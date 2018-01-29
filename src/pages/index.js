@@ -5,10 +5,14 @@ import styles from "./index.module.scss"
 class IndexPage extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {height: window.innerHeight}
+    this.state = {height: 100}
   }
   componentDidMount () {
-    window.addEventListener("resize", () => this.setState({height: window.innerHeight}))
+    this.setHeight()
+    window.addEventListener("resize", this.setHeight.bind(this))
+  }
+  setHeight () {
+    this.setState({height: window.innerHeight})
   }
   render () {
     return (
