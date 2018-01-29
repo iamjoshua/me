@@ -1,0 +1,25 @@
+.container {
+  border-top: 1px #e8e8e8 solid;
+  border-bottom: 1px #e8e8e8 solid;
+  width: 100%;
+  align-self: center;
+  margin-top: 25%;
+  display: flex;
+  div:first-child {
+    background-image: linear-gradient(
+                        rgba(134, 112, 164, 0.6),
+                        rgba(134, 112, 164, 0.6)
+                      ),
+                      url('./joshua_heiland.jpg');
+    background-image: url('./joshua_heiland.jpg');
+    background-position: 50% 40%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    flex: 35%;
+  }
+  div:last-child {
+    border-left: 1px #e8e8e8 solid;
+    flex: 65%;
+    padding: 50px;
+  }
+}
