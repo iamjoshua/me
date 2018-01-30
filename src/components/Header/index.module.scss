@@ -1,6 +1,6 @@
+@import '../../css/variables';
+
 .container {
-  border-top: 1px #e8e8e8 solid;
-  border-bottom: 1px #e8e8e8 solid;
   width: 100%;
   align-self: center;
   margin-top: 25%;
@@ -18,8 +18,20 @@
     flex: 35%;
   }
   div:last-child {
-    border-left: 1px #e8e8e8 solid;
+    box-sizing: border-box;
+    border-top: 1px #e8e8e8 solid;
+    border-bottom: 1px #e8e8e8 solid;
+    border-left: 5px solid $accent-color;
     flex: 65%;
     padding: 50px;
   }
+  h1 {
+    margin-left: 30px;
+    transition: margin 1s;
+
+  }
+}
+
+h1.initMargin {
+  margin-left: 0;
 }

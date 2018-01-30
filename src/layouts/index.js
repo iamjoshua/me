@@ -6,7 +6,7 @@ import './index.scss'
 const TemplateWrapper = ({ children }) => (
   <div>
     <Helmet
-      title="Joshua Heiland"
+      title="Joshua Heiland | Artificial Intelligence Researcher"
       meta={[
         { name: 'description', content: 'Sample' },
         { name: 'keywords', content: 'sample, something' },

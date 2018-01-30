@@ -5,7 +5,7 @@ const Header = () => (
   <div className={styles.container}>
     <div></div>
     <div>
-      <h1>SF-based thinker & <br/> artificial intelligence researcher</h1>
+      <h1 className={styles.initMargin}>SF-based thinker & <br/> artificial intelligence researcher</h1>
       <h2>designer, coder, writer</h2>
     </div>
   </div>

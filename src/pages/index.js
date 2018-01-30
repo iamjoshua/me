@@ -15,11 +15,11 @@ class IndexPage extends React.Component {
     this.setState({height: window.innerHeight})
   }
   render () {
+    // used to fade in on load
+    let classes = 'initHide ' + styles.container
     return (
-      <div>
-        <div className={styles.container} style={{height: this.state.height}}>
-          <Header />
-        </div>
+      <div className={classes} style={{height: this.state.height}}>
+        <Header />
       </div>
     )
   }
