@@ -5,6 +5,9 @@
   width: 100%;
   align-self: center;
   margin-top: 25%;
+  @media only screen and (max-width: 500px) {
+    margin-top: 0;
+  }
   display: flex;
   & > div:first-child {
     box-sizing: border-box;
@@ -20,21 +23,11 @@
     background-repeat: no-repeat;
     flex: 35%;
     @media only screen and (max-width: 500px) {
+      flex: 50%;
       border-right: none;
       border-top: 10px solid $muted-color;
       order: 1;
-      height: 200px;
-    }
-    display: flex;
-    & div {
-      opacity: 0;
-      border: none;
-      background: white;
-      flex-basis: 30%;
-      opacity: 0;
-      &:hover {
-        background: #b196af;
-      }
+      height: 300px;
     }
   }
   div:last-child {
@@ -43,6 +36,9 @@
     border-bottom: 1px $muted-color solid;
     flex: 65%;
     padding: 50px;
+    @media only screen and (max-width: 500px) {
+      padding: 20px 50px;
+    }
   }
   h1 {
     margin-left: 30px;
