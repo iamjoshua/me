@@ -1,11 +1,14 @@
 @import '../../css/variables';
 
+
 .container {
   width: 100%;
   align-self: center;
   margin-top: 25%;
   display: flex;
-  div:first-child {
+  & > div:first-child {
+    box-sizing: border-box;
+    border-right: 10px solid $muted-color;
     background-image: linear-gradient(
                         rgba(134, 112, 164, 0.6),
                         rgba(134, 112, 164, 0.6)
@@ -16,19 +19,40 @@
     background-size: cover;
     background-repeat: no-repeat;
     flex: 35%;
+    @media only screen and (max-width: 500px) {
+      border-right: none;
+      border-top: 10px solid $muted-color;
+      order: 1;
+      height: 200px;
+    }
+    display: flex;
+    & div {
+      opacity: 0;
+      border: none;
+      background: white;
+      flex-basis: 30%;
+      opacity: 0;
+      &:hover {
+        background: #b196af;
+      }
+    }
   }
   div:last-child {
     box-sizing: border-box;
-    border-top: 1px #e8e8e8 solid;
-    border-bottom: 1px #e8e8e8 solid;
-    border-left: 5px solid $accent-color;
+    border-top: 1px $muted-color solid;
+    border-bottom: 1px $muted-color solid;
     flex: 65%;
     padding: 50px;
   }
   h1 {
     margin-left: 30px;
     transition: margin 1s;
-
+  }
+  h2 {
+    color: $accent-color;
+  }
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
   }
 }
 
