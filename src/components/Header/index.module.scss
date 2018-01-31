@@ -5,6 +5,9 @@
   width: 100%;
   align-self: center;
   margin-top: 25%;
+  @media only screen and (max-height: 800px) {
+    margin-top: 0;
+  }
   @media only screen and (max-width: 500px) {
     margin-top: 0;
   }
