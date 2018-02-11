@@ -10,6 +10,7 @@
     "gatsby-plugin-react-helmet": "^2.0.3",
     "lost": "^8.2.0",
     "react-helmet": "^5.2.0",
+    "react-on-screen": "^2.0.1",
     "react-transition-group": "1.x"
   },
   "keywords": [
