@@ -1,5 +1,4 @@
 import React from "react"
-import Centered from "../components/centered"
 import Post from "../components/blog/post"
 import VisibleDiv from "../components/visiblediv"
 import styles from "./blog.module.scss"
