@@ -7,15 +7,15 @@ class IndexPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {height: 100, transform: 0}
-    // get around binding this for listeners
-    this.setHeight = this.setHeight.bind(this)
   }
   componentDidMount () {
     this.setHeight()
-    window.addEventListener("resize", this.setHeight)
+    // get around binding this for listeners
+    this._setHeight = this.setHeight.bind(this)
+    window.addEventListener("resize", this._setHeight)
   }
   componentWillUnmount () {
-    window.removeEventListener("resize", this.setHeight)
+    window.removeEventListener("resize", this._setHeight)
   }
   setHeight () {
     this.setState({height: window.innerHeight})
