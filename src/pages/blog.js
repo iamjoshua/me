@@ -6,7 +6,7 @@ import styles from "./blog.module.scss"
 export const pageQuery = graphql`
   query IndexQuery {
     allMarkdownRemark(
-      filter: { frontmatter: { type: { eq: "blog" } } },
+      filter: { frontmatter: { type: { eq: "blog" }, published: { eq: true } } },
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {
@@ -24,8 +24,13 @@ export const pageQuery = graphql`
   }
 `
 
-const Blog = ({ data: { allMarkdownRemark: { edges } } }) => {
-  const Posts = edges.map(edge => <Post key={edge.node.id} post={edge.node} />)
+const Blog = ({data}) => {
+  let Posts = false
+  if (data.allMarkdownRemark) {
+    let results = data.allMarkdownRemark.edges
+    Posts = results.map(r => <Post key={r.node.id} post={r.node} />)
+  }
+  
   return (
     <div className={styles.container}>
       <div>
@@ -34,7 +39,7 @@ const Blog = ({ data: { allMarkdownRemark: { edges } } }) => {
         </VisibleDiv>
       </div>
       <div>
-        {Posts}
+        {Posts || 'No posts yet...'}
       </div>
     </div>
   )

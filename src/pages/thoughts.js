@@ -4,7 +4,7 @@ import PostLink from "../components/post-link"
 export const pageQuery = graphql`
   query thoughtsQuery {
     allMarkdownRemark(
-      filter: { frontmatter: { type: { eq: "thought" } } },
+      filter: { frontmatter: { type: { eq: "thought" }, published: { eq: true } } },
       sort: { order: DESC, fields: [frontmatter___date] }
     ) {
       edges {
@@ -23,10 +23,12 @@ export const pageQuery = graphql`
   }
 `
 
-const Thoughts = ({ data: { allMarkdownRemark: { edges } } }) => {
-  const Posts = edges
-    .filter(edge => !!edge.node.frontmatter.date) // You can filter your posts based on some criteria
-    .map(edge => <PostLink key={edge.node.id} post={edge.node} />)
+const Thoughts = ({data}) => {
+  let Posts = false
+  if (data.allMarkdownRemark) {
+    let results = data.allMarkdownRemark.edges
+    Posts = results.map(r => <PostLink key={r.node.id} post={r.node} />)
+  }
 
   return <div style={{margin: 150}}>{Posts}</div>;
 }

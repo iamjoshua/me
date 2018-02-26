@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "author": "Kyle Mathews <mathews.kyle@gmail.com>",
   "dependencies": {
+    "@mosch/gatsby-source-github": "^0.4.1",
     "gatsby": "^1.9.215",
     "gatsby-link": "^1.6.34",
     "gatsby-plugin-postcss-sass": "1.0.17",
