@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-import Navigation from '../components/Navigation'
+import Navigation from '../components/navigation'
 import './index.scss'
 
 class TemplateWrapper extends React.Component {

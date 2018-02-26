@@ -1,5 +1,5 @@
 import React from 'react'
-import Header from '../components/Header'
+import Header from '../components/header'
 import Thoughts from '../components/thoughts'
 import styles from "./index.module.scss"
 
