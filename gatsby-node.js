@@ -39,7 +39,7 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
       result.data.allMarkdownRemark.edges.forEach(({ node }) => {
         createPage({
           path: node.frontmatter.path,
-          component: path.resolve(`src/templates/${type}Template.js`)
+          component: path.resolve(`src/templates/${type}-template.js`)
         })
       })
     }).catch(console.log)
