@@ -1,11 +1,10 @@
 import React from 'react'
-import VisibleDiv from "../visiblediv"
-import styles from "./index.module.scss"
+import VisibleDiv from '../visiblediv'
+import styles from './index.module.scss'
 
 const Header = () => (
   <div className={styles.container}>
-    <div>
-    </div>
+    <div></div>
     <div>
       <VisibleDiv>
         <h1>SF-based thinker & <br/> artificial intelligence researcher</h1>

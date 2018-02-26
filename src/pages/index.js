@@ -1,6 +1,5 @@
 import React from 'react'
-import Header from '../components/header'
-import Thoughts from '../components/thoughts'
+import Intro from '../components/intro'
 import styles from "./index.module.scss"
 
 class IndexPage extends React.Component {
@@ -20,23 +19,13 @@ class IndexPage extends React.Component {
   setHeight () {
     this.setState({height: window.innerHeight})
   }
-  handleScroll (event) {
-    // console.log(event)
-    // let scrollTop = event.srcElement.body.scrollTop,
-    //     itemTranslate = Math.min(0, scrollTop/3 - 60)
-    //
-    // this.setState({
-    //   transform: this.state.transform + 5
-    // })
-    // console.log(this.state.transform)
-  }
   render () {
     // used to fade in on load
     let classes = 'initHide ' + styles.container
     return (
       <div style={{marginTop: this.state.transform}}>
         <div className={classes} style={{height: this.state.height}}>
-          <Header />
+          <Intro />
         </div>
       </div>
     )
