@@ -33,7 +33,7 @@
       height: 130px;
     }
   }
-  > div:last-child {
+  & > div:last-child {
     box-sizing: border-box;
     border-top: 1px $muted-color solid;
     border-bottom: 1px $muted-color solid;
