@@ -1,21 +1,37 @@
 @import '../../css/variables';
 
 .thought {
+  transition: all 0.5s;
+  opacity: 0.01;
+  padding-top: 50px;
+}
+:global {
+  .visible {
+    padding-top: 0px;
+    opacity: 1;
+  }
+}
+
+.thought {
+  flex-basis: 100%;
   font-size: 25px;
   line-height: 40px;
   font-weight: 100;
   cursor: pointer;
   box-sizing: border-box;
-  // opacity: 0.01;
-  transition: all 3s;
-  &.visible {
-    opacity: 1;
+  padding: 10%;
+  &:hover{
+    background: #484848;
+    color: #e2e2e2;
+    transition: background-color 0.6s;
+    div:first-child  > div {
+      border-color: transparent;
+    }
   }
   // @media only screen and (max-width: 900px) {
   //   flex-basis: 100%;
   // }
   & div:first-child {
-    margin: 15%;
     @media only screen and (max-width: 1100px) {
       margin: 10%;
     }
@@ -25,10 +41,13 @@
     @media only screen and (max-width: 500px) {
       margin: 10%;
     }
+    & > :nth-child(2) {
+      background: red;
+    }
     > div {
       display: inherit;
       opacity: 1;
-      border-top: 1px $muted-color solid;
+      // border-top: 1px $muted-color solid;
       margin: 20px auto;
     }
   }
@@ -42,15 +61,6 @@
   &:first-child {
     border: none;
   }
-  &:hover{
-    background: #484848;
-    color: #e2e2e2;
-    transition: background-color 0.6s;
-    div:first-child  > div {
-      border-color: transparent;
-    }
-  }
-
 }
 
 .expanded {

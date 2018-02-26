@@ -10,10 +10,12 @@ class IndexPage extends React.Component {
   }
   componentDidMount () {
     this.setHeight()
-    window.addEventListener("resize", this.setHeight.bind(this))
-    window.addEventListener('scroll', this.handleScroll.bind(this))
+    window.addEventListener("resize", this.setHeight)
   }
-  setHeight () {
+  componentWillUnmount () {
+    window.removeEventListener("resize", this.setHeight)
+  }
+  setHeight = () => {
     this.setState({height: window.innerHeight})
   }
   handleScroll (event) {
@@ -31,11 +33,9 @@ class IndexPage extends React.Component {
     let classes = 'initHide ' + styles.container
     return (
       <div style={{marginTop: this.state.transform}}>
-
         <div className={classes} style={{height: this.state.height}}>
           <Header />
         </div>
-        <Thoughts />
       </div>
     )
   }

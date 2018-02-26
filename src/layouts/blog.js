@@ -25,9 +25,12 @@ class TemplateWrapper extends React.Component {
             { name: 'description', content: 'Sample' },
             { name: 'keywords', content: 'sample, something' },
           ]}
-        />
+        />hello
         <Navigation />
-        {this.props.children()}
+        <div>
+        wow
+          {this.props.children()}
+        </div>
       </div>
     )
   }

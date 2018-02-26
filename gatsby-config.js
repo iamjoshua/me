@@ -12,6 +12,14 @@ module.exports = {
         postCssPlugins: [lost()],
         precision: 8, // SASS default: 5
       },
-    }
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        path: `${__dirname}/src/posts`,
+        name: "markdown-pages",
+      },
+    },
+    `gatsby-transformer-remark`
   ]
-};
+}

@@ -1,0 +1,66 @@
+@import '../../css/variables';
+@import '../../css/global';
+
+.name {
+  position: fixed;
+  left: 30px;
+  text-transform: uppercase;
+}
+:global {
+  .short {
+    display: none !important;
+  }
+  @media only screen and (max-width: 600px) {
+    .short {
+      display: inline-block !important;
+    }
+    .full {
+      display: none !important;
+    }
+  }
+}
+
+.mainNav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0;
+  border-top: 1px #f3f3f3 solid;
+  border-bottom: 4px #9c7d9a solid;
+  background: #ffffffeb;
+  ul {
+    flex-basis: 65%;
+    @media only screen and (max-width: 600px) {
+      flex-basis: inherit;
+      margin-right: 30px;
+    }
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    // margin: 0 auto;
+    // width: 650px;
+  }
+  li {
+    display: inline;
+    // padding: 0 10px;
+    padding: 0 0 0 45px;
+    @media only screen and (max-width: 600px) {
+      padding-left: 5px;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: #545454;
+    font-weight: 500;
+    padding: 40px 10px;
+    font-size: 15px;
+    display: inline-block;
+    &.active {
+      color: $accent-color;
+      border-top: 1px $accent-color solid;
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react'
-import styles from "./thought.module.scss"
+import styles from "./book.module.scss"
 
-class Thought extends React.Component {
+class Book extends React.Component {
   constructor(props) {
     super(props)
     this.state = {state: false}
@@ -17,16 +17,10 @@ class Thought extends React.Component {
     //style += this.state.expanded ? styles.expanded : styles.thought
     return (
       <div className={style} onClick={this.handleClick.bind(this)}>
-        <div>
-          <div></div>
-          {this.props.children}
-        </div>
-        <div>
-          More stuff here
-        </div>
+        {this.props.children}
       </div>
     )
   }
 }
 
-export default Thought
+export default Book

@@ -1,4 +1,5 @@
 import React from 'react'
+import VisibleDiv from "../visiblediv"
 import styles from "./index.module.scss"
 
 const Header = () => (
@@ -6,8 +7,10 @@ const Header = () => (
     <div>
     </div>
     <div>
-      <h1>SF-based thinker & <br/> artificial intelligence researcher</h1>
-      <h2>designer, coder, writer</h2>
+      <VisibleDiv>
+        <h1>SF-based thinker & <br/> artificial intelligence researcher</h1>
+        <h2>designer, coder, writer</h2>
+      </VisibleDiv>
     </div>
   </div>
 )

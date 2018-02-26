@@ -1,0 +1,42 @@
+.container {
+  display: flex;
+  @media only screen and (max-width: 800px) {
+    display: inherit;
+  }
+  > :first-child {
+    flex-basis: 35%;
+    padding: 45px;
+    @media only screen and (max-width: 800px) {
+      padding-bottom: 0;
+    }
+    flex: 1;
+    > :first-child {
+      position: sticky;
+      z-index: 1;
+      top: calc(50% - 150px);
+      font-size: 25px;
+      color: #9b7d9a;
+      font-weight: 100;
+      line-height: 45px;
+      > div {
+        transition: all 0.5s;
+        padding-top: 30px;
+        opacity: 0.1;
+      }
+    }
+  }
+  > :last-child {
+    flex-basis: 65%;
+    padding: 45px 65px 100px 45px;
+    flex: 2;
+  }
+}
+
+// Blog intro on left
+:global {
+  .visible {
+    padding-top: 0 !important;
+    opacity: 1 !important;
+    width: 100%; // stops word wrap on transition
+  }
+}

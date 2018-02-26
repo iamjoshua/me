@@ -9,6 +9,12 @@ const Thoughts = (props) => {
   <div className={styles.container}>
     <TrackVisibility className={styles.item}>
       <Thought>
+        Some thoughts that I frequently reflect on...
+      </Thought>
+    </TrackVisibility>
+
+    <TrackVisibility className={styles.item}>
+      <Thought>
         An average idea is better than a great idea when it considers sustainability and the other does not.
       </Thought>
     </TrackVisibility>
