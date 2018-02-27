@@ -1,8 +1,8 @@
 import React from "react"
 import Link from "gatsby-link"
-import styles from './post.module.scss'
+import styles from './book.module.scss'
 
-const Post = ({ post }) => (
+const BookSummary = ({ post }) => (
   <article className={styles.post}>
     <header>
       <h3>
@@ -21,4 +21,4 @@ const Post = ({ post }) => (
   </article>
 )
 
-export default Post
+export default BookSummary

@@ -1,6 +1,6 @@
 import React from "react"
-//import Book from "../components/books/book"
-import Post from "../components/blog/post"
+import BookSummary from "../../components/books/book-summary"
+import styles from "./books.module.scss"
 
 export const pageQuery = graphql`
   query booksQuery {
@@ -24,14 +24,14 @@ export const pageQuery = graphql`
   }
 `
 
-const Books = ({data}) => {
+const BooksPage = ({data}) => {
   let Posts = false
   if (data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
-    Posts = results.map(r => <Post key={r.node.id} post={r.node} />)
+    Posts = results.map(r => <BookSummary key={r.node.id} post={r.node} />)
   }
 
   return <div style={{margin: 150}}>{Posts}</div>;
 }
 
-export default Books
+export default BooksPage

@@ -1,4 +1,6 @@
 import React from "react"
+import Link from "gatsby-link"
+import styles from "./post.module.scss"
 
 export const pageQuery = graphql`
   query BlogPostByPath($path: String!) {
@@ -18,12 +20,15 @@ export default function Template({data}) {
   const { markdownRemark } = data; // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark;
   return (
-    <div className="blog-post-container">
-      <div className="blog-post">
+    <div className={styles.container}>
+      <div className={styles.back}>
+        <Link to='/blog'>back</Link>
+      </div>
+      <div className={styles.post}>
         <h1>{frontmatter.title}</h1>
-        <h2>{frontmatter.date}</h2>
+        <time dateTime={frontmatter.date}>{frontmatter.date}</time>
         <div
-          className="blog-post-content"
+          className={styles.content}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

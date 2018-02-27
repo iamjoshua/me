@@ -1,5 +1,6 @@
 import React from "react"
-import PostLink from "../components/post-link"
+import ThoughtSummary from "../../components/thoughts/thought-summary"
+import styles from "./thoughts.module.scss"
 
 export const pageQuery = graphql`
   query thoughtsQuery {
@@ -23,14 +24,14 @@ export const pageQuery = graphql`
   }
 `
 
-const Thoughts = ({data}) => {
+const ThoughtsPage = ({data}) => {
   let Posts = false
   if (data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
-    Posts = results.map(r => <PostLink key={r.node.id} post={r.node} />)
+    Posts = results.map(r => <ThoughtSummary key={r.node.id} post={r.node} />)
   }
 
   return <div style={{margin: 150}}>{Posts}</div>;
 }
 
-export default Thoughts
+export default ThoughtsPage

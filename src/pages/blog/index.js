@@ -1,6 +1,6 @@
 import React from "react"
-import Post from "../components/blog/post"
-import VisibleDiv from "../components/visiblediv"
+import PostSummary from "../../components/blog/post-summary"
+import VisibleDiv from "../../components/visiblediv"
 import styles from "./blog.module.scss"
 
 export const pageQuery = graphql`
@@ -24,13 +24,13 @@ export const pageQuery = graphql`
   }
 `
 
-const Blog = ({data}) => {
+const BlogPage = ({data}) => {
   let Posts = false
   if (data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
-    Posts = results.map(r => <Post key={r.node.id} post={r.node} />)
+    Posts = results.map(r => <PostSummary key={r.node.id} post={r.node} />)
   }
-  
+
   return (
     <div className={styles.container}>
       <div>
@@ -46,4 +46,4 @@ const Blog = ({data}) => {
 
 }
 
-export default Blog
+export default BlogPage

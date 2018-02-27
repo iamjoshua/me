@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  padding: 30px;
+  justify-content: center;
+  .back {
+    text-transform: uppercase;
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    font-size: 12px;
+  }
+  time {
+    font-size: 12px;
+  }
+  .post {
+    flex-basis: 65%;
+    @media only screen and (max-width: 1200px) {
+      flex-basis: 80%;
+    }
+    align-self: center;
+    padding-bottom: 100px;
+    color: #676767;
+    .content {
+      font-size: 18px;
+      line-height: 30px;
+    }
+  }
+}
