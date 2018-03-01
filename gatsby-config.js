@@ -1,6 +1,4 @@
 const lost = require('lost')
-const key = require('./client_secret.json')
-console.log(key.type)
 
 module.exports = {
   siteMetadata: {
@@ -15,7 +13,7 @@ module.exports = {
     //   options: {
     //       spreadsheetId: '1XtAOX3c4s6WylSUk3J5j0QiyP3OZG6ZvQFoCGpGyje8',
     //       worksheetTitle: 'legislators-current',
-    //       credentials: key
+    //       credentials: require('./client_secret.json')
     //   }
     // },
     {
