@@ -1,4 +1,6 @@
 import React from "react"
+import Link from "gatsby-link"
+import styles from "./thought.module.scss"
 
 export const pageQuery = graphql`
   query ThoughtPostByPath($path: String!) {
@@ -8,6 +10,7 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         path
         title
+        axiom
       }
     }
   }
@@ -18,12 +21,15 @@ export default function Template({data}) {
   const { markdownRemark } = data; // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark;
   return (
-    <div className="thought-post-container">
-      <div className="thought-post">
-        <h1>Book Title: {frontmatter.title}</h1>
-        <h2><small>Started:</small>{frontmatter.date}</h2>
+    <div className={styles.container}>
+      <div className={styles.back}>
+        <Link to='/thoughts'>back</Link>
+      </div>
+      <div className={styles.post}>
+        <h1>{frontmatter.axiom}</h1>
+        <time dateTime={frontmatter.date}>{frontmatter.date}</time>
         <div
-          className="thought-post-content"
+          className={styles.content}
           dangerouslySetInnerHTML={{ __html: html }}
         />
       </div>

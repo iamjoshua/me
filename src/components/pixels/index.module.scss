@@ -1,0 +1,14 @@
+.container {
+  position:fixed;
+  display: flex;
+  flex-wrap: wrap;
+  .pixel {
+    width: 20px;
+    height: 20px;
+    background: white;
+    transition: background-color 0.5s ease;
+    &.firing {
+      background: #f3f3f3;
+    }
+  }
+}

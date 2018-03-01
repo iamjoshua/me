@@ -6,17 +6,16 @@ const BookSummary = ({ post }) => (
   <article className={styles.post}>
     <header>
       <h3>
-        <Link to={post.frontmatter.path}>
-          {post.frontmatter.title}
-        </Link>
+          {post.Title}
       </h3>
-      <time dateTime={post.frontmatter.date}>{post.frontmatter.date}</time>
+      <h4>
+        {post.Author}
+      </h4> 
+      <time dateTime={post.Completed}>{post.Completed}</time>
     </header>
     <div>
-      {post.excerpt}
     </div>
     <footer>
-      <Link to={post.frontmatter.path}><small>Read More</small></Link>
     </footer>
   </article>
 )

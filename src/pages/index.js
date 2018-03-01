@@ -1,4 +1,5 @@
 import React from 'react'
+import Pixels from '../components/pixels'
 import Intro from '../components/intro'
 import styles from "./index.module.scss"
 

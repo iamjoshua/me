@@ -21,6 +21,7 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
           edges {
             node {
               frontmatter {
+                title
                 path
                 type
               }
@@ -37,8 +38,12 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
 
       // Create blog post pages
       result.data.allMarkdownRemark.edges.forEach(({ node }) => {
+        if (!node.frontmatter.title) return
+        let urlSafeTitle = encodeURI(node.frontmatter.title.replace(/\s/g, "-").toLowerCase())
+        let dynamicPath = `/${type}/${urlSafeTitle}`
+
         createPage({
-          path: node.frontmatter.path,
+          path: node.frontmatter.path || dynamicPath,
           component: path.resolve(`src/templates/${type}/index.js`)
         })
       })
