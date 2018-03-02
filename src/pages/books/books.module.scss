@@ -1,5 +1,20 @@
+@import '../../css/variables';
+
 .container {
   padding: 20px 20px 130px 20px;
+  ul {
+    li {
+      display: inline-block;
+      font-size: 14px;
+      padding-right: 20px;
+      cursor: pointer;
+      transition: all 0.5s;
+      &.active, &:hover {
+        padding-left: 5px;
+        font-weight: bold;
+      }
+    }
+  }
   & > div:first-child {
     font-size: 25px;
     color: #9b7d9a;
@@ -10,13 +25,13 @@
       width: 90%;
     }
     margin: 20px;
+    a:link {
+      text-decoration: underline;
+      font-weight: bold;
+    }
   }
 }
 .innerContainer {
   display: flex;
   flex-wrap: wrap;
-}
-a:link {
-  text-decoration: underline;
-  font-weight: bold;
 }

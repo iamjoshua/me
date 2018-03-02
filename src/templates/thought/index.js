@@ -22,16 +22,9 @@ export default function Template({data}) {
   const { frontmatter, html } = markdownRemark;
   return (
     <div className={styles.container}>
-      <div className={styles.back}>
-        <Link to='/thoughts'>back</Link>
-      </div>
       <div className={styles.post}>
-        <h1>{frontmatter.axiom}</h1>
-        <time dateTime={frontmatter.date}>{frontmatter.date}</time>
-        <div
-          className={styles.content}
-          dangerouslySetInnerHTML={{ __html: html }}
-        />
+        <h1 className={styles.axiom}>{frontmatter.axiom}</h1>
+        <div className={styles.content} dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>
   )

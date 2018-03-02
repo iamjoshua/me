@@ -3,6 +3,8 @@
 
 .container {
   width: 100%;
+  position: absolute;
+  bottom: 0;
   align-self: flex-end;
   margin-bottom: 104px;
   @media only screen and (max-height: 800px) {
@@ -41,6 +43,7 @@
     padding: 50px;
   }
   h1, h2 {
+    width: 100%; // keeps lines from breaking during animation
     margin-left: 30px;
     @media only screen and (max-width: 500px) {
       margin-left: 0px;

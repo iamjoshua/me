@@ -1,34 +1,42 @@
 .container {
   display: flex;
-  padding: 30px;
-  justify-content: center;
-  .back {
-    text-transform: uppercase;
-    position: fixed;
-    @media only screen and (max-width: 600px) {
-      display: none;
-    }
-    top: 30px;
-    left: 30px;
-    font-size: 12px;
-  }
-  time {
-    font-size: 12px;
-  }
-  .post {
-    flex-basis: 65%;
-    @media only screen and (max-width: 1200px) {
-      flex-basis: 80%;
-    }
-    @media only screen and (max-width: 600px) {
-      flex-basis: 95%;
+  align-self: center;
+  padding: 40px;
+  padding-bottom: 130px;
+  // flex-basis: 50%;
+  .axiom {
+    flex-basis: 60%;
+    @media only screen and (max-width: 800px) {
+      flex-basis: 100%;
     }
     align-self: center;
-    padding-bottom: 100px;
+    padding-right: 20px;
+  }
+  .content {
+    flex-basis: 35%;
+    @media only screen and (max-width: 800px) {
+      flex-basis: 100%;
+    }
+    margin-top: -10px;
+  }
+  .post {
+    display: flex;
+    flex-basis: 100%;
+    @media only screen and (max-width: 1000px) {
+      flex-wrap: wrap;
+      flex-flow: column;
+    }
+    // @media only screen and (max-width: 1200px) {
+    //   flex-basis: 80%;
+    // }
+    // @media only screen and (max-width: 600px) {
+    //   flex-basis: 95%;
+    // }
+    align-self: center;
     color: #676767;
     h1 {
       margin-top: 0;
-      line-height: 50px;
+      line-height: 65px;
     }
     .content {
       font-size: 18px;

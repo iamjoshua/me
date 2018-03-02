@@ -7,12 +7,21 @@ import './index.scss'
 class TemplateWrapper extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {loaded: false}
+    this.state = {loaded: false, height: 1000}
   }
   componentDidMount () {
+    this.setHeight()
+    this._setHeight = this.setHeight.bind(this)
+    window.addEventListener("resize", this._setHeight)
     setTimeout(() => {
       this.setState({loaded: true})
     }, 0)
+  }
+  componentWillUnmount () {
+    window.removeEventListener("resize", this._setHeight)
+  }
+  setHeight () {
+    this.setState({height: window.innerHeight})
   }
   render () {
     // used to fade in on load
@@ -27,7 +36,9 @@ class TemplateWrapper extends React.Component {
           ]}
         />
         <Navigation />
-        {this.props.children()}
+        <div className='pageContainer' style={{minHeight: this.state.height}}>
+          {this.props.children()}
+        </div>
       </div>
     )
   }
