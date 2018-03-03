@@ -17,6 +17,7 @@ export const pageQuery = graphql`
             path
             title
             completed
+            axiom
           }
         }
       }
@@ -31,7 +32,7 @@ const ThoughtsPage = ({data}) => {
     Posts = results.map(r => <ThoughtSummary key={r.node.id} post={r.node} />)
   }
 
-  return <div style={{margin: 150}}>{Posts}</div>;
+  return <div className={styles.container}>{Posts}</div>;
 }
 
 export default ThoughtsPage

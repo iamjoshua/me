@@ -3,7 +3,6 @@ import Link from "gatsby-link"
 import styles from './book.module.scss'
 
 const BookSummary = ({ post, onClick }) => (
-
   <article className={styles.post}>
     <header>
       <h3>

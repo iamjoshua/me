@@ -18,13 +18,17 @@ export const pageQuery = graphql`
 
 // data prop will be injected by the GraphQL query below.
 export default function Template({data}) {
-  const { markdownRemark } = data; // data.markdownRemark holds our post data
-  const { frontmatter, html } = markdownRemark;
+  const { markdownRemark } = data // data.markdownRemark holds our post data
+  const { frontmatter, html } = markdownRemark
+  let sourceLink = `https://github.com/iamjoshua/writings/blob/master${frontmatter.path}.md`
   return (
     <div className={styles.container}>
       <div className={styles.post}>
         <h1 className={styles.axiom}>{frontmatter.axiom}</h1>
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: html }} />
+        <div className={styles.content}>
+          <div dangerouslySetInnerHTML={{ __html: html }} />
+          <div className={styles.source}><a href={sourceLink}>Versions</a></div>
+        </div>
       </div>
     </div>
   )

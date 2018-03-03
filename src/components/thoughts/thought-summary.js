@@ -3,21 +3,14 @@ import Link from "gatsby-link"
 import styles from './thought.module.scss'
 
 const ThoughtSummary = ({ post }) => (
-  <article className={styles.post}>
+  <article className={styles.thought}>
     <header>
       <h3>
         <Link to={post.frontmatter.path}>
-          {post.frontmatter.title}
+          {post.frontmatter.axiom}
         </Link>
       </h3>
-      <time dateTime={post.frontmatter.date}>{post.frontmatter.date}</time>
     </header>
-    <div>
-      {post.excerpt}
-    </div>
-    <footer>
-      <Link to={post.frontmatter.path}><small>Read More</small></Link>
-    </footer>
   </article>
 )
 

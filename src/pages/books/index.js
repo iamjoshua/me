@@ -9,7 +9,7 @@ class BooksPage extends React.Component {
     super(props)
     let data = this.props.data
     let books = (data && data.allBooksCsv) ? data.allBooksCsv.edges.map(b => b.node) : []
-    this.state = {books, params: {}}
+    this.state = {books, params: {}, clicked: 'All'}
   }
   componentDidMount () {
   }
@@ -41,13 +41,14 @@ class BooksPage extends React.Component {
     return (
       <div className={styles.container}>
         <VisibleDiv>
-          It seems to me that a mind doesn't contain knowledge but <Link to="./thoughts/mind-from-knowledge">emerges from it.</Link> These are the books that I've read and so they have certainly, for better or for worse, shaped my mind.
+          It seems to me that a mind doesn't contain knowledge but <Link to="./thoughts/mind-from-knowledge">emerges from it.</Link> These are the books that I have read and assume have sculpted "me" to some extent for better or for worse.
         </VisibleDiv>
 
         <ul>
           {this.filterLink('All', {})}
           {this.filterLink('Fiction', {Type: 'Fiction'})}
           {this.filterLink('Nonfiction', {Type: 'Nonfiction'})}
+          {this.filterLink('Favorites', {Rating: '5/5'})}
           {this.filterLink('Author', {})}
         </ul>
 

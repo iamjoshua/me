@@ -1,6 +1,6 @@
 ---
 type: "thought"
-path: "/thoughts/example-thought"
+path: "/thoughts/example-thought4"
 title: "Example Thought"
 date: "2018-02-22"
 author: "Joshua Heiland"

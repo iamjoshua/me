@@ -1,86 +1,26 @@
-@import '../../css/variables';
-
 .thought {
-  transition: all 0.5s;
-  opacity: 0.01;
-  padding-top: 50px;
-}
-:global {
-  .visible {
-    padding-top: 0px;
-    opacity: 1;
-  }
-}
-
-.thought {
-  flex-basis: 100%;
-  font-size: 25px;
-  line-height: 40px;
-  font-weight: 100;
-  cursor: pointer;
-  box-sizing: border-box;
-  padding: 10%;
-  &:hover{
-    background: #484848;
-    color: #e2e2e2;
-    transition: background-color 0.6s;
-    div:first-child  > div {
-      border-color: transparent;
-    }
-  }
-  // @media only screen and (max-width: 900px) {
-  //   flex-basis: 100%;
-  // }
-  & div:first-child {
-    @media only screen and (max-width: 1100px) {
-      margin: 10%;
-    }
-    @media only screen and (max-width: 900px) {
-      margin: 10%;
-    }
-    @media only screen and (max-width: 500px) {
-      margin: 10%;
-    }
-    & > :nth-child(2) {
-      background: red;
-    }
-    & > div {
-      display: inherit;
-      opacity: 1;
-      // border-top: 1px $muted-color solid;
-      margin: 20px auto;
-    }
-  }
-  & div:last-child {
-    display: none;
-    opacity: 0;
-  }
-  &:nth-child(odd) {
-    // background: $muted-color;
-  }
-  &:first-child {
-    border: none;
-  }
-}
-
-.expanded {
-  background: white;
-  opacity: 0.95;
-  position: fixed;
-  top: 0;
-  font-size: 50px;
-  height: 100%;
+  flex-basis: calc(30% - 40px);
+  flex-grow: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  padding: 0 10%;
-  letter-spacing: -2px;
-  transition: opacity 0.5s;
-  h1 {
-
+  justify-content: center;
+  a {
+    display: inline-block;
+    padding: 40px;
   }
-  @media only screen and (max-width: 1100px) {
-    font-size: 40px;
+  &:hover {
+    background: #545454;
+    a {
+      color: white;
+    }
+  }
+  &:nth-child(even) {
+    // background: #f9f9f9;
+    // color: white;
+    //border-right: 1px #f9f9f9 solid;
+  }
+  @media only screen and (max-width: 800px) {
+    flex-basis: 100%;
+    justify-content: flex-start;
   }
 }
