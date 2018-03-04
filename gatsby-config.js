@@ -1,14 +1,11 @@
 const lost = require('lost')
-console.log(process)
-try {
-  let key = {
-    private_key: process.env.GAPI_PRIVATE_KEY,
-    client_email: process.env.GAPI_CLIENT_EMAIL,
-  }
-} catch (error) {
-  console.log('failed so loading key')
-  key = require('./client_secret.json')
-}
+
+let key = process.env.GAPI_PRIVATE_KEY ? {
+  private_key: process.env.GAPI_PRIVATE_KEY,
+  client_email: process.env.GAPI_CLIENT_EMAIL,
+} : require('./client_secret.json')
+
+console.log(key)
 
 module.exports = {
   siteMetadata: {
