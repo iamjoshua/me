@@ -2,8 +2,8 @@ const lost = require('lost')
 console.log(process)
 try {
   let key = {
-    private_key: GAPI_PRIVATE_KEY,
-    client_email: GAPI_CLIENT_EMAIL,
+    private_key: process.env.GAPI_PRIVATE_KEY,
+    client_email: process.env.GAPI_CLIENT_EMAIL,
   }
 } catch (error) {
   console.log('failed so loading key')
