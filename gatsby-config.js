@@ -4,8 +4,6 @@ const googleKey = process.env.GAPI_PRIVATE_KEY ? {
   client_email: process.env.GAPI_CLIENT_EMAIL
 } : require('./client_secret.json')
 
-console.log(googleKey)
-
 module.exports = {
   siteMetadata: {
     title: 'Gatsby Default Starter',
