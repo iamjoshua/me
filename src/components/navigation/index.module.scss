@@ -50,6 +50,9 @@
     @media only screen and (max-width: 600px) {
       padding-left: 5px;
     }
+    &:hover {
+      padding-bottom: 10px;
+    }
   }
   a {
     text-decoration: none;
@@ -58,9 +61,13 @@
     padding: 40px 10px;
     font-size: 15px;
     display: inline-block;
+    transition: all 0.5s;
     &.active {
       color: $accent-color;
       border-top: 1px $accent-color solid;
+    }
+    &:hover:not(.active) {
+      color: $accent-color;
     }
   }
 }
