@@ -1,4 +1,14 @@
 const lost = require('lost')
+console.log(process)
+try {
+  let key = {
+    private_key: GAPI_PRIVATE_KEY,
+    client_email: GAPI_CLIENT_EMAIL,
+  }
+} catch (error) {
+  console.log('failed so loading key')
+  key = require('./client_secret.json')
+}
 
 module.exports = {
   siteMetadata: {
@@ -13,7 +23,7 @@ module.exports = {
       options: {
         spreadsheetId: '1Jiz1Ye1ltYeeoruRtn2tpqhK7il42iDyzKv4vjsui-Y',
         worksheetTitle: 'Sheet1',
-        credentials: require('./client_secret.json')
+        credentials: key
       }
     },
     {
@@ -30,6 +40,15 @@ module.exports = {
         name: 'markdown-pages',
       },
     },
+    {
+      resolve: `@mosch/gatsby-source-github`,
+      options: {
+        repository: "writings",
+        tree: true,
+        releases: true,
+        user: "iamjoshua",
+      }
+    },
     // {
     //   resolve: 'gatsby-source-filesystem',
     //   options: {
@@ -38,13 +57,5 @@ module.exports = {
     //   },
     // },
     // {
-    //   resolve: `@mosch/gatsby-source-github`,
-    //   options: {
-    //     repository: "writings",
-    //     tree: true,
-    //     releases: true,
-    //     user: "iamjoshua",
-    //   }
-    // },
   ]
 }
