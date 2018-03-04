@@ -1,11 +1,10 @@
 const lost = require('lost')
-
-let key = process.env.GAPI_PRIVATE_KEY ? {
-  private_key: process.env.GAPI_PRIVATE_KEY,
-  client_email: process.env.GAPI_CLIENT_EMAIL,
+const googleKey = process.env.GAPI_PRIVATE_KEY ? {
+  private_key: process.env.GAPI_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  client_email: process.env.GAPI_CLIENT_EMAIL
 } : require('./client_secret.json')
 
-console.log(key)
+console.log(googleKey)
 
 module.exports = {
   siteMetadata: {
@@ -15,14 +14,6 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-remark',
     'gatsby-transformer-csv',
-    {
-      resolve: 'gatsby-source-google-sheets',
-      options: {
-        spreadsheetId: '1Jiz1Ye1ltYeeoruRtn2tpqhK7il42iDyzKv4vjsui-Y',
-        worksheetTitle: 'Sheet1',
-        credentials: key
-      }
-    },
     {
       resolve: 'gatsby-plugin-postcss-sass',
       options: {
@@ -46,13 +37,13 @@ module.exports = {
         user: "iamjoshua",
       }
     },
-    // {
-    //   resolve: 'gatsby-source-filesystem',
-    //   options: {
-    //     path: `${__dirname}/books.csv`,
-    //     name: 'books-csv',
-    //   },
-    // },
-    // {
+    {
+      resolve: 'gatsby-source-google-sheets',
+      options: {
+        spreadsheetId: '1Jiz1Ye1ltYeeoruRtn2tpqhK7il42iDyzKv4vjsui-Y',
+        worksheetTitle: 'Sheet1',
+        credentials: googleKey
+      }
+    }
   ]
 }
