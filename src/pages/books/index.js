@@ -6,34 +6,33 @@ import styles from "./books.module.scss"
 
 class BooksPage extends React.Component {
   constructor(props) {
+    console.log(props)
     super(props)
     let data = this.props.data
-    let books = (data && data.allBooksCsv) ? data.allBooksCsv.edges.map(b => b.node) : []
-    this.state = {books, params: {}, clicked: 'All'}
+    let books = (data && data.allGoogleSheetSheet1Row) ? data.allGoogleSheetSheet1Row.edges.map(b => b.node) : []
+    this.state = {books, filterFn: (b) => true, clicked: 'All'}
   }
-  componentDidMount () {
-  }
-  componentWillUnmount () {
-  }
-  filter (params, name) {
+  filter (filterFn, name) {
     this.state.clicked
-    this.setState({params, clicked: name})
+    filterFn = filterFn || this.state.filterFn
+    this.setState({filterFn, clicked: name})
   }
   getBooks () {
-    let books = this.state.books
-    for (let key in this.state.params) {
-      books = books.filter(b => b[key] === this.state.params[key])
-    }
     let key = 0
-    return books.map(b => <BookSummary key={key++} post={b} onClick={this.filter.bind(this)} />)
+    return this.state.books.filter(this.state.filterFn).map(b => {
+      let filterByAuthor = (n) => n.author === b.author
+      let onClick = () => this.filter(filterByAuthor, 'Author')
+      return <BookSummary key={key++} post={b} onClick={onClick} />
+    })
   }
-  filterLink (name, params) {
+  filterLink (name, fn) {
     let className = this.state.clicked === name ? styles.active : ''
-    let handleClick = this.filter.bind(this, params, name)
+    let handleClick = this.filter.bind(this, fn, name)
     if (name === 'Author') {
+      // don't render author link unless already displaying results for an author
       if (this.state.clicked !== 'Author') return
-      name = name + ': ' + this.state.params.Author
-      handleClick = () => {}
+      name = 'Author'
+      handleClick = () => false
     }
     return <li className={className} onClick={handleClick}>{name}</li>
   }
@@ -45,11 +44,11 @@ class BooksPage extends React.Component {
         </VisibleDiv>
 
         <ul>
-          {this.filterLink('All', {})}
-          {this.filterLink('Fiction', {Type: 'Fiction'})}
-          {this.filterLink('Nonfiction', {Type: 'Nonfiction'})}
-          {this.filterLink('Favorites', {Rating: '5/5'})}
-          {this.filterLink('Author', {})}
+          {this.filterLink('All', (b) => true)}
+          {this.filterLink('Fiction', (b) => b.type === 'Fiction')}
+          {this.filterLink('Nonfiction', (b) => b.type === 'Nonfiction')}
+          {this.filterLink('Favorites', (b) => Number(b.rating) > 4)}
+          {this.filterLink('Author')}
         </ul>
 
         <div className={styles.innerContainer}>
@@ -60,40 +59,21 @@ class BooksPage extends React.Component {
   }
 }
 
-// const BooksPage = ({data}) => {
-//   let Posts = false
-//   if (data && data.allBooksCsv) {
-//     let results = data.allBooksCsv.edges
-//     let key = 0
-//     Posts = results.map(r => <BookSummary key={key++} post={r.node} />)
-//   }
-//
-//   return (
-    // <div className={styles.container}>
-    //   <VisibleDiv>
-    //     It seems to me that a mind doesn't contain knowledge but <Link to="./thoughts/mind-from-knowledge">emerges from it.</Link> These are the books that I've read and so they have certainly, for better or for worse, shaped my mind.
-    //   </VisibleDiv>
-    //
-    //   <div className={styles.innerContainer}>
-    //     {Posts}
-    //   </div>
-    // </div>
-//   )
-// }
-
 export default BooksPage
 
 export const query = graphql`
   query booksQuery {
-    allBooksCsv {
+    allGoogleSheetSheet1Row {
+  		totalCount
       edges {
         node {
-          Title
-          Author
-          Type
-          Genre
-          Completed
-          Rating
+          title
+          author
+          type
+          rating
+          genre
+          review
+          completed
         }
       }
     }

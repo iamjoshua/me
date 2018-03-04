@@ -8,14 +8,14 @@ module.exports = {
     'gatsby-plugin-react-helmet',
     'gatsby-transformer-remark',
     'gatsby-transformer-csv',
-    // {
-    //   resolve: 'gatsby-source-google-sheets',
-    //   options: {
-    //       spreadsheetId: '1XtAOX3c4s6WylSUk3J5j0QiyP3OZG6ZvQFoCGpGyje8',
-    //       worksheetTitle: 'legislators-current',
-    //       credentials: require('./client_secret.json')
-    //   }
-    // },
+    {
+      resolve: 'gatsby-source-google-sheets',
+      options: {
+        spreadsheetId: '1Jiz1Ye1ltYeeoruRtn2tpqhK7il42iDyzKv4vjsui-Y',
+        worksheetTitle: 'Sheet1',
+        credentials: require('./client_secret.json')
+      }
+    },
     {
       resolve: 'gatsby-plugin-postcss-sass',
       options: {
@@ -30,21 +30,21 @@ module.exports = {
         name: 'markdown-pages',
       },
     },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/books.csv`,
-        name: 'books-csv',
-      },
-    },
-    {
-      resolve: `@mosch/gatsby-source-github`,
-      options: {
-        repository: "writings",
-        tree: true,
-        releases: true,
-        user: "iamjoshua",
-      }
-    },
+    // {
+    //   resolve: 'gatsby-source-filesystem',
+    //   options: {
+    //     path: `${__dirname}/books.csv`,
+    //     name: 'books-csv',
+    //   },
+    // },
+    // {
+    //   resolve: `@mosch/gatsby-source-github`,
+    //   options: {
+    //     repository: "writings",
+    //     tree: true,
+    //     releases: true,
+    //     user: "iamjoshua",
+    //   }
+    // },
   ]
 }

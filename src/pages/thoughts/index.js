@@ -27,7 +27,7 @@ export const pageQuery = graphql`
 
 const ThoughtsPage = ({data}) => {
   let Posts = false
-  if (data.allMarkdownRemark) {
+  if (data && data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
     Posts = results.map(r => <ThoughtSummary key={r.node.id} post={r.node} />)
   }

@@ -6,12 +6,12 @@ const BookSummary = ({ post, onClick }) => (
   <article className={styles.post}>
     <header>
       <h3>
-          {post.Title}
+        {post.title}
       </h3>
-      <h4 onClick={onClick.bind(this, {Author: post.Author}, 'Author')}>
-        {post.Author}
+      <h4 onClick={onClick.bind(this, {author: post.author}, 'Author')}>
+        {post.author}
       </h4>
-      <time dateTime={post.Completed}>{post.Completed}</time>
+      <time dateTime={post.completed}>{post.completed}</time>
     </header>
     <div>
     </div>
