@@ -27,3 +27,6 @@ time {
   color: #d8d8d8;
   font-size: 10px;
 }
+[contenteditable]:focus {
+  outline: 0px solid transparent;
+}
