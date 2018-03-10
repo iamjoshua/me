@@ -1,9 +1,9 @@
 import React from "react"
 import Link from "gatsby-link"
-import styles from './post.module.scss'
+import styles from './summary.module.scss'
 
 const PostSummary = ({ post }) => (
-  <article className={styles.post}>
+  <article className={styles.summary}>
     <header>
       <h3>
         <Link to={post.frontmatter.path}>
