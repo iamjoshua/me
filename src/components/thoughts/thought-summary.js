@@ -4,13 +4,9 @@ import styles from './thought.module.scss'
 
 const ThoughtSummary = ({ post }) => (
   <article className={styles.thought}>
-    <header>
-      <h3>
-        <Link to={post.frontmatter.path}>
-          {post.frontmatter.axiom}
-        </Link>
-      </h3>
-    </header>
+    <Link to={post.frontmatter.path}>
+      {post.frontmatter.axiom}
+    </Link>
   </article>
 )
 
