@@ -5,6 +5,7 @@ import Post from '../../components/blog/post'
 class NewBlogPage extends React.Component {
   constructor(props) {
     super(props)
+    if (typeof window === "undefined") return false
     this.id = props.location.search.substring(4)
     if (!this.id) this.initPost(props)
     this.post = JSON.parse(localStorage.getItem(this.id))
