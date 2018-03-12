@@ -1,10 +1,11 @@
 import React from "react"
 import Link from "gatsby-link"
 import Post from "../../components/blog/post"
+import EditPost from "../../pages/blog/new"
 
 export const pageQuery = graphql`
-  query BlogPostByPath($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+  query BlogPostByPath($url: String!) {
+    markdownRemark(frontmatter: { path: { eq: $url } }) {
       html
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
@@ -16,11 +17,11 @@ export const pageQuery = graphql`
 `
 
 // data prop will be injected by the GraphQL query below.
-export default function Template({data}) {
+export default function Template(params) {
+  const {data} = params
   const {title, date} = data.markdownRemark.frontmatter
   const {html} = data.markdownRemark
   const post = {title, date, html}
-  return (
-    <Post post={post} />
-  )
+
+  return params.pathContext.edit ? <EditPost post={post} location={params.location} /> : <Post post={post} />
 }
