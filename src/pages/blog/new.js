@@ -5,19 +5,24 @@ import Post from '../../components/blog/post'
 class NewBlogPage extends React.Component {
   constructor(props) {
     super(props)
-    if (typeof window === "undefined") return false
+    if (typeof window === "undefined") {
+      this.post = this.defaultPost()
+      return
+    }
     this.id = props.location.search.substring(4)
     if (!this.id) this.initPost(props)
     this.post = JSON.parse(localStorage.getItem(this.id))
   }
-  initPost () {
-
-    this.id = this.props.post ? this.props.location.pathname : Date.now()
-    this.post = JSON.parse(localStorage.getItem(this.id)) || this.props.post || {
+  defaultPost () {
+    return {
       title: 'Title...',
       date: '2018-03-12',
       html: 'Body...'
     }
+  }
+  initPost () {
+    this.id = this.props.post ? this.props.location.pathname : Date.now()
+    this.post = JSON.parse(localStorage.getItem(this.id)) || this.props.post || this.default()
     this.save()
     navigateTo(`?id=${this.id}`)
   }
