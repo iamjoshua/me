@@ -26,15 +26,15 @@ module.exports = {
         name: 'markdown-pages',
       },
     },
-    // {
-    //   resolve: `@mosch/gatsby-source-github`,
-    //   options: {
-    //     repository: "writings",
-    //     tree: true,
-    //     releases: true,
-    //     user: "iamjoshua",
-    //   }
-    // },
+    {
+      resolve: `@mosch/gatsby-source-github`,
+      options: {
+        repository: "writings",
+        tree: true,
+        releases: true,
+        user: "iamjoshua",
+      }
+    },
     {
       resolve: 'gatsby-source-google-sheets',
       options: {
@@ -42,6 +42,18 @@ module.exports = {
         worksheetTitle: 'Sheet1',
         credentials: googleKey
       }
-    }
+    },
+    {
+    resolve: `gatsby-plugin-google-analytics`,
+    options: {
+      trackingId: 'UA-115612853-1',
+      // Puts tracking script in the head instead of the body
+      head: false,
+      // Setting this parameter is optional
+      anonymize: true,
+      // Setting this parameter is also optional
+      respectDNT: true,
+    },
+  },
   ]
 }

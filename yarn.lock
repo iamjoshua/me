@@ -3334,6 +3334,12 @@ gatsby-module-loader@^1.0.10:
     babel-runtime "^6.26.0"
     loader-utils "^0.2.16"
 
+gatsby-plugin-google-analytics@^1.0.22:
+  version "1.0.22"
+  resolved "https://registry.yarnpkg.com/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-1.0.22.tgz#fb2a3311d64e6daf77004a482b73eee0181fe8c1"
+  dependencies:
+    babel-runtime "^6.26.0"
+
 gatsby-plugin-postcss-sass@1.0.17:
   version "1.0.17"
   resolved "https://registry.yarnpkg.com/gatsby-plugin-postcss-sass/-/gatsby-plugin-postcss-sass-1.0.17.tgz#8aeec135d44659431dd401dc4f11a5ee51b3bed9"
