@@ -22,7 +22,7 @@ class NewBlogPage extends React.Component {
   }
   initPost () {
     this.id = this.props.post ? this.props.location.pathname : Date.now()
-    this.post = JSON.parse(localStorage.getItem(this.id)) || this.props.post || this.default()
+    this.post = JSON.parse(localStorage.getItem(this.id)) || this.props.post || this.defaultPost()
     this.save()
     navigateTo(`?id=${this.id}`)
   }
