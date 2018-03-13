@@ -6,10 +6,16 @@ class NewBlogPage extends React.Component {
   constructor(props) {
     super(props)
     if (typeof window === "undefined") {
+      console.log('underfined part')
       this.post = this.defaultPost()
     } else {
       this.id = props.location.search.substring(4)
-      if (!this.id) this.initPost(props)
+      if (!this.id) {
+        console.log('id not found')
+        this.initPost()
+      } else {
+        console.log('id was found', this.id)
+      }
       this.post = JSON.parse(localStorage.getItem(this.id))
     }
   }
@@ -22,6 +28,7 @@ class NewBlogPage extends React.Component {
   }
   initPost () {
     this.id = this.props.post ? this.props.location.pathname : Date.now()
+    console.log('here', this.id)
     this.post = JSON.parse(localStorage.getItem(this.id)) || this.props.post || this.defaultPost()
     this.save()
     navigateTo(`?id=${this.id}`)
