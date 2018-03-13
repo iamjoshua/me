@@ -7,11 +7,11 @@ class NewBlogPage extends React.Component {
     super(props)
     if (typeof window === "undefined") {
       this.post = this.defaultPost()
-      return
+    } else {
+      this.id = props.location.search.substring(4)
+      if (!this.id) this.initPost(props)
+      this.post = JSON.parse(localStorage.getItem(this.id))
     }
-    this.id = props.location.search.substring(4)
-    if (!this.id) this.initPost(props)
-    this.post = JSON.parse(localStorage.getItem(this.id))
   }
   defaultPost () {
     return {

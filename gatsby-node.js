@@ -10,7 +10,7 @@ const path = require("path")
 exports.createPages = ({ boundActionCreators, graphql }) => {
   const { createPage } = boundActionCreators;
 
-  ['blog', 'book', 'thought'].forEach(type => {
+  ['blog', 'thought'].forEach(type => {
     let query = `
       {
         allMarkdownRemark(
@@ -39,7 +39,6 @@ exports.createPages = ({ boundActionCreators, graphql }) => {
 
       // Create blog post pages
       result.data.allMarkdownRemark.edges.forEach(({ node }) => {
-        console.log(node)
         if (!node.frontmatter.title) return
         let urlSafeTitle = encodeURI(node.frontmatter.title.replace(/\s/g, "-").toLowerCase())
         let url = node.frontmatter.path || `/${type}/${urlSafeTitle}`

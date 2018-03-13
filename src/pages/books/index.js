@@ -6,7 +6,6 @@ import styles from "./books.module.scss"
 
 class BooksPage extends React.Component {
   constructor(props) {
-    console.log(props)
     super(props)
     let data = this.props.data
     let books = (data && data.allGoogleSheetSheet1Row) ? data.allGoogleSheetSheet1Row.edges.map(b => b.node) : []

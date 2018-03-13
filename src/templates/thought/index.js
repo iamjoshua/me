@@ -3,8 +3,8 @@ import Link from "gatsby-link"
 import styles from "./thought.module.scss"
 
 export const pageQuery = graphql`
-  query ThoughtPostByPath($path: String!) {
-    markdownRemark(frontmatter: { path: { eq: $path } }) {
+  query ThoughtPostByPath($url: String!) {
+    markdownRemark(frontmatter: { path: { eq: $url } }) {
       html
       frontmatter {
         date(formatString: "MMMM DD, YYYY")
