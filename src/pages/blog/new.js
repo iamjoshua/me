@@ -46,7 +46,7 @@ class NewBlogPage extends React.Component {
   }
   render () {
     return (
-      <Post post={this.post} editable={true} handleChange={this.onChange.bind(this)} />
+      <Post transition={transition} post={this.post} editable={true} handleChange={this.onChange.bind(this)} />
     )
   }
 }

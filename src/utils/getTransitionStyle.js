@@ -4,12 +4,15 @@ const getTransitionStyles = timeout => {
       opacity: 0,
     },
     entered: {
-      transition: `opacity ${timeout}ms ease-in-out`,
+      transition: `all ${timeout}ms ease-in-out`,
       opacity: 1,
+      marginTop: 0
     },
     exiting: {
-      transition: `opacity ${timeout}ms ease-in-out`,
+      transition: `all ${timeout}ms ease-in-out`,
       opacity: 0,
+      marginTop: 100
+
     },
   }
 }

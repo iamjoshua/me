@@ -2,11 +2,11 @@ import React from "react"
 import Link from "gatsby-link"
 import styles from './post.module.scss'
 
-const Post = ({post, editable, handleChange}) => {
+const Post = ({post, editable, handleChange, transition}) => {
   let fn = handleChange || function () {}
 
   return (
-    <div className={styles.container}>
+    <div style={transition && transition.style } className={styles.container}>
       <div className={styles.back}>
         <Link to='/blog'>back</Link>
       </div>

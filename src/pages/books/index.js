@@ -37,7 +37,7 @@ class BooksPage extends React.Component {
   }
   render () {
     return (
-      <div className={styles.container}>
+      <div style={this.props.transition && this.props.transition.style} className={styles.container}>
         <VisibleDiv>
           It seems to me that a mind doesn't contain knowledge but <Link to="./thoughts/mind-from-knowledge">emerges from it.</Link> These are the books that I have read and assume have sculpted "me" to some extent for better or for worse.
         </VisibleDiv>

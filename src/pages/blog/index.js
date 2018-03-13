@@ -24,7 +24,7 @@ export const pageQuery = graphql`
   }
 `
 
-const BlogPage = ({data}) => {
+const BlogPage = ({transition, data}) => {
   let Posts = false
   if (data && data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
@@ -32,7 +32,7 @@ const BlogPage = ({data}) => {
   }
 
   return (
-    <div className={styles.container}>
+    <div style={transition && transition.style} className={styles.container}>
       <div>
         <VisibleDiv>
           Here are some thoughts and ideas that that aren't quite ready for the final form of an essay.

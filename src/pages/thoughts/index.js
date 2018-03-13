@@ -25,14 +25,14 @@ export const pageQuery = graphql`
   }
 `
 
-const ThoughtsPage = ({data}) => {
+const ThoughtsPage = ({data, transition}) => {
   let Posts = false
   if (data && data.allMarkdownRemark) {
     let results = data.allMarkdownRemark.edges
     Posts = results.map(r => <ThoughtSummary key={r.node.id} post={r.node} />)
   }
 
-  return <div className={styles.container}>{Posts}</div>;
+  return <div style={transition && transition.style} className={styles.container}>{Posts}</div>;
 }
 
 export default ThoughtsPage

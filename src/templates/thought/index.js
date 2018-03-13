@@ -18,13 +18,13 @@ export const pageQuery = graphql`
 
 // data prop will be injected by the GraphQL query below.
 export default function Template(params) {
-  let {data} = params
+  let {data, transition} = params
   let editable = params.location.search === '?edit=true'
   const { markdownRemark } = data // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark
   let sourceLink = `https://github.com/iamjoshua/writings/blob/master${frontmatter.path}.md`
   return (
-    <div className={styles.container}>
+    <div style={transition && transition.style } className={styles.container}>
       <div className={styles.post}>
         <div className={styles.axiom}>
           <div>It seems to me that:</div>
