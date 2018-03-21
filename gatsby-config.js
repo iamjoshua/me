@@ -64,13 +64,14 @@ module.exports = {
         feeds: [
           {
             serialize: ({ query: { site, allMarkdownRemark } }) => {
+              if (!allMarkdownRemark) return []
               return allMarkdownRemark.edges.map(edge => {
                 return Object.assign({}, edge.node.frontmatter, {
                   description: edge.node.excerpt,
-                  url: site.siteMetadata.siteUrl + edge.node.fields.slug,
-                  guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                  url: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
+                  guid: site.siteMetadata.siteUrl + edge.node.frontmatter.path,
                   custom_elements: [{ "content:encoded": edge.node.html }],
-                });
+                })
               });
             },
             query: `
@@ -87,6 +88,7 @@ module.exports = {
                       fields { slug }
                       frontmatter {
                         title
+                        path
                         date
                       }
                     }
