@@ -17,7 +17,6 @@ export const pageQuery = graphql`
             date(formatString: "MMMM DD, YYYY")
             path
             title
-            summary
           }
         }
       }
