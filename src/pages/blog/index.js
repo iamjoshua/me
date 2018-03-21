@@ -17,6 +17,7 @@ export const pageQuery = graphql`
             date(formatString: "MMMM DD, YYYY")
             path
             title
+            summary
           }
         }
       }
@@ -35,7 +36,7 @@ const BlogPage = ({transition, data}) => {
     <div style={transition && transition.style} className={styles.container}>
       <div>
         <VisibleDiv>
-          Here are some thoughts and ideas that that aren't quite ready for the final form of an essay.
+          Here are some ideas that I've been thinking about and feel are worth sharing.
         </VisibleDiv>
       </div>
       <div>

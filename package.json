@@ -6,20 +6,21 @@
   "dependencies": {
     "@mosch/gatsby-source-github": "^0.4.1",
     "dotenv": "^5.0.1",
-    "gatsby": "^1.9.215",
-    "gatsby-link": "^1.6.34",
-    "gatsby-plugin-google-analytics": "^1.0.22",
-    "gatsby-plugin-postcss-sass": "1.0.17",
-    "gatsby-plugin-react-helmet": "^2.0.3",
-    "gatsby-source-filesystem": "^1.5.24",
-    "gatsby-source-google-sheets": "^1.1.0",
+    "gatsby": "^1.9.238",
+    "gatsby-link": "^1.6.39",
+    "gatsby-plugin-feed": "^1.3.20",
+    "gatsby-plugin-google-analytics": "^1.0.24",
+    "gatsby-plugin-postcss-sass": "^1.0.18",
+    "gatsby-plugin-react-helmet": "^2.0.8",
+    "gatsby-source-filesystem": "^1.5.27",
+    "gatsby-source-google-sheets": "^1.1.1",
     "gatsby-transformer-csv": "^1.3.9",
-    "gatsby-transformer-remark": "^1.7.33",
-    "lost": "^8.2.0",
+    "gatsby-transformer-remark": "^1.7.37",
+    "lost": "^8.2.1",
     "node-sass": "^4.7.2",
     "react-helmet": "^5.2.0",
-    "react-on-screen": "^2.0.1",
-    "react-transition-group": "2.2.1"
+    "react-on-screen": "^2.0.3",
+    "react-transition-group": "^2.2.1"
   },
   "keywords": [
     "gatsby"
@@ -33,6 +34,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
-    "prettier": "^1.10.2"
+    "prettier": "^1.11.1"
   }
 }
