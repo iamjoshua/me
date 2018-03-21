@@ -29,15 +29,15 @@ module.exports = {
         name: 'markdown-pages',
       },
     },
-    // {
-    //   resolve: `@mosch/gatsby-source-github`,
-    //   options: {
-    //     repository: "writings",
-    //     tree: true,
-    //     releases: true,
-    //     user: "iamjoshua",
-    //   }
-    // },
+    {
+      resolve: `@mosch/gatsby-source-github`,
+      options: {
+        repository: "writings",
+        tree: true,
+        releases: true,
+        user: "iamjoshua",
+      }
+    },
     {
       resolve: 'gatsby-source-google-sheets',
       options: {
