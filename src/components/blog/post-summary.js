@@ -13,7 +13,7 @@ const PostSummary = ({ post }) => (
       <time dateTime={post.frontmatter.date}>{post.frontmatter.date}</time>
     </header>
     <div>
-      {post.excerpt}
+      {post.frontmatter.summary || post.excerpt}
     </div>
     <footer>
       <Link to={post.frontmatter.path}><small>Read More</small></Link>
