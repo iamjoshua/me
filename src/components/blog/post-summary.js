@@ -5,12 +5,15 @@ import styles from './summary.module.scss'
 const PostSummary = ({ post }) => (
   <article className={styles.summary}>
     <header>
-      <h3>
-        <Link to={post.frontmatter.path}>
+      <Link to={post.frontmatter.path}>
+        <h3>
           {post.frontmatter.title}
-        </Link>
-      </h3>
-      <time dateTime={post.frontmatter.date}>{post.frontmatter.date}</time>
+        </h3>
+        <h4>
+          {post.frontmatter.subtitle}
+          <time dateTime={post.frontmatter.date}>{post.frontmatter.date}</time>
+        </h4>
+      </Link>
     </header>
     <div>
       {post.frontmatter.summary || post.excerpt}

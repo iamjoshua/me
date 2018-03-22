@@ -11,13 +11,19 @@ const Post = ({post, editable, handleChange, transition}) => {
         <Link to='/blog'>back</Link>
       </div>
       <div className={styles.post}>
-        <h1 contentEditable={editable}
-            onKeyUp={(e) => fn('title', e.target.innerHTML)}
-            dangerouslySetInnerHTML={{__html: post.title}}/>
-        <time contentEditable={editable}
-              dateTime={post.date}
-              onKeyUp={(e) => fn('date', e.target.innerHTML)}
-              dangerouslySetInnerHTML={{__html: post.date}}/>
+        <header>
+          <h1 contentEditable={editable}
+              onKeyUp={(e) => fn('title', e.target.innerHTML)}
+              dangerouslySetInnerHTML={{__html: post.title}}/>
+          <h2 contentEditable={editable}
+                onKeyUp={(e) => fn('title', e.target.innerHTML)}
+                dangerouslySetInnerHTML={{__html: post.subtitle}}/>
+          <time contentEditable={editable}
+                dateTime={post.date}
+                onKeyUp={(e) => fn('date', e.target.innerHTML)}
+                dangerouslySetInnerHTML={{__html: post.date}}/>
+        </header>      
+
         <div contentEditable={editable}
              onKeyUp={(e) => fn('html', e.target.innerHTML)}
              className={styles.content}

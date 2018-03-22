@@ -11,6 +11,8 @@ export const pageQuery = graphql`
         date(formatString: "MMMM DD, YYYY")
         path
         title
+        subtitle
+        summary
       }
     }
   }
@@ -19,9 +21,9 @@ export const pageQuery = graphql`
 // data prop will be injected by the GraphQL query below.
 export default function Template(params) {
   const {data, transition} = params
-  const {title, date} = data.markdownRemark.frontmatter
+  const {title, subtitle, summary, date} = data.markdownRemark.frontmatter
   const {html} = data.markdownRemark
-  const post = {title, date, html}
+  const post = {title, subtitle, summary, date, html}
 
   return params.pathContext.edit ? <EditPost transition={transition} post={post} location={params.location} /> : <Post transition={transition} post={post} />
 }
