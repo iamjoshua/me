@@ -19,7 +19,7 @@ const PostSummary = ({ post }) => (
       {post.frontmatter.summary || post.excerpt}
     </div>
     <footer>
-      <Link to={post.frontmatter.path}><small>Read More</small></Link>
+      <Link to={post.frontmatter.path}><small>Read Post</small></Link>
     </footer>
   </article>
 )

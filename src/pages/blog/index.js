@@ -37,7 +37,7 @@ const BlogPage = ({transition, data}) => {
     <div style={transition && transition.style} className={styles.container}>
       <div>
         <VisibleDiv>
-          Here are some ideas that I've been thinking about and feel are worth sharing.
+          Here are some ideas that I feel are worth sharing.
         </VisibleDiv>
       </div>
       <div>
