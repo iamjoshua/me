@@ -31,24 +31,67 @@
   border-top: 1px #f3f3f3 solid;
   border-bottom: 4px #9c7d9a solid;
   background: #ffffffeb;
-  ul {
+  .menu {
     flex-basis: 65%;
     @media only screen and (max-width: 600px) {
-      flex-basis: inherit;
+      flex-direction: row;
       margin-right: 30px;
     }
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    // margin: 0 auto;
-    // width: 650px;
+    ul {
+      transition: all 0.3s;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      @media only screen and (max-width: 600px) {
+        display: inherit;
+        width: 100%;
+        position: fixed;
+        bottom: 104px;
+        left: 0;
+        text-align: right;
+        opacity: 0;
+        background: white;
+        border-top: 1px #f3f3f3 solid;
+        li {
+          display: block;
+          a.active {
+            border-top: 0;
+            border-right: 5px $accent-color solid;
+          }
+        }
+        &.visible {
+          opacity: 0.95;
+          li:hover {
+            padding-bottom: 0;
+          }
+          a {
+            padding: 30px;
+            &:hover {
+              padding-right: 40px;
+            }
+          }
+        }
+      }
+    }
+    .burger {
+      display: none;
+      cursor: pointer;
+      padding: 42px 10px;
+      @media only screen and (max-width: 600px) {
+        display: inherit;
+        text-align: left;
+      }
+    }
   }
   li {
     display: inline;
     // padding: 0 10px;
     padding: 0 0 0 45px;
-    @media only screen and (max-width: 600px) {
-      padding-left: 5px;
+    @media only screen and (max-width: 700px) {
+      padding-left: 10px;
+      &:first-child {
+        padding-left: 45px;
+      }
     }
     &:hover {
       padding-bottom: 10px;
@@ -69,6 +112,21 @@
     &:hover:not(.active) {
       color: $accent-color;
     }
+  }
+  .twitterIcon {
+    position: fixed;
+    right: 30px;
+    width: 30px;
+    text-indent: -300px;
+    overflow: hidden;
+    background-image: url('./twitter_logo_blue.png');
+    filter: grayscale(1);
+    &:hover {
+      filter: none;
+    }
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
   }
 }
 .minimize {

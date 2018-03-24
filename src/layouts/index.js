@@ -35,7 +35,7 @@ class TemplateWrapper extends React.Component {
             { name: 'keywords', content: 'sample, something' },
           ]}
         />
-        <Navigation />
+        <Navigation location={this.props.location} />
         <div className='pageContainer' style={{minHeight: this.state.height}}>
           {this.props.children()}
         </div>
