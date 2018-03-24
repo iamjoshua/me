@@ -1,9 +1,11 @@
 import React from "react"
+import ReadingTime from 'reading-time'
 import Link from "gatsby-link"
 import styles from './post.module.scss'
 
 const Post = ({post, editable, handleChange, transition}) => {
   let fn = handleChange || function () {}
+  const readingTime = ReadingTime(post.html)
 
   return (
     <div style={transition && transition.style } className={styles.container}>
@@ -22,7 +24,9 @@ const Post = ({post, editable, handleChange, transition}) => {
                 dateTime={post.date}
                 onKeyUp={(e) => fn('date', e.target.innerHTML)}
                 dangerouslySetInnerHTML={{__html: post.date}}/>
-        </header>      
+          <small>{readingTime.words} words</small>
+          <small>{readingTime.text}</small>
+        </header>
 
         <div contentEditable={editable}
              onKeyUp={(e) => fn('html', e.target.innerHTML)}
