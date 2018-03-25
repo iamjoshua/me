@@ -1,7 +1,7 @@
 import React from "react"
 import ReadingTime from 'reading-time'
-import { Share } from 'react-twitter-widgets'
 import Link from "gatsby-link"
+import Subscribe from './subscribe'
 import Helmet from 'react-helmet'
 import styles from './post.module.scss'
 
@@ -42,7 +42,7 @@ const Post = ({post, editable, handleChange, transition}) => {
              dangerouslySetInnerHTML={{__html: post.html}}
         />
 
-      <Share url={post.url} />
+        <Subscribe url={post.url} />
       </div>
     </div>
   )
