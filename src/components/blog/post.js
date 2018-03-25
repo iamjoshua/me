@@ -2,15 +2,22 @@ import React from "react"
 import ReadingTime from 'reading-time'
 import { Share } from 'react-twitter-widgets'
 import Link from "gatsby-link"
+import Helmet from 'react-helmet'
 import styles from './post.module.scss'
 
 const Post = ({post, editable, handleChange, transition}) => {
   let fn = handleChange || function () {}
   const readingTime = ReadingTime(post.html)
-  const twitterMessage = `I just read ${post.title} by @iamjoshua `
 
   return (
     <div style={transition && transition.style } className={styles.container}>
+      <Helmet
+        title={post.title + ': ' + post.subtitle}
+        meta={[
+          { name: 'description', content: post.subtitle },
+          { name: 'keywords', content: 'sample, something' },
+        ]}
+      />
       <div className={styles.back}>
       </div>
       <div className={styles.post}>
