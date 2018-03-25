@@ -2,6 +2,7 @@
 
 .container {
   display: flex;
+  flex-wrap:wrap;
   align-self: center;
   padding: 40px;
   padding-bottom: 130px;
@@ -73,5 +74,12 @@
   // border-top: 1px black solid;
   a {
     color: #bd8888;
+  }
+}
+.bottom {
+  margin-top: 60px;
+  & div:nth-child(1) {
+    border-top: none !important;
+    flex-direction: column;
   }
 }

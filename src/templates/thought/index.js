@@ -1,5 +1,8 @@
 import React from "react"
 import Link from "gatsby-link"
+import Helmet from 'react-helmet'
+import TrackVisibility from 'react-on-screen'
+import Subscribe from "../../components/blog/subscribe"
 import styles from "./thought.module.scss"
 
 export const pageQuery = graphql`
@@ -25,6 +28,13 @@ export default function Template(params) {
   let sourceLink = `https://github.com/iamjoshua/writings/blob/master${frontmatter.path}.md`
   return (
     <div style={transition && transition.style } className={styles.container}>
+      <Helmet
+        title={frontmatter.axiom}
+        meta={[
+          { name: 'description', content: frontmatter.axiom },
+          { name: 'keywords', content: 'sample, something' },
+        ]}
+      />
       <div className={styles.post}>
         <div className={styles.axiom}>
           <div>It seems to me that:</div>
