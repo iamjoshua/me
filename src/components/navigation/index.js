@@ -26,7 +26,8 @@ class Navigation extends React.Component {
   }
   resize () {
     const offset = window.pageYOffset
-    const minimize = offset > this._distanceFromTop
+    //const minimize = offset > this._distanceFromTop
+    const minimize = offset > 2 && offset > this._distanceFromTop
     this._distanceFromTop = offset
     if (this.state.minimize !== minimize) this.setState({minimize})
     // hide menu if visible and user scrolls
