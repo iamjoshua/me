@@ -25,6 +25,7 @@
     "react-helmet": "^5.2.0",
     "react-on-screen": "^2.0.3",
     "react-transition-group": "^2.2.1",
+    "react-twitter-widgets": "^1.7.1",
     "reading-time": "^1.1.0"
   },
   "keywords": [

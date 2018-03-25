@@ -34,7 +34,6 @@ class Navigation extends React.Component {
     if (this.state.mobileVisible) this.toggleMenu(false)
   }
   toggleMenu (visible) {
-    console.log(typeof visible)
     let mobileVisible = typeof visible === 'boolean' ? visible : !this.state.mobileVisible
     this.setState({mobileVisible})
   }

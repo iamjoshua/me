@@ -1,5 +1,6 @@
 import React from "react"
 import ReadingTime from 'reading-time'
+import { Share } from 'react-twitter-widgets'
 import Link from "gatsby-link"
 import styles from './post.module.scss'
 
@@ -7,10 +8,10 @@ const Post = ({post, editable, handleChange, transition}) => {
   let fn = handleChange || function () {}
   const readingTime = ReadingTime(post.html)
   const twitterMessage = `I just read ${post.title} by @iamjoshua `
+
   return (
     <div style={transition && transition.style } className={styles.container}>
       <div className={styles.back}>
-        <Link to='/blog'>back</Link>
       </div>
       <div className={styles.post}>
         <header>
@@ -33,8 +34,8 @@ const Post = ({post, editable, handleChange, transition}) => {
              className={styles.content}
              dangerouslySetInnerHTML={{__html: post.html}}
         />
-      <a href="https://twitter.com/intent/tweet?screen_name=iamjoshua&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-text={twitterMessage} data-show-count="false">Tweet to @iamjoshua</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-      <a href="https://twitter.com/intent/tweet?screen_name=TwitterDev&ref_src=twsrc%5Etfw" class="twitter-mention-button" data-size="large" data-text="Just read... by @iamjoshua" data-show-count="false">Tweet to @TwitterDev</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+      <Share url={post.url} />
       </div>
     </div>
   )

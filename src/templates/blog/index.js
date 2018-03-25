@@ -23,7 +23,8 @@ export default function Template(params) {
   const {data, transition} = params
   const {title, subtitle, summary, date} = data.markdownRemark.frontmatter
   const {html} = data.markdownRemark
-  const post = {title, subtitle, summary, date, html}
+  const url = 'https://www.joshuaheiland.com' + params.location.pathname
+  const post = {title, subtitle, summary, date, html, url}
 
   return params.pathContext.edit ? <EditPost transition={transition} post={post} location={params.location} /> : <Post transition={transition} post={post} />
 }
