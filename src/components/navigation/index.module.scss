@@ -133,4 +133,14 @@
   a {
     padding: 20px 10px;
   }
+  .menu {
+    a.burger{
+      padding: 20px 10px;
+    }
+    @media only screen and (max-width: 600px) {
+      ul {
+        bottom: 60px;
+      }
+    }
+  }
 }

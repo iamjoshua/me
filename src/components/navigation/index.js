@@ -20,7 +20,7 @@ class Navigation extends React.Component {
   componentWillReceiveProps(nextProps) {
     // hide mobile menu if visible when changing path
     if (nextProps.location.pathname != this.location) {
-      this.setState({mobileVisible: false})
+      this.toggleMenu(false)
       this.location = nextProps.location.pathname
     }
   }
@@ -29,9 +29,12 @@ class Navigation extends React.Component {
     const minimize = offset > this._distanceFromTop
     this._distanceFromTop = offset
     if (this.state.minimize !== minimize) this.setState({minimize})
+    // hide menu if visible and user scrolls
+    if (this.state.mobileVisible) this.toggleMenu(false)
   }
-  onHamburger () {
-    let mobileVisible = !this.state.mobileVisible
+  toggleMenu (visible) {
+    console.log(typeof visible)
+    let mobileVisible = typeof visible === 'boolean' ? visible : !this.state.mobileVisible
     this.setState({mobileVisible})
   }
   render () {
@@ -45,7 +48,7 @@ class Navigation extends React.Component {
           <Link className='short' to="/">JH</Link>
         </div>
         <div className={styles.menu}>
-          <a className={styles.burger} onClick={this.onHamburger.bind(this)}>
+          <a className={styles.burger} onClick={this.toggleMenu.bind(this)}>
             <HamburgerMenu
             	isOpen={this.state.mobileVisible}
             	width={18}
