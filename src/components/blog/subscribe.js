@@ -4,9 +4,11 @@ import styles from './subscribe.module.scss'
 
 const Subscribe = (props) => {
   let subscribed = false
-  if (window.location.search === '?subscribed' || document.cookie.match('subscribed')) {
-    document.cookie = "subscribed=true"
-    subscribed = true
+  if (typeof window !== "undefined") {
+    if (window.location.search === '?subscribed' || document.cookie.match('subscribed')) {
+      document.cookie = "subscribed=true"
+      subscribed = true
+    }
   }
 
   return (
