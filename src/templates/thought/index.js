@@ -2,6 +2,7 @@ import React from "react"
 import Link from "gatsby-link"
 import Helmet from 'react-helmet'
 import TrackVisibility from 'react-on-screen'
+import Thought from "../../components/thoughts/thought"
 import Subscribe from "../../components/blog/subscribe"
 import styles from "./thought.module.scss"
 
@@ -26,27 +27,14 @@ export default function Template(params) {
   const { markdownRemark } = data // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark
   let sourceLink = `https://github.com/iamjoshua/writings/blob/master${frontmatter.path}.md`
+  const thought = {
+    axiom: frontmatter.axiom,
+    html,
+    sourceLink
+  }
   return (
-    <div style={transition && transition.style } className={styles.container}>
-      <Helmet
-        title={frontmatter.axiom}
-        meta={[
-          { name: 'description', content: frontmatter.axiom },
-          { name: 'keywords', content: 'sample, something' },
-        ]}
-      />
-      <div className={styles.post}>
-        <div className={styles.axiom}>
-          <div>It seems to me that:</div>
-          <h1 contentEditable={editable} dangerouslySetInnerHTML={{ __html: frontmatter.axiom }} />
-          <div className={styles.bar}></div>
-        </div>
-
-        <div className={styles.content}>
-          <div contentEditable={editable} dangerouslySetInnerHTML={{ __html: html }} />
-          <div className={styles.source}><a href={sourceLink}>Versions</a></div>
-        </div>
-      </div>
+    <div style={transition && transition.style}>
+      <Thought {...thought}/>
     </div>
   )
 }

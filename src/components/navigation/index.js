@@ -14,7 +14,7 @@ class Navigation extends React.Component {
   componentDidMount () {
     document.addEventListener('scroll', this._resize)
   }
-  componentwillUnmount () {
+  componentWillUnmount () {
     document.removeEventListener('scroll', this._resize)
   }
   componentWillReceiveProps(nextProps) {

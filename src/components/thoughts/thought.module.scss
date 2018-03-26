@@ -1,60 +1,102 @@
-.thought {
-  flex-basis: calc(30% - 40px);
-  flex-grow: 1;
+@import '../../css/variables.scss';
+
+.container {
   display: flex;
-  align-items: center;
-  justify-content: stretch;
-  border-right: 1px #f3f3f3 solid;
-  border-bottom: 1px #f3f3f3 solid;
-  transition: all 0.5s;
-  div {
-    // border-top: 1px dashed #d2d2d2;
-    width: 50%;
-    margin: 0 auto;
-  }
-  a {
-    padding: 20%;
-    width: 100%;
-    align-self: stretch;
+  flex-wrap:wrap;
+  align-self: center;
+  padding: 40px;
+  // flex-basis: 50%;
+  .axiom {
+    align-self: center;
+    flex-basis: calc(50% - 0px);
+    padding-right: 50px;
+    margin-right: 50px;
+    text-align: right;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-size: 16px;
-    line-height: 35px;
-    color: #464646;
-    @media only screen and (max-width: 800px) {
-      justify-content: flex-start;
-      // text-align: left;
-      padding: 40px;
-    }
+    flex-direction: column;
     position: relative;
-    &::after {
-      content: "";
-      display: block;
-      border-top: 6px solid #9b7d9a;
-      width: 50px;
-      left: calc(50% - 25px);
-      position: absolute;
-      bottom: -1px;
+    height: 100%;
+    @media only screen and (max-width: 1000px) {
+      flex-basis: 100%;
+      padding-right: 0px;
+      padding-left: 20px;
+      margin-right: 0;
+      margin-left: -20px;
+      text-align: left;
+      align-self: flex-start;
     }
-  }
-  &:hover {
-    background: #9b7d9a;
-    a {
-      color: white;
-      &::after {
-        border-color: white;
+    .inner {
+      position: fixed;
+      top: calc(40% - 1px);
+      width: calc(50% - 50px);
+      @media only screen and (max-width: 1000px) {
+        position: inherit;
+        width: 100%;
+        // top: calc(50% - 100px);
+        // width: calc(60% - 120px);
+      }
+    }
+    div {
+      color: $accent-color;
+    }
+    .bar {
+      position: absolute;
+      width: 5px;
+      top: 0;
+      height: calc(100% - 30px);
+      background-color: $accent-color;
+      right: -60px;
+      @media only screen and (max-width: 1000px) {
+        left: -20px;
+        right: 0;
       }
     }
   }
-  &:nth-child(even) {
-    // background: #f9f9f9;
-    // color: white;
-    //border-right: 1px #f9f9f9 solid;
+  .content {
+    flex-basis: 40%;
+    padding-bottom: 100px;
+    @media only screen and (max-width: 800px) {
+      flex-basis: 100%;
+    }
+    display: flex;
+    .inner {
+      align-self: center;
+      margin-top: -10px;
+    }
   }
-  @media only screen and (max-width: 800px) {
+  .post {
+    display: flex;
     flex-basis: 100%;
-    justify-content: flex-start;
+    @media only screen and (max-width: 1000px) {
+      flex-wrap: wrap;
+      flex-flow: column;
+    }
+    align-self: center;
+    color: #676767;
+    h1 {
+      margin-top: 0;
+      line-height: 60px;
+      font-size: 40px;
+    }
+    .content {
+      font-size: 18px;
+      line-height: 30px;
+    }
+  }
+}
+.source {
+  text-transform: uppercase;
+  font-size: 10px;
+  text-align: left;
+  // border-top: 1px black solid;
+  a {
+    color: #bd8888;
+  }
+}
+.bottom {
+  margin-top: 60px;
+  & div:nth-child(1) {
+    border-top: none !important;
+    flex-direction: column;
   }
 }

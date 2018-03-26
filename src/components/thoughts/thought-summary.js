@@ -1,6 +1,6 @@
 import React from "react"
 import Link from "gatsby-link"
-import styles from './thought.module.scss'
+import styles from './summary.module.scss'
 
 const ThoughtSummary = ({ post }) => (
   <article className={styles.thought}>
