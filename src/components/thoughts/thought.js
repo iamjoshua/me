@@ -5,9 +5,13 @@ import styles from './thought.module.scss'
 class Thought extends React.Component {
   constructor(props) {
     super(props)
+    let height = 0
+    if (typeof window !== 'undefined') {
+      height = window.innerHeight
+    }
     this.state = {
       offset: '40%',
-      height: window.innerHeight - 100,
+      height: height - 100,
     }
     this._reposition = this.reposition.bind(this)
   }
@@ -18,8 +22,11 @@ class Thought extends React.Component {
     document.removeEventListener('scroll', this._reposition)
   }
   reposition () {
-    let offset = window.pageYOffset / 4
-    offset = offset > 100 ? 100 : offset
+    let offset = 0
+    if (typeof window !== 'undefined') {
+      offset = window.pageYOffset / 4
+      offset = offset > 100 ? 100 : offset
+    }
     this.setState({
       offset: `calc(40% - ${offset}px)`,
     })
