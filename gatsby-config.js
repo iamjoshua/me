@@ -1,6 +1,6 @@
 const lost = require('lost')
 const airTableKey = process.env.AIRTABLE_API_KEY
-                  ? AIRTABLE_API_KEY
+                  ? process.env.AIRTABLE_API_KEY
                   : require('./client_secret.json').airtable_api
 
 module.exports = {
