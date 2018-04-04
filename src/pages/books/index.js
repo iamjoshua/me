@@ -8,7 +8,7 @@ class BooksPage extends React.Component {
   constructor(props) {
     super(props)
     let data = this.props.data
-    let books = (data && data.allGoogleSheetSheet1Row) ? data.allGoogleSheetSheet1Row.edges.map(b => b.node) : []
+    let books = (data && data.allAirtableBooks) ? data.allAirtableBooks.edges.map(b => b.node) : []
     this.state = {books, filterFn: (b) => true, clicked: 'All'}
   }
   filter (filterFn, name) {
@@ -19,7 +19,7 @@ class BooksPage extends React.Component {
   getBooks () {
     let key = 0
     return this.state.books.filter(this.state.filterFn).map(b => {
-      let filterByAuthor = (n) => n.author === b.author
+      let filterByAuthor = (n) => n.Author.trim() === b.Author.trim()
       let onClick = () => this.filter(filterByAuthor, 'Author')
       return <BookSummary key={key++} post={b} onClick={onClick} />
     })
@@ -44,9 +44,9 @@ class BooksPage extends React.Component {
 
         <ul>
           {this.filterLink('All', (b) => true)}
-          {this.filterLink('Fiction', (b) => b.type === 'Fiction')}
-          {this.filterLink('Nonfiction', (b) => b.type === 'Nonfiction')}
-          {this.filterLink('Favorites', (b) => Number(b.rating) > 4)}
+          {this.filterLink('Fiction', (b) => b.Type === 'Fiction')}
+          {this.filterLink('Nonfiction', (b) => b.Type === 'Nonfiction')}
+          {this.filterLink('Favorites', (b) => Number(b.Rating) > 4)}
           {this.filterLink('Author')}
         </ul>
 
@@ -62,17 +62,17 @@ export default BooksPage
 
 export const query = graphql`
   query booksQuery {
-    allGoogleSheetSheet1Row {
-  		totalCount
+    allAirtableBooks(sort: {fields: [Completed], order: DESC}) {
       edges {
         node {
-          title
-          author
-          type
-          rating
-          genre
-          review
-          completed
+          Title
+          Subtitle
+          Author
+          Type
+          Rating
+          Genre
+          Review
+          Completed
         }
       }
     }

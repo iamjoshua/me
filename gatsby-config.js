@@ -1,8 +1,7 @@
 const lost = require('lost')
-const googleKey = process.env.GAPI_PRIVATE_KEY ? {
-  private_key: process.env.GAPI_PRIVATE_KEY.replace(/\\n/g, '\n'),
-  client_email: process.env.GAPI_CLIENT_EMAIL
-} : require('./client_secret.json')
+const airTableKey = process.env.AIRTABLE_API_KEY
+                  ? AIRTABLE_API_KEY
+                  : require('./client_secret.json').airtable_api
 
 module.exports = {
   siteMetadata: {
@@ -41,11 +40,13 @@ module.exports = {
       }
     },
     {
-      resolve: 'gatsby-source-google-sheets',
+      resolve: `gatsby-source-airtable`,
       options: {
-        spreadsheetId: '1Jiz1Ye1ltYeeoruRtn2tpqhK7il42iDyzKv4vjsui-Y',
-        worksheetTitle: 'Sheet1',
-        credentials: googleKey
+        apiKey: airTableKey,
+        baseId: `appp5ITQMUn30FVMo`,
+        tableName: `Completed`,
+        tableView: `Grid view`,
+        queryName: `Books`
       }
     },
     {
