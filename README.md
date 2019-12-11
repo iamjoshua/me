@@ -1,3 +1,25 @@
+
+# Environment variables
+Create the following file in the root directory:
+
+    .env.development
+
+  With the following variables populated:
+
+      airtable_api=
+      type=
+      project_id=
+      private_key_id=
+      private_key=`KEY`
+      client_email=
+      client_id=
+      auth_uri=
+      token_uri=
+      auth_provider_x509_cert_url=
+      client_x509_cert_url=
+      github_token=
+
+# OLD
 <!-- AUTO-GENERATED-CONTENT:START (STARTER) -->
 <p align="center">
   <a href="https://www.gatsbyjs.org">
