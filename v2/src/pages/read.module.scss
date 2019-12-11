@@ -1,0 +1,45 @@
+@import '../css/variables';
+
+.container {
+  padding: 20px 20px 130px 20px;
+  ul {
+    li {
+      display: inline-block;
+      font-size: 14px;
+      padding-right: 20px;
+      cursor: pointer;
+      transition: all 0.5s;
+      text-decoration: none;
+      a:link.author {
+        display: none;
+      }
+      a, a:link, a:visited {
+        text-decoration: none;
+      }
+      a.active, & a:hover {
+        text-decoration: none;
+        padding-left: 5px;
+        font-weight: bold;
+      }
+    }
+  }
+  & > div:first-child {
+    font-size: 25px;
+    color: #9b7d9a;
+    font-weight: 100;
+    line-height: 45px;
+    width: 50%;
+    @media only screen and (max-width: 1000px) {
+      width: 90%;
+    }
+    margin: 20px;
+    a:link {
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+}
+.innerContainer {
+  display: flex;
+  flex-wrap: wrap;
+}

@@ -17,12 +17,19 @@ module.exports = {
     'gatsby-transformer-remark',
     'gatsby-transformer-csv',
     {
-      resolve: 'gatsby-plugin-postcss-sass',
+      resolve: `gatsby-plugin-sass`,
       options: {
         postCssPlugins: [lost()],
         precision: 8, // SASS default: 5
       },
     },
+    // {
+    //   resolve: 'gatsby-plugin-postcss-sass',
+    //   options: {
+    //     postCssPlugins: [lost()],
+    //     precision: 8, // SASS default: 5
+    //   },
+    // },
     {
       resolve: 'gatsby-source-filesystem',
       options: {
@@ -30,23 +37,39 @@ module.exports = {
         name: 'markdown-pages',
       },
     },
-    {
-      resolve: `@mosch/gatsby-source-github`,
-      options: {
-        repository: "writings",
-        tree: true,
-        releases: true,
-        user: "iamjoshua",
-      }
-    },
+    // {
+    //   resolve: `@mosch/gatsby-source-github`,
+    //   options: {
+    //     repository: "writings",
+    //     tree: true,
+    //     releases: true,
+    //     user: "iamjoshua",
+    //   }
+    // },
     {
       resolve: `gatsby-source-airtable`,
       options: {
         apiKey: airTableKey,
-        baseId: `appp5ITQMUn30FVMo`,
-        tableName: `Completed`,
-        tableView: `Grid view`,
-        queryName: `Books`
+        tables: [
+          {
+            baseId: `appp5ITQMUn30FVMo`,
+            tableName: `Completed`,
+            tableView: `Grid view`,
+            // queryName: `Books`
+          },
+          {
+            baseId: `app0WuDpKy9pgSwDD`,
+            tableName: `Read`,
+            tableView: `Grid view`,
+            // queryName: `Philosophy`
+          },
+          {
+            baseId: `app0WuDpKy9pgSwDD`,
+            tableName: `Roadmap`,
+            tableView: `Grid view`,
+            // queryName: `PhilosophyRoadmap`
+          }
+        ]
       }
     },
     {

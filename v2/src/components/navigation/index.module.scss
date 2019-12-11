@@ -1,0 +1,147 @@
+@import './variables';
+
+.name {
+  position: fixed;
+  left: 30px;
+  text-transform: uppercase;
+}
+:global {
+  .short {
+    display: none !important;
+  }
+  @media only screen and (max-width: 600px) {
+    .short {
+      display: inline-block !important;
+    }
+    .full {
+      display: none !important;
+    }
+  }
+}
+
+.mainNav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0;
+  border-top: 1px #f3f3f3 solid;
+  border-bottom: 4px #9c7d9a solid;
+  background: #ffffffeb;
+  .menu {
+    flex-basis: 65%;
+    @media only screen and (max-width: 600px) {
+      flex-direction: row;
+      margin-right: 30px;
+    }
+    ul {
+      transition: all 0.3s;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      @media only screen and (max-width: 600px) {
+        width: 100%;
+        position: fixed;
+        bottom: 104px;
+        left: 0;
+        text-align: right;
+        background: white;
+        border-top: 1px #f3f3f3 solid;
+        display: block;
+        visibility: hidden;
+        opacity: 0;
+        li {
+          display: block;
+          a.active {
+            border-top: 0;
+            border-right: 5px $accent-color solid;
+          }
+        }
+        &.visible {
+          visibility: visible;
+          opacity: 0.95;
+          li:hover {
+            padding-bottom: 0;
+          }
+          a {
+            padding: 30px;
+            &:hover {
+              padding-right: 40px;
+            }
+          }
+        }
+      }
+    }
+    .burger {
+      display: none;
+      cursor: pointer;
+      padding: 42px 10px;
+      @media only screen and (max-width: 600px) {
+        display: inherit;
+        text-align: left;
+      }
+    }
+  }
+  li {
+    display: inline;
+    // padding: 0 10px;
+    padding: 0 0 0 45px;
+    @media only screen and (max-width: 700px) {
+      padding-left: 10px;
+      &:first-child {
+        padding-left: 45px;
+      }
+    }
+    &:hover {
+      padding-bottom: 10px;
+    }
+  }
+  a {
+    text-decoration: none;
+    color: #545454;
+    font-weight: 500;
+    padding: 40px 10px;
+    font-size: 15px;
+    display: inline-block;
+    transition: all 0.5s;
+    &.active {
+      color: $accent-color;
+      border-top: 1px $accent-color solid;
+    }
+    &:hover:not(.active) {
+      color: $accent-color;
+    }
+  }
+  .twitterIcon {
+    position: fixed;
+    right: 30px;
+    width: 30px;
+    text-indent: -300px;
+    overflow: hidden;
+    background-image: url('./twitter_logo_blue.png');
+    filter: grayscale(1);
+    &:hover {
+      filter: none;
+    }
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
+  }
+}
+.minimize {
+  a {
+    padding: 20px 10px;
+  }
+  .menu {
+    a.burger{
+      padding: 20px 10px;
+    }
+    @media only screen and (max-width: 600px) {
+      ul {
+        bottom: 60px;
+      }
+    }
+  }
+}

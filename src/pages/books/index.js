@@ -8,7 +8,9 @@ class BooksPage extends React.Component {
   constructor(props) {
     super(props)
     let data = this.props.data
-    let books = (data && data.allAirtableBooks) ? data.allAirtableBooks.edges.map(b => b.node) : []
+    console.log('HERE')
+    console.log(data)
+    let books = (data && data.allAirtable) ? data.allAirtable.edges.map(b => b.node) : []
     this.state = {books, filterFn: (b) => true, clicked: 'All'}
   }
   filter (filterFn, name) {
@@ -61,8 +63,7 @@ class BooksPage extends React.Component {
 export default BooksPage
 
 export const query = graphql`
-  query booksQuery {
-    allAirtableBooks(sort: {fields: [Completed], order: DESC}) {
+    allAirtable(filter: {table: {eq: "Completed"}}, sort: {fields: [Completed], order: DESC}) {
       edges {
         node {
           Title
@@ -75,6 +76,5 @@ export const query = graphql`
           Completed
         }
       }
-    }
   }
 `

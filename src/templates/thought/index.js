@@ -26,7 +26,7 @@ export default function Template(params) {
   let editable = params.location.search === '?edit=true'
   const { markdownRemark } = data // data.markdownRemark holds our post data
   const { frontmatter, html } = markdownRemark
-  let sourceLink = `https://github.com/iamjoshua/writings/blob/master${frontmatter.path}.md`
+  let sourceLink = `https://github.com/iamjoshua/writings/commits/master${frontmatter.path}.md`
   const thought = {
     axiom: frontmatter.axiom,
     html,
