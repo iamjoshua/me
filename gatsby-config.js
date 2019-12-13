@@ -27,6 +27,31 @@ module.exports = {
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
       },
     },
+    // CSS
+    `gatsby-plugin-emotion`,
+    // Google fonts
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            // https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat
+            family: `Montserrat`,
+            variants: [
+              '400',
+              '400i',
+              '500',
+              '700',
+              '700i'
+            ],
+          },
+          {
+            family: `Open Sans`,
+            variants: [`400`, `700`]
+          },
+        ],
+      },
+    }
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

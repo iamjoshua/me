@@ -1,21 +1,51 @@
-import React from "react"
-import { Link } from "gatsby"
+import React from 'react'
+import { Link } from 'gatsby'
+import styled from '@emotion/styled'
+import { Global, css } from '@emotion/core'
+import Intro from '../components/intro'
+import Navigation from '../components/navigation'
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+const HTML = css`
+  html, body {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    background: #9c7d9a;
+    font-family: 'Montserrat', 'sans-serif';
+    // color: #9c7d9a;
+    color: #6d6d6d;
+    a, a:visited {
+      color: #9c7d9a;
+      text-decoration: none;
+    }
+  }
+`
+const Container = styled.div`
+  /* display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 40% 10% 350px; */
+  position: fixed;
+  background: white;
+  width: 100vw;
+  height: 100vh; 
+`
+
+const Bottom = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 102px;
+`
 
 const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
+  <Container>
+    <Global styles={HTML}/>
+    <Bottom>
+      <Intro />
+    </Bottom>
+    <Navigation />
+  </Container>
 )
 
 export default IndexPage
+
