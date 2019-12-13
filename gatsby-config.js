@@ -1,3 +1,6 @@
+require("dotenv").config({path: `.env.${process.env.NODE_ENV}`})
+const plugins = require('./plugins')
+
 module.exports = {
   siteMetadata: {
     title: `Gatsby Default Starter`,
@@ -28,32 +31,9 @@ module.exports = {
       },
     },
     // CSS
-    `gatsby-plugin-emotion`,
-    // Google fonts
-    {
-      resolve: `gatsby-plugin-prefetch-google-fonts`,
-      options: {
-        fonts: [
-          {
-            // https://fonts.google.com/specimen/Montserrat?selection.family=Montserrat
-            family: `Montserrat`,
-            variants: [
-              '400',
-              '400i',
-              '500',
-              '700',
-              '700i'
-            ],
-          },
-          {
-            family: `Open Sans`,
-            variants: [`400`, `700`]
-          },
-        ],
-      },
-    }
+    `gatsby-plugin-emotion`,    
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
-  ],
+  ].concat(plugins),
 }

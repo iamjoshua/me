@@ -1,6 +1,11 @@
 import React from 'react'
 import { Link } from 'gatsby'
 import styled from '@emotion/styled'
+import PageLink from './pagelink'
+
+// ================================ //
+// Styles
+// ================================ //
 
 const Nav = styled.div`
   position: fixed;
@@ -14,76 +19,35 @@ const Nav = styled.div`
   font-weight: 500;
 `
 
-const Logo = styled.div`
-    a {
-        display: block;
-        padding: 35px;
-        white-space: pre;
-        text-transform: uppercase;
-    }
+const Logo = styled(Link)`
+  display: block;
+  padding: 35px;
+  white-space: pre;
+  text-transform: uppercase;
 `
-
-// const Menu = styled.div`
-//     ul {
-//         display: inline-block;
-//         list-style: none;
-//         /* offset to match introduction padding */
-//         margin: 0 0 0 15px;
-//         li {
-//             display: inline;
-//             a {
-//                 display: inline-block;
-//                 padding: 35px;
-//                 text-transform: lowercase;
-//                 color: black;
-//                 transition: all 0.3s;
-//                 :hover {
-//                     color: #9c7d9a;
-//                     padding: 30px 35px 40px 35px;
-//                 }
-//             }
-//         }
-//     }
-// `
 
 const Menu = styled.div`
-    /* offset to match introduction padding */
-    margin: 0 0 0 15px;
-    display: flex;
-    a, a:visited {
-        padding: 35px;
-        white-space: pre;
-        text-transform: lowercase;
-        color: #6d6d6d;
-        transition: all 0.3s; 
-        :hover {
-            color: #9c7d9a;
-            padding: 32px 35px 38px 35px;
-        }
-    }
+  /* offset to match introduction padding */
+  margin: 0 0 0 15px;
+  display: flex;
 `
 
-const Social = styled.div`
-`
+const Social = styled.div``
+
+// ================================ //
+// Component
+// ================================ //
 
 const Navigation = () => (
-    <Nav>  
-        <Logo>
-            <Link to='./'>Joshua Heiland</Link>
-        </Logo>
-        <Menu>
-            <Link to='./about'>About</Link>
-            <Link to='./reading-list'>Reading List</Link>
-            <Link to='./contact'>Contact</Link>
-            {/* <ul>
-                <li><Link to='./about'>About</Link></li>
-                <li><Link to='./reading-list'>Reading List</Link></li>
-                <li><Link to='./contact'>Contact</Link></li>
-            </ul> */}
-        </Menu>
-        <Social></Social>
-    </Nav>
+  <Nav>
+    <Logo to="/">Joshua Heiland</Logo>
+    <Menu>
+      <PageLink to="about">About</PageLink>
+      <PageLink to="read">Reading List</PageLink>
+      <PageLink to="/">Contact</PageLink>
+    </Menu>
+    <Social></Social>
+  </Nav>
 )
-  
+
 export default Navigation
-  
