@@ -1,4 +1,6 @@
+// for development
 require("dotenv").config({path: `.env.${process.env.NODE_ENV}`})
+// import plugin config files instead of having a clusterfuck plugins array below
 const plugins = require('./plugins')
 
 module.exports = {
@@ -35,5 +37,5 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,
-  ].concat(plugins),
+  ].concat(plugins), // see import at top of file
 }

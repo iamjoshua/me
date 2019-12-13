@@ -15,6 +15,7 @@ const Nav = styled.div`
   bottom: 0;
   border-top: 1px solid #f3f3f3;
   border-bottom: 6px solid #9c7d9a;
+  background: #fffffff0;
   font-size: 16px;
   font-weight: 500;
 `
