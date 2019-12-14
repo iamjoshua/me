@@ -10,6 +10,7 @@ import Main from '../components/main'
 const Bottom = styled.div`
   position: fixed;
   width: 100%;
+  /* Just above bottom navigation */
   bottom: 102px;
 `
 
