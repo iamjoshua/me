@@ -13,8 +13,8 @@ const Nav = styled.div`
   grid-template-columns: 35% auto 20%;
   width: 100%;
   bottom: 0;
-  border-top: 1px solid #f3f3f3;
-  border-bottom: 6px solid #9c7d9a;
+  border-top: 1px solid ${props => props.theme.color.gray};
+  border-bottom: 6px solid ${props => props.theme.color.accent};
   background: #fffffff0;
   font-size: 16px;
   font-weight: 500;

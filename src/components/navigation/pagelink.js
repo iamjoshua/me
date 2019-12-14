@@ -19,17 +19,17 @@ const PageLink = styled(props => (
     padding: 35px;
     white-space: pre;
     text-transform: lowercase;
-    color: #6d6d6d;
+    color: ${props => props.theme.color.normal};
     transition: all 0.3s;
   } 
   &:hover:not(.active) {
-    color: #9c7d9a;
+    color: ${props => props.theme.color.accent};
     padding: 32px 35px 38px 35px;
   }
   &.active {
     padding: 35px;
-    animation: ${backDown} 0.1s;
-    color: #9c7d9a;
+    animation: ${backDown} 0.6s;
+    color: ${props => props.theme.color.normal};
   }
 `
 
