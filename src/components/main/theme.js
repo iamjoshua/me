@@ -9,6 +9,7 @@ import { Global, css } from '@emotion/core'
 const theme = {
   color: {
     accent: '#9c7d9a',
+    deepAccent: '#ce6fc4',
     normal: '#6d6d6d',
     gray: '#f3f3f3',
     muted: '#d8d8d8',

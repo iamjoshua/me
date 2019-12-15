@@ -1,4 +1,15 @@
 
+# Next
+
+Page Transitions
+Module/section intro transitions
+Sorting of readings by date
+Filtering of readings 
+  - by author
+  - by genre 
+
+
+
 # Environment variables
 Create the following file in the root directory:
 

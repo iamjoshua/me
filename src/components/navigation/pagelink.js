@@ -15,6 +15,11 @@ const backDown = keyframes`
 const PageLink = styled(props => (
   <Link activeClassName={'active'} {...props} />
 ))`
+  font-size: 14px;
+  letter-spacing: -1px;
+  font-weight: 500;
+  position: relative;
+  z-index: 100;
   &, &:visited {
     padding: 35px;
     white-space: pre;

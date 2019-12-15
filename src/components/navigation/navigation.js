@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'gatsby'
 import styled from '@emotion/styled'
 import PageLink from './pagelink'
+import Wave from './wave'
 
 // ================================ //
 // Styles
@@ -14,7 +15,7 @@ const Nav = styled.div`
   width: 100%;
   bottom: 0;
   border-top: 1px solid ${props => props.theme.color.gray};
-  border-bottom: 6px solid ${props => props.theme.color.accent};
+  border-bottom: 4px solid ${props => props.theme.color.accent};
   background: #fffffff0;
   font-size: 16px;
   font-weight: 500;
@@ -48,6 +49,7 @@ const Navigation = () => (
       <PageLink to="/">Contact</PageLink>
     </Menu>
     <Social></Social>
+    <Wave />
   </Nav>
 )
 
