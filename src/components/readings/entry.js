@@ -1,16 +1,30 @@
 import React from 'react'
+import ReactDOM from 'react-dom'
 import styled from '@emotion/styled'
+import { keyframes } from '@emotion/core'
 import _ from 'lodash'
 
 // ================================ //
 // Styles
 // ================================ //
 
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    margin-top: -5px;
+  }
+  to {
+    opacity: 1  
+    margin-top: 0;
+  }
+`
+
 const Read = styled('article')`
   border-left: 5px solid ${props => props.theme.color.gray};
   margin: 20px;
   padding-left: 15px;
   transition: all .5s;
+  animation: ${fadeIn} 0.6s;
   &:hover {
     border-color: ${props => props.theme.color.accent};
   }

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import Intro from '../components/intro'
-import Main from '../components/main'
+// import Main from '../components/main'
 
 // ================================ //
 // Styles
@@ -19,11 +19,11 @@ const Bottom = styled.div`
 // ================================ //
 
 const IndexPage = () => (
-  <Main>
+  <>
     <Bottom>
       <Intro />
     </Bottom>
-  </Main> 
+  </> 
 )
 
 export default IndexPage

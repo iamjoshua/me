@@ -1,5 +1,8 @@
 import React from 'react'
 import { Link } from 'gatsby'
+import TransitionLink from 'gatsby-plugin-transition-link'
+import AniLink from "gatsby-plugin-transition-link/AniLink"
+
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/core'
 
@@ -11,6 +14,7 @@ const backDown = keyframes`
     padding: 33px 35px 35px 35px;
   }
 `
+//<AniLink swipe activeClassName={'active'} {...props} />
 
 const PageLink = styled(props => (
   <Link activeClassName={'active'} {...props} />

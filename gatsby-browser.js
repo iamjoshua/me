@@ -4,5 +4,12 @@
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
 
+import React from 'react'
+import Main from './src/components/main/main'
 
-import "./src/styles/global.css"
+export const wrapRootElement = ({ element, props }) => {
+  // props provide same data to Layout as Page element will get
+  // including location, data, etc - you don't need to pass it
+  return <Main {...props}>{element}</Main>
+}
+

@@ -33,7 +33,10 @@ module.exports = {
       },
     },
     // CSS
-    `gatsby-plugin-emotion`,    
+    `gatsby-plugin-emotion`,  
+    // Transitions
+    `gatsby-plugin-transition-link`
+
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

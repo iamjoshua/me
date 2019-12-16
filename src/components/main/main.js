@@ -2,6 +2,7 @@ import React from 'react'
 import styled from '@emotion/styled'
 import Theme from './theme'
 import Navigation from '../navigation'
+import Wave from './wave'
 
 // ================================ //
 // Styles
@@ -19,14 +20,19 @@ const Container = styled.div`
 // Component
 // ================================ //
 
-const Main = ({ children }) => (
-  <Theme>
-    <Container>
-      <main>{children}</main>
+const Main = ({ children }) => {
+  console.log('loaded again');
+  
+  return (
+    <Theme>
+      <Container>
+        <main>{children}</main>
+      </Container> 
       <Navigation/>
-    </Container> 
-  </Theme>
-)
+      <Wave />
+    </Theme>
+  )
+}
   
 export default Main
   

@@ -1,9 +1,11 @@
-import React from 'react'
+import _ from 'lodash'
+import React, {useState, useEffect} from 'react'
 import { graphql } from 'gatsby'
 import styled from '@emotion/styled'
 import { eachRecord } from '../utils/data'
-import Main from '../components/main'
+// import Main from '../components/main'
 import Entry from '../components/readings/entry'
+import LazyLoad from 'react-lazyload'
 
 // ================================ //
 // Styles
@@ -13,6 +15,9 @@ const Entries = styled.div`
   display: grid;
   grid-template-columns: 33% 33% 33%;
   padding: ${props => props.theme.space};
+`
+
+const Filter = styled.div`
 
 `
 
@@ -22,15 +27,30 @@ const Entries = styled.div`
 
 const ReadPage = ({data}) => {  
 
-  const entry = (key, data) => <Entry key={key} {...data} />
-  const entries = eachRecord(data, 'allAirtable', entry)
+  let [entries, setEntries] = useState([])
+
+  useEffect(() => {    
+    const entry = (key, data) => ({key, data})//<Entry key={key} {...data} />
+    const records = eachRecord(data, 'allAirtable', entry)
+    setEntries(records)
+  }, [])
+
+
+  const somethings = entries.map(({key, data}) => (  
+    <LazyLoad key={key} throttle={50} height={100}>
+      <Entry {...data} />
+    </LazyLoad>
+  ))
 
   return (
-    <Main>
+    <>
+      <Filter>
+        <div>Fiction</div>
+      </Filter>
       <Entries>
-        {entries}
+        {somethings}
       </Entries>
-    </Main>
+    </>
   )
 }
 
@@ -58,28 +78,6 @@ export const query = graphql`
     }
   }
 `
-
-// export const query = graphql`
-//   query HomePageQuery {
-//     allAirtable {
-//       edges {
-//         node {
-//           data {
-//             Author {
-//               data {
-//                 Name
-//               }
-//             }
-//             Title
-//             Type
-//             Genre
-//             Completed
-//           }
-//         }
-//       }
-//     }
-//   }
-// `
 
 export default ReadPage
 
