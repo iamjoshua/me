@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/core'
 import _ from 'lodash'
@@ -71,15 +70,20 @@ const Time = styled('time')`
 // Component
 // ================================ //
 
-const getAuthors = (authors) => {  
-  return _.map(authors, (a) => _.get(a, 'data.Name')).join(' & ')
+const getAuthors = (authors, filterFn) => {   
+  let key = 0
+  return _.map(authors, a => {
+    const author = _.get(a, 'data.Name')
+    const filter = () => filterFn({author})
+    return <div key={'a' + key++} onClick={filter}>{author}</div>
+  })
 }
 
-const Entry = ({ title, subtitle, author, completed }) => (
+const Entry = ({ type, title, subtitle, author, completed, filterFn }) => (
   <Read>
     <Title>{title}</Title>
     <Subtitle>{subtitle}</Subtitle>
-    <Author>{getAuthors(author)}</Author>
+    <Author>{getAuthors(author, filterFn)}</Author>
     <Time datetime={completed}>{completed}</Time>
   </Read>
 )

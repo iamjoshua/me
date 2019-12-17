@@ -25,30 +25,43 @@ const Filter = styled.div`
 // Component
 // ================================ //
 
-const ReadPage = ({data}) => {  
+const ReadPage = ({data}) => {    
 
-  let [entries, setEntries] = useState([])
+  const [entries, setEntries] = useState([])
+  const [filtered, setFiltered] = useState([])
 
   useEffect(() => {    
     const entry = (key, data) => ({key, data})//<Entry key={key} {...data} />
-    const records = eachRecord(data, 'allAirtable', entry)
-    setEntries(records)
-  }, [])
+    const books = eachRecord(data, 'books', entry)
+    const papers = eachRecord(data, 'papers', entry)
+    const all = [...books, ...papers]
+    setEntries(all)
+    setFiltered(all)
+  }, [data])
 
+  const filterBy = (params) => {
+    const criteria = params.author ? (e) => _.find(e.data.author, {
+      data: {Name: params.author}
+    }) : {data: params}
+    const f = _.filter(entries, criteria)
 
-  const somethings = entries.map(({key, data}) => (  
-    <LazyLoad key={key} throttle={50} height={100}>
-      <Entry {...data} />
-    </LazyLoad>
-  ))
+    setFiltered(f)
+  }
 
+  let k = 0
   return (
     <>
       <Filter>
-        <div>Fiction</div>
+      < div onClick={() => filterBy({type: 'Fiction'})}>Fiction</div>
+        <div onClick={() => filterBy({type: 'Nonfiction'})}>Non Fiction</div>
+        <div onClick={() => filterBy({type: 'Philosophy'})}>Philosophy</div>
       </Filter>
       <Entries>
-        {somethings}
+        {filtered.map(({key, data}) => (
+          <LazyLoad key={key + k++} throttle={50} height={100}>
+            <Entry filterFn={filterBy} {...data}  />
+          </LazyLoad>
+        ))}
       </Entries>
     </>
   )
@@ -60,17 +73,30 @@ const ReadPage = ({data}) => {
 
 export const query = graphql`
   query ReadPageQuery {
-    allAirtable(filter: {table: {eq: "Completed"}}) {
-      edges {
-        node {
-          data {
-            Title
-            Subtitle
-            Completed
-            Author {
-              data {
-                Name
-              }
+    papers: allAirtable(filter: {table: {eq: "Papers"}}) {
+      nodes {
+        data {
+          Title
+          Completed
+          Type
+          Author {
+            data {
+              Name
+            }
+          }
+        }
+      }
+    }
+    books: allAirtable(filter: {table: {eq: "Completed"}}) {
+      nodes {
+        data {
+          Title
+          Subtitle
+          Completed
+          Type
+          Author {
+            data {
+              Name
             }
           }
         }
