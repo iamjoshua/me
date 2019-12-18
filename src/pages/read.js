@@ -3,22 +3,31 @@ import React, {useState, useEffect} from 'react'
 import { graphql } from 'gatsby'
 import styled from '@emotion/styled'
 import { eachRecord } from '../utils/data'
-// import Main from '../components/main'
+import animateScrollTo from 'animated-scroll-to'
 import Entry from '../components/readings/entry'
-import LazyLoad from 'react-lazyload'
+import FilterNav from '../components/readings/filternav'
 
 // ================================ //
 // Styles
 // ================================ //
 
+const Container = styled.div`
+  /* min-height: 900px; */
+`
+
+const Header = styled.div`
+  width: 60%;
+  margin: 40px;
+  font-size: 25px;
+  font-weight: 100;
+  line-height: 45px;  
+  color: #9b7d9a;
+`
+
 const Entries = styled.div`
   display: grid;
   grid-template-columns: 33% 33% 33%;
   padding: ${props => props.theme.space};
-`
-
-const Filter = styled.div`
-
 `
 
 // ================================ //
@@ -34,7 +43,7 @@ const ReadPage = ({data}) => {
     const entry = (key, data) => ({key, data})//<Entry key={key} {...data} />
     const books = eachRecord(data, 'books', entry)
     const papers = eachRecord(data, 'papers', entry)
-    const all = [...books, ...papers]
+    const all = sortBy([...books, ...papers], 'completed')
     setEntries(all)
     setFiltered(all)
   }, [data])
@@ -43,27 +52,44 @@ const ReadPage = ({data}) => {
     const criteria = params.author ? (e) => _.find(e.data.author, {
       data: {Name: params.author}
     }) : {data: params}
-    const f = _.filter(entries, criteria)
-
+    
+    let f = _.filter(entries, criteria)
+    
+    f = sortBy(f, 'completed')
+    
     setFiltered(f)
   }
 
+  const sortBy = (items, field) => {
+    return _.sortBy(items, [(e) => (e.data[field])]).reverse()
+  }
+
+  const handleFilter = (params) => {    
+    const div = document.querySelector('.scrollHere')
+    animateScrollTo(div, {maxDuration: 100})
+    filterBy(params)
+
+      // animateScrollTo(div, {maxDuration: 600}).then((pos) => {
+    //   filterBy(params)
+    // })
+  }
+
   let k = 0
+  const items = filtered.map(({key, data}) => (
+    <Entry key={key + k++} filterFn={handleFilter} {...data} />
+  ))
+
   return (
-    <>
-      <Filter>
-      < div onClick={() => filterBy({type: 'Fiction'})}>Fiction</div>
-        <div onClick={() => filterBy({type: 'Nonfiction'})}>Non Fiction</div>
-        <div onClick={() => filterBy({type: 'Philosophy'})}>Philosophy</div>
-      </Filter>
+    <Container style={{minHeight: window.outerHeight + 150}}>
+      <Header>
+        It seems to me that a mind doesn't contain knowledge but emerges from it. These are the things that I have read and in having read them assume have contributed to "me" to some extent (for better or for worse.)
+      </Header>
+      <div className="scrollHere"></div>
+      <FilterNav handleFilter={handleFilter}></FilterNav>
       <Entries>
-        {filtered.map(({key, data}) => (
-          <LazyLoad key={key + k++} throttle={50} height={100}>
-            <Entry filterFn={filterBy} {...data}  />
-          </LazyLoad>
-        ))}
+        {items}
       </Entries>
-    </>
+    </Container>
   )
 }
 

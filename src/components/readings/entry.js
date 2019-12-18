@@ -1,7 +1,8 @@
+import _ from 'lodash'
 import React from 'react'
 import styled from '@emotion/styled'
 import { keyframes } from '@emotion/core'
-import _ from 'lodash'
+import LazyLoad from 'react-lazyload'
 
 // ================================ //
 // Styles
@@ -80,12 +81,14 @@ const getAuthors = (authors, filterFn) => {
 }
 
 const Entry = ({ type, title, subtitle, author, completed, filterFn }) => (
-  <Read>
-    <Title>{title}</Title>
-    <Subtitle>{subtitle}</Subtitle>
-    <Author>{getAuthors(author, filterFn)}</Author>
-    <Time datetime={completed}>{completed}</Time>
-  </Read>
+  <LazyLoad throttle={50} height={100}>
+    <Read>
+      <Title>{title}</Title>
+      <Subtitle>{subtitle}</Subtitle>
+      <Author>{getAuthors(author, filterFn)}</Author>
+      <Time datetime={completed}>{completed}</Time>
+    </Read>
+  </LazyLoad>
 )
 
 export default Entry
