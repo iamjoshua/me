@@ -1,8 +1,8 @@
-// import React, {useState, useEffect} from 'react'
-import React from 'react'
+import _ from 'lodash'
+import React, {useState} from 'react'
 import styled from '@emotion/styled'
 import Sticky from 'react-stickynode'
-
+import Search from './search'
 
 // ================================ //
 // Styles
@@ -20,10 +20,11 @@ const Filter = styled.div`
     display: inline-block;
     padding: 15px;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 400;
     color: black;
     cursor: pointer;
-    .active  & {
+    &.active {
+      font-weight: 600;
     }
   } 
 `
@@ -32,20 +33,29 @@ const Filter = styled.div`
 // Component
 // ================================ //
 
-const FilterNav = ({handleFilter}) => {    
-
+const FilterNav = ({activeFilter, handleFilter}) => {   
+    
   const onClick = (type) => {
-    const params = type ? {type} : {}
+    const params = type === 'All' ? {} : {type}    
     handleFilter(params)
   }
+
+  const activeClass = (type) => {    
+    return activeFilter === type ? 'active' : ''
+  }
+  
+  const linkFor = (type, i) => {
+    return <div key={`filter${i}`} className={activeClass(type)} onClick={() => onClick(type)}>{type}</div>
+  }
+
+  const types = ['All', 'Fiction', 'Nonfiction', 'Philosophy']
+  const links = _.map(types, linkFor)
 
   return (
     <Sticky enabled={true} top={0}>
       <Filter>
-        <div onClick={() => onClick()}>All</div>
-        <div onClick={() => onClick('Fiction')}>Fiction</div>
-        <div onClick={() => onClick('Nonfiction')}>Non Fiction</div>
-        <div onClick={() => onClick('Philosophy')}>Philosophy</div>
+        {links}
+        <Search filterFn={handleFilter}/>
       </Filter>
     </Sticky>
   )

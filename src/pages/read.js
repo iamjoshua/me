@@ -38,6 +38,7 @@ const ReadPage = ({data}) => {
 
   const [entries, setEntries] = useState([])
   const [filtered, setFiltered] = useState([])
+  const [activeFilter, setActiveFilter] = useState('All')
 
   useEffect(() => {    
     const entry = (key, data) => ({key, data})//<Entry key={key} {...data} />
@@ -48,16 +49,47 @@ const ReadPage = ({data}) => {
     setFiltered(all)
   }, [data])
 
+  const searchFn = (value) => {
+    return (e) => {
+      let fields = _.values(e.data)
+      let authors = _.map(e.data.author, 'data.Name')
+      let allFields = [...fields, ...authors]
+
+      return _.filter(allFields, v => (
+        _.includes(_.toLower(v), value)
+      )).length
+    }
+  }
+
+  const searchAuthor = (author) => {
+    return (e) => _.find(e.data.author, {
+      data: {Name: author}
+    })
+  }
+
+  const setCriteria = (filter, params) => {    
+    switch (filter) {
+      case 'author':
+        return searchAuthor(params.author)
+        break;
+      case 'search':
+        return searchFn(params.search)
+        break;
+      case 'type':
+        return {data: params}
+      default:        
+        return {}
+    }
+  }
+
   const filterBy = (params) => {
-    const criteria = params.author ? (e) => _.find(e.data.author, {
-      data: {Name: params.author}
-    }) : {data: params}
-    
-    let f = _.filter(entries, criteria)
-    
-    f = sortBy(f, 'completed')
-    
-    setFiltered(f)
+    const filter = _.keys(params)[0]
+    const filterName = _.values(params)[0] || 'All'
+    const criteria = setCriteria(filter, params)    
+    const f = _.filter(entries, criteria)
+    const s = sortBy(f, 'completed')    
+    setFiltered(s)    
+    setActiveFilter(filterName)
   }
 
   const sortBy = (items, field) => {
@@ -68,10 +100,6 @@ const ReadPage = ({data}) => {
     const div = document.querySelector('.scrollHere')
     animateScrollTo(div, {maxDuration: 100})
     filterBy(params)
-
-      // animateScrollTo(div, {maxDuration: 600}).then((pos) => {
-    //   filterBy(params)
-    // })
   }
 
   let k = 0
@@ -85,7 +113,7 @@ const ReadPage = ({data}) => {
         It seems to me that a mind doesn't contain knowledge but emerges from it. These are the things that I have read and in having read them assume have contributed to "me" to some extent (for better or for worse.)
       </Header>
       <div className="scrollHere"></div>
-      <FilterNav handleFilter={handleFilter}></FilterNav>
+      <FilterNav activeFilter={activeFilter} handleFilter={handleFilter}></FilterNav>
       <Entries>
         {items}
       </Entries>
