@@ -1,6 +1,9 @@
 # JoshuaHeiland.com Personal Site
-This is the latest version of my personal sight. 
+This is the latest version of my personal sight. It is currently deployed to Vercel. 
 
+### Favicon
+I used this site eto generate the favicon: https://favicon.io/favicon-generator/
+Roboto Condensed heaviest 80
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
