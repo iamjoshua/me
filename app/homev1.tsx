@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Image from "next/image"
+import Link from "next/link"
 import Latest from "./latest"
 
 export default function HomeV1() {
@@ -23,7 +24,7 @@ export default function HomeV1() {
               <span className="">
                 I engage with
                 <br className="md:hidden" /> problems in{" "}
-                <span className="text-sky-600">philosophy</span>,<br />{" "}
+                <Link href="/philosophy" className="text-sky-600 hover:text-sky-500 transition-color duration-300">philosophy</Link>,<br />{" "}
               </span>{" "}
               <span className="">
                 create digital <span className="">tools</span>, and dabble in{" "}

@@ -2,15 +2,25 @@ import { motion } from "framer-motion"
 import Link from "next/link"
 import { FaTwitter } from "react-icons/fa"
 
-export default function Nav() {
+interface NavProps {
+  fixed?: boolean
+  className?: string
+  nameClassName?: string
+  linksClassName?: string
+}
+
+export default function Nav({ fixed, className, nameClassName, linksClassName }: NavProps) {
   const pages = [
-    ["projects", "./"],
-    ["writings", "./"],
-    ["reading list", "./"],
+    ["philosophy", "/philosophy"],
+    ["projects", "/projects"],
+    // ["writings", "./"],
+    // ["reading list", "./"],
   ]
   return (
     <motion.nav
-      className="sticky bottom-0 z-10 w-full h-[6rem] min-h-[50px] flex border-b-4 border-b-sky-600 border-t text-neutral-600 bg-white"
+      className={`${
+        fixed ? "fixed" : "sticky"
+      } bottom-0 z-10 w-full h-[6rem] min-h-[50px] flex border-b-4 border-b-sky-600 text-neutral-600 bg-transparent ${className}`}
       variants={{
         hidden: { opacity: 0, y: 10 },
         visible: { opacity: 1, y: 0 },
@@ -21,17 +31,17 @@ export default function Nav() {
     >
       <Link
         href="/"
-        className="w-2/3 md:w-5/12 flex items-center pl-10 uppercase text-sm tracking-wider text-neutral-900 hover:pl-11 transition-all duration-500"
+        className={`w-2/3 md:w-5/12 flex items-center pl-10 uppercase text-sm tracking-wider text-neutral-900 hover:pl-11 transition-all duration-500 ${nameClassName}`}
       >
         Joshua Heiland
       </Link>
       <div className="w-7/12 flex display">
-        <div className="w-full flex items-center space-x-10 pl-0 -ml-5 tracking-wide text-md">
+        <div className={`w-full flex items-center space-x-10 pl-0 -ml-5 tracking-wide text-md `}>
           {pages.map(([name, url]) => (
             <Link
               key={name}
               href={url}
-              className="p-5 text-sm hover:-translate-y-0.5 transition-all duration-300 hidden md:block"
+              className={`p-5 text-sm hover:-translate-y-0.5 transition-all duration-300 hidden md:block ${linksClassName}`}
             >
               {name}
             </Link>
