@@ -16,7 +16,7 @@ function TheGrid() {
 
   const getGridSize = () => {
     if (!ref.current) return
-    const itemSize = 50 // update global.css too
+    const itemSize = 25 // update global.css too
     const columns = Math.floor(ref.current.clientWidth / itemSize)
     const rows = Math.floor(ref.current.clientHeight / itemSize)
     setGrid({ columns, rows, total: rows * columns })

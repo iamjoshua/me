@@ -10,7 +10,7 @@ export default function Nav() {
   ]
   return (
     <motion.nav
-      className="fixed bottom-0 z-10 w-full h-[6rem] flex border-b-4 border-b-sky-600 border-t text-neutral-600"
+      className="sticky bottom-0 z-10 w-full h-[6rem] flex border-b-4 border-b-sky-600 border-t text-neutral-600 bg-white"
       variants={{
         hidden: { opacity: 0, y: 10 },
         visible: { opacity: 1, y: 0 },
@@ -21,7 +21,7 @@ export default function Nav() {
     >
       <Link
         href="/"
-        className="w-5/12 flex items-center pl-10 uppercase text-sm tracking-wider text-neutral-900 hover:pl-11 transition-all duration-500"
+        className="w-2/3 md:w-5/12 flex items-center pl-10 uppercase text-sm tracking-wider text-neutral-900 hover:pl-11 transition-all duration-500"
       >
         Joshua Heiland
       </Link>
@@ -31,7 +31,7 @@ export default function Nav() {
             <Link
               key={name}
               href={url}
-              className="p-5 text-sm hover:-translate-y-0.5 transition-all duration-300 hidden"
+              className="p-5 text-sm hover:-translate-y-0.5 transition-all duration-300 hidden md:block"
             >
               {name}
             </Link>

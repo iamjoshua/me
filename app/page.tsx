@@ -6,19 +6,12 @@ import TheGrid from "./thegrid"
 
 export default function Home() {
   return (
-    <motion.main
-      // variants={{
-      //   hidden: { opacity: 0 },
-      //   visible: { opacity: 1 },
-      // }}
-      // transition={{ ease: "easeInOut", duration: 0.5 }}
-      // initial="hidden"
-      // animate="visible"
-      className="h-[calc(100vh-6rem)] w-screen flex flex-col justify-between"
-    >
-      <HomeV1 />
-      <Nav />
+    <main className="h-[100dvh] w-screen flex flex-col justify-between overflow-hidden">
       <TheGrid />
-    </motion.main>
+      <div className="h-full w-full flex flex-col justify-between">
+        <HomeV1 />
+      </div>
+      <Nav />
+    </main>
   )
 }

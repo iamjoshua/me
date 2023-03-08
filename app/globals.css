@@ -8,8 +8,8 @@ body {
 
 #grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(50px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(25px, 1fr));
+  grid-template-rows: repeat(auto-fit, minmax(25px, 1fr));
   justify-content: center;
   /* z-index: 10000; */
   /* pointer-events: auto; */
