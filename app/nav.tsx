@@ -10,7 +10,7 @@ export default function Nav() {
   ]
   return (
     <motion.nav
-      className="sticky bottom-0 z-10 w-full h-[6rem] flex border-b-4 border-b-sky-600 border-t text-neutral-600 bg-white"
+      className="sticky bottom-0 z-10 w-full h-[6rem] min-h-[50px] flex border-b-4 border-b-sky-600 border-t text-neutral-600 bg-white"
       variants={{
         hidden: { opacity: 0, y: 10 },
         visible: { opacity: 1, y: 0 },

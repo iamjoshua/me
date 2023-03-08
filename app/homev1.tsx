@@ -7,7 +7,7 @@ import Latest from "./latest"
 export default function HomeV1() {
   return (
     <>
-      <div className="h-3/6 flex justify-center">
+      <div className="h-3/6 min-h-[200px] flex justify-center">
         <div className="p-10 lg:p-0 lg:w-2/3 flex items-center justify-center border-l-[0px]">
           <div className="relative z-50 w-full md:text-center lg:text-center">
             <motion.h1
@@ -34,7 +34,7 @@ export default function HomeV1() {
         </div>
       </div>
       <motion.header
-        className="w-screen h-3/6 flex justify-center bg-sky-600"
+        className="w-screen h-3/6 min-h-[200px] flex justify-center bg-sky-600"
         variants={{
           hidden: { opacity: 0 },
           visible: { opacity: 1 },
