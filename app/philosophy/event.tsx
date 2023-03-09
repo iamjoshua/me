@@ -2,21 +2,23 @@ interface EventProps {
   date: string
   title: string
   type?: string
-  description?: string
+  description?: React.ReactNode
 }
 
 function Event({ date, title, type, description }: EventProps) {
   return (
     <li className="mb-10 ml-4">
       <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-      <time className="mb-1 text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
-        {date}
+      <div className="flex items-center gap-10">
+        <time className="text-sm font-normal leading-none text-gray-400 dark:text-gray-500">
+          {date}
+        </time>
         {type && (
-          <span className="ml-5 mb-1 p-1 bg-sky-900 text-white text-[8px] rounded uppercase">
+          <span className="py-1 px-2 bg-sky-900 text-white text-[8px] rounded uppercase">
             {type}
           </span>
         )}
-      </time>
+      </div>
       <h3 className="mb-1 text-lg font-semibold text-gray-900 ">{title}</h3>
       {description && (
         <p className="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">
