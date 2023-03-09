@@ -2,14 +2,32 @@
 import Link from "next/link"
 import Nav from "../nav"
 import Event from "./event"
+import { motion } from "framer-motion"
+import PageWrapper from "../pagewrapper"
 
 function Philosophy() {
   return (
-    <main className="min-h-[100dvh] w-full flex justify-between">
+    // <PageWrapper>
+    <motion.main
+      key="philosophy2"
+      // initial={{ opacity: 0, y: 30 }}
+      // animate={{ opacity: 1, y: 0 }}
+      // exit={{ opacity: 0, y: 30 }}
+      // transition={{ duration: 2 }}
+      className="min-h-[100dvh] w-full flex justify-between"
+    >
       <div className="h-full w-full flex flex-col md:flex-row justify-end">
-        <div className="static md:fixed md:top-0 md:left-0 md:h-screen w-full md:w-5/12 bg-sky-700 flex align-center items-center justify-center">
-          <div className="max-w-screen-md text-center flex flex-col justify-end p-10 pb-5 md:p-10 lg:p-20">
-            <div className="text-2xl font-thin lg:leading-relaxed text-white">
+        <div className="static md:fixed md:top-0 md:left-0 md:h-screen w-full md:w-5/12 md:-ml-10 bg-sky-700 flex align-center items-center justify-center">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{
+              y: { duration: 2 },
+              opacity: { delay: 0.3, duration: 0.3 },
+            }}
+            className="max-w-screen-md text-center flex flex-col justify-end p-10 pb-5 md:p-20"
+          >
+            <div className="text-2xl md:text-xl lg:text-2xl font-thin lg:leading-relaxed text-white">
               America is thus as a nation rapidly drifting towards a state of
               things in which no man of science or letters will be accounted
               respectable unless some kind of badge or diploma is stamped upon
@@ -18,10 +36,10 @@ function Philosophy() {
             <div className="text-sky-300 p-5 md:p-10">
               — William James, <span className="italic">The Ph.D. Octopus</span>
             </div>
-          </div>
+          </motion.div>
         </div>
         <div className="h-full w-full md:w-7/12 min-h-[200px] flex justify-start">
-          <div className="max-w-screen-lg p-10 mb-10">
+          <div className="max-w-screen-lg p-10 md:pl-0 mb-10 ">
             <h1 className="mb-5 text-3xl leading-normal md:text-4xl md:leading-normal font-thin">
               Philosophy
             </h1>
@@ -41,7 +59,7 @@ function Philosophy() {
                 type="Now Reading"
                 description={
                   <>
-                    I first heard abot Shea's work on the{" "}
+                    I first heard abot Shea&apos;s work on the{" "}
                     <Link
                       target="__blank"
                       href="https://newbooksnetwork.com/nicholas-shea-representation-in-cognitive-science-oxford-up-2018"
@@ -50,24 +68,24 @@ function Philosophy() {
                       Books in Philosophy podcast
                     </Link>
                     . I was excited to learn that his position on
-                    representational content is remarkably close to mine. I'm
-                    looking forward to getting into the details.
+                    representational content is remarkably close to mine.
+                    I&apos;m looking forward to getting into the details.
                   </>
                 }
               />
-              
             </ol>
           </div>
           {/* Nav cover */}
-          <div className="fixed bottom-0 w-full h-[6rem] bg-white/90 border-t border-t-gray-100 md:border-0"></div>
+          <div className="fixed bottom-0 w-full h-[calc(6rem+1px)] bg-white/90 border-t border-t-gray-100 md:border-0"></div>
         </div>
       </div>
       <Nav
         fixed={true}
         nameClassName="md:text-white"
-        linksClassName="first:ml-10"
+        // linksClassName="first:ml-10"
       />
-    </main>
+    </motion.main>
+    // </PageWrapper>
   )
 }
 
