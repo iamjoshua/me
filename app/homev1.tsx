@@ -6,6 +6,8 @@ import Link from "next/link"
 import CurrentReading from "./current_reading"
 import Latest from "./latest"
 import Event from "./philosophy/event"
+import { readings } from './readings'
+const currentReading = readings[0]
 
 export default function HomeV1() {
   return (
@@ -64,26 +66,7 @@ export default function HomeV1() {
           </div>
           <div className="relative w-full hidden md:grid grid-cols-3 grid-rows-2 place-content-stretch  border-t">
             <Cell bg="bg-sky-200">
-              <CurrentReading
-                date="March 6th, 2023"
-                title="Representation in Cognitive Science, by Nicholas Shea"
-                type="Now Reading"
-                description={
-                  <>
-                    I first heard abot Shea&apos;s work on the{" "}
-                    <Link
-                      target="__blank"
-                      href="https://newbooksnetwork.com/nicholas-shea-representation-in-cognitive-science-oxford-up-2018"
-                      className="underline"
-                    >
-                      Books in Philosophy podcast
-                    </Link>
-                    . I was excited to learn that his position on
-                    representational content is remarkably close to mine.
-                    I&apos;m looking forward to getting into the details.
-                  </>
-                }
-              />
+              {currentReading && <CurrentReading {...currentReading} />}
             </Cell>
             <Cell bg="bg-sky-300" />
             <Cell bg="bg-sky-400" />

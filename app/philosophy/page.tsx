@@ -5,6 +5,7 @@ import Event from "./event"
 import { motion } from "framer-motion"
 import PageWrapper from "../pagewrapper"
 import CurrentReading from "../current_reading"
+import { readings } from '../readings'
 
 function Philosophy() {
   return (
@@ -58,26 +59,9 @@ function Philosophy() {
             </p>
 
             <ol className="mt-10 relative border-l border-gray-200 dark:border-gray-700">
-              <Event
-                date="March 6th, 2023"
-                title="Representation in Cognitive Science, by Nicholas Shea"
-                type="Now Reading"
-                description={
-                  <>
-                    I first heard abot Shea&apos;s work on the{" "}
-                    <Link
-                      target="__blank"
-                      href="https://newbooksnetwork.com/nicholas-shea-representation-in-cognitive-science-oxford-up-2018"
-                      className="underline"
-                    >
-                      Books in Philosophy podcast
-                    </Link>
-                    . I was excited to learn that his position on
-                    representational content is remarkably close to mine.
-                    I&apos;m looking forward to getting into the details.
-                  </>
-                }
-              />
+              {readings.map((reading, key) => (
+                <Event key={key} {...reading} />
+              ))}
             </ol>
           </div>
           {/* Nav cover */}
