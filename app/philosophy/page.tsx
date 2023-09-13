@@ -4,6 +4,7 @@ import Nav from "../nav"
 import Event from "./event"
 import { motion } from "framer-motion"
 import PageWrapper from "../pagewrapper"
+import CurrentReading from "../current_reading"
 
 function Philosophy() {
   return (
@@ -17,7 +18,11 @@ function Philosophy() {
       className="min-h-[100dvh] w-full flex justify-between"
     >
       <div className="h-full w-full flex flex-col md:flex-row justify-end">
-        <div className="static md:fixed md:top-0 md:left-0 md:h-screen w-full md:w-5/12 md:-ml-10 bg-sky-700 flex align-center items-center justify-center">
+        <motion.div
+          initial={{ opacity: 0}}
+          animate={{ opacity: 1 }}
+          className="static md:fixed md:top-0 md:left-0 md:h-screen w-full md:w-5/12 md:-ml-10 bg-sky-700 flex align-center items-center justify-center"
+        >
           <motion.div
             initial={{ y: 20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
@@ -37,7 +42,7 @@ function Philosophy() {
               — William James, <span className="italic">The Ph.D. Octopus</span>
             </div>
           </motion.div>
-        </div>
+        </motion.div>
         <div className="h-full w-full md:w-7/12 min-h-[200px] flex justify-start">
           <div className="max-w-screen-lg p-10 md:pl-0 mb-10 ">
             <h1 className="mb-5 text-3xl leading-normal md:text-4xl md:leading-normal font-thin">

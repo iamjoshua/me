@@ -18,7 +18,7 @@ export default function Home() {
         <HomeV1 />
       </div>
        {/* Nav cover */}
-       <div className="sticky bottom-0 w-full h-[calc(110px+1px)] bg-white/90 border-t border-t-gray-100 md:border-0"></div>
+       <div className=" w-full h-[111px] bg-white/90 border-t border-t-gray-100 md:border-0"></div>
        
       <Nav fixed={true} />
     </motion.main>

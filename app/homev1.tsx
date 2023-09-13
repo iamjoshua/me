@@ -3,7 +3,9 @@
 import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
+import CurrentReading from "./current_reading"
 import Latest from "./latest"
+import Event from "./philosophy/event"
 
 export default function HomeV1() {
   return (
@@ -24,7 +26,13 @@ export default function HomeV1() {
               <span className="">
                 I engage with
                 <br className="md:hidden" /> problems in{" "}
-                <Link href="/philosophy" className="text-sky-600 hover:text-sky-500 transition-color duration-300">philosophy</Link>,<br />{" "}
+                <Link
+                  href="/philosophy"
+                  className="text-sky-600 hover:text-sky-500 transition-color duration-300"
+                >
+                  philosophy
+                </Link>
+                ,<br />{" "}
               </span>{" "}
               <span className="">
                 create digital <span className="">tools</span>, and dabble in{" "}
@@ -55,7 +63,28 @@ export default function HomeV1() {
             />
           </div>
           <div className="relative w-full hidden md:grid grid-cols-3 grid-rows-2 place-content-stretch  border-t">
-            <Cell bg="bg-sky-200" />
+            <Cell bg="bg-sky-200">
+              <CurrentReading
+                date="March 6th, 2023"
+                title="Representation in Cognitive Science, by Nicholas Shea"
+                type="Now Reading"
+                description={
+                  <>
+                    I first heard abot Shea&apos;s work on the{" "}
+                    <Link
+                      target="__blank"
+                      href="https://newbooksnetwork.com/nicholas-shea-representation-in-cognitive-science-oxford-up-2018"
+                      className="underline"
+                    >
+                      Books in Philosophy podcast
+                    </Link>
+                    . I was excited to learn that his position on
+                    representational content is remarkably close to mine.
+                    I&apos;m looking forward to getting into the details.
+                  </>
+                }
+              />
+            </Cell>
             <Cell bg="bg-sky-300" />
             <Cell bg="bg-sky-400" />
             <Cell bg="bg-sky-400" />
@@ -156,14 +185,14 @@ function Cell({ children, bg }: any) {
     <div
       className={`relative ${bg} flex justify-center items-center text-xs pt-5 hover:pt-0 text-transparent hover:text-white transition-all duration-300 overflow-hidden`}
     >
-      <div
+      {/* <div
         className={`absolute top-0 left-0 z-10 w-full h-full ${bg} opacity-50 hover:opacity-0 transition duration-300`}
-      ></div>
+      ></div> */}
 
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col"> */}
         {/* <div className="text-white text-center">Latest App update</div> */}
-        <div className="">Coming soon...</div>
-      </div>
+        {/* <div className="">Coming soon...</div> */}
+      {/* </div> */}
 
       {children}
     </div>
