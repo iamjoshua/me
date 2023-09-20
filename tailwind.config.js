@@ -19,16 +19,16 @@ module.exports = {
         pulseonce: {
           "100%": {
             opacity: 0,
-            background: theme('colors.sky.600'),
+            background: theme("colors.sky.600"),
           },
           "50%": {
             opacity: 0.2,
-            background: theme('colors.sky.600'),
+            background: theme("colors.sky.600"),
           },
-          "0%":{
+          "0%": {
             opacity: 0.5,
-            background: theme('colors.sky.600'),
-          }
+            background: theme("colors.sky.600"),
+          },
         },
       }),
       animation: {
@@ -36,5 +36,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
-}
+  plugins: [require("@tailwindcss/typography")],
+};
