@@ -3,16 +3,12 @@ import { revalidateTag } from "next/cache";
 
 const WEBHOOK_SECRET: string = process.env.CACHE_SECRET as string;
 
-export async function POST(request: Request) {
-  try {
-    if (await verifySignature(request)) {
-      revalidateTag("essays");
-      return new Response("Never the same again\n");
-    } else {
-      console.log("secret was wrong:");
-    }
-  } catch (e: any) {
-    console.log("JSON parsing failed", e);
+export async function handleCacheRevalidation(tag: string, request: Request) {
+  if (await verifySignature(request)) {
+    revalidateTag(tag);
+    return new Response("Never the same again\n");
+  } else {
+    console.log("secret was wrong:");
   }
 
   return new Response("Some things never change\n");
