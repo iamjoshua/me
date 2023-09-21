@@ -74,7 +74,11 @@ export async function fetchFileContent(url: string): Promise<string> {
 
 async function fetchRepo(path: string): Promise<any> {
   const url = `${BASE_URL}/repos/iamjoshua/writings/contents/${path}`;
-  const response = await fetch(url, { cache: "force-cache" });
+  const response = await fetch(url, {
+    cache: "force-cache",
+    next: { tags: ["essays"] },
+  });
+
   return response;
 }
 
