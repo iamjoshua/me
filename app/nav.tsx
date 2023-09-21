@@ -14,7 +14,7 @@ export default function Nav({ fixed, className, nameClassName, linksClassName }:
   const pages = [
     ["philosophy", "/philosophy"],
     ["projects", "/projects"],
-    // ["writings", "./"],
+    // ["writings", "./on"],
     // ["reading list", "./"],
   ]
   return (

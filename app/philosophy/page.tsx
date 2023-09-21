@@ -65,7 +65,7 @@ function Philosophy() {
             </ol>
           </div>
           {/* Nav cover */}
-          <div className="fixed bottom-0 w-full h-[calc(6rem+1px)] bg-white/90 border-t border-t-gray-100 md:border-0"></div>
+          <div className="fixed bottom-0 w-full h-[110px] bg-white/30 border-t border-t-gray-300 md:border-0"></div>
         </div>
       </div>
       <Nav

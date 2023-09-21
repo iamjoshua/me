@@ -13,7 +13,7 @@ function PageWrapper({ children }: { children: React.ReactNode }) {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 10 }}
         transition={{ duration: 0.3 }}
-        className='w-screen min-h-screen'
+        className='w-screen min-h-[100dvh]'
       >
         {children}
       </motion.div>
