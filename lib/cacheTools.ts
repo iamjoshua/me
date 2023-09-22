@@ -15,6 +15,8 @@ export async function handleCacheRevalidation(tag: string, request: Request) {
 }
 
 const verifySignature = async (req: Request) => {
+  if (process.env.NODE_ENV === "development") return true;
+
   const body = await req.json();
   const signature = crypto
     .createHmac("sha256", WEBHOOK_SECRET)

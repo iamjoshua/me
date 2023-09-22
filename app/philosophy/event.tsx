@@ -1,11 +1,11 @@
 interface EventProps {
-  date: string
-  title: string
-  type?: string
-  description?: React.ReactNode
+  date: string;
+  title: string;
+  type?: string;
+  content?: string;
 }
 
-function Event({ date, title, type, description }: EventProps) {
+function Event({ date, title, type, content }: EventProps) {
   return (
     <li className="mb-10 ml-4">
       <div className="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
@@ -20,9 +20,9 @@ function Event({ date, title, type, description }: EventProps) {
         )}
       </div>
       <h3 className="mb-1 text-lg font-semibold text-gray-900 ">{title}</h3>
-      {description && (
+      {content && (
         <p className="mb-4 text-sm font-normal text-gray-500 dark:text-gray-400">
-          {description}
+          {content}
         </p>
       )}
       {/* <a
@@ -44,7 +44,7 @@ function Event({ date, title, type, description }: EventProps) {
         </svg>
       </a> */}
     </li>
-  )
+  );
 }
 
-export default Event
+export default Event;
