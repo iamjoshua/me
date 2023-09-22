@@ -3,8 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { getEssayTitles } from "./getWritings";
 
 export default async function On() {
-  const titles = await getEssayTitles("essays");
-  console.log("inside On:", titles);
+  const titles = await getEssayTitles("essays/", "essays");
 
   return (
     <div className="p-5">
