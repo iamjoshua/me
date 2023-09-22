@@ -5,6 +5,8 @@ import { fetchGitMdFile } from "@/lib/getWritings";
 import { Quote } from "./Quote";
 import { parseMarkdown } from "@/lib/mdTools";
 import { Reading } from "./Reading";
+import { AnimatePresence } from "framer-motion";
+import { Readings } from "./Readings";
 
 async function Philosophy() {
   const wow = (await fetchGitMdFile(
@@ -13,7 +15,7 @@ async function Philosophy() {
     "readings",
   )) as string;
   const readings = parseMarkdown(wow);
-  // console.log("readings:", wow);
+
   return (
     // <PageWrapper>
     <main
@@ -40,11 +42,7 @@ async function Philosophy() {
               emphasis on the philosophy of mind.{" "}
             </p>
 
-            <ol className="mt-10 relative border-l border-gray-200 dark:border-gray-700">
-              {readings.map((reading, key) => (
-                <Reading key={key} {...reading} />
-              ))}
-            </ol>
+            <Readings readings={readings} />
           </div>
           {/* Nav cover */}
           <div className="fixed bottom-0 w-full h-[110px] bg-white/30 border-t border-t-gray-300 md:border-0"></div>
