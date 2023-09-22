@@ -1,5 +1,5 @@
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
-import { fetchMdFile, getEssayTitles, parseMdFile } from "../getWritings";
+import { fetchMdFile, getEssayTitles, parseMdFile } from "@/lib/getWritings";
 
 export async function generateStaticParams() {
   const titles = await getEssayTitles("essays/", "essays");

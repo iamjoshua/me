@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
-import { getEssayTitles } from "./getWritings";
+import { getEssayTitles } from "@/lib/getWritings";
 
 export default async function On() {
   const titles = await getEssayTitles("essays/", "essays");

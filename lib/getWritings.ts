@@ -1,4 +1,21 @@
 const BASE_URL = "https://api.github.com";
+const BASE_FILE_URL = "https://raw.githubusercontent.com/iamjoshua";
+
+export async function fetchGitMdFile(repo: string, path: string, tag: string) {
+  const file = await fetchGitFile(repo, path, tag);
+  return await file.text()
+}
+
+export async function fetchGitFile(repo: string, path: string, tag: string) {
+  const url = `${BASE_FILE_URL}/${repo}/main/${path}`;
+  console.log('url:', url)
+  const response = await fetch(url, {
+    cache: "force-cache",
+    next: { tags: [tag] },
+  });
+
+  return response;
+}
 
 export async function getEssayTitles(path: string, tag: string) {
   const essays = await fetchMdFiles(path, tag);
