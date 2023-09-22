@@ -22,7 +22,7 @@ export default function Home() {
       {/* Nav cover */}
       <div className="w-full h-[111px] shrink-0 bg-white/90 border-t border-t-gray-100 md:border-0" />
 
-      <Nav fixed={true} />
+      <Nav fixed={true} className="bg-transparent" />
     </motion.main>
   );
 }

@@ -17,10 +17,10 @@ export default async function Essay({
 }) {
   const path = `essays/${params.title.replaceAll(" ", "-")}.md`;
   const content = await fetchMdFile(path, "essays");
-  console.log("Esasy:", path, params.magic);
   const file = await parseMdFile(content);
+
   return (
-    <div className="p-20 w-full mx-auto w-fit">
+    <div className="p-10 pb-[120px] w-full flex justify-start lg:justify-center w-fit">
       <ReactMarkdown className="prose prose-base max-w-[900px] prose-headings:font-thin prose-h1:text-3xl">
         {file.content}
       </ReactMarkdown>

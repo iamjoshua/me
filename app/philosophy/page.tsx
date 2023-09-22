@@ -70,7 +70,8 @@ function Philosophy() {
       </div>
       <Nav
         fixed={true}
-        nameClassName="md:text-white"
+        nameClassName="md:text-white "
+        className="md:bg-transparent"
         // linksClassName="first:ml-10"
       />
     </motion.main>
