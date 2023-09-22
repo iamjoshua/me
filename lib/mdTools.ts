@@ -1,4 +1,4 @@
-import * as yaml from "js-yaml";
+import yaml from "yaml";
 
 type Meta = {
   type: string;
@@ -50,7 +50,7 @@ function getMetaDataAndContent(lines: string[]): {
     metadataStart,
   );
   const metadataString = lines.slice(metadataStart, metadataEnd).join("\n");
-  const meta = yaml.load(metadataString);
+  const meta = yaml.parse(metadataString);
   const content = lines
     .slice(metadataEnd + 1)
     .join("\n")
