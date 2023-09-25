@@ -1,21 +1,20 @@
-"use client"
+import Image from "next/image";
+import Link from "next/link";
+import { CurrentReading } from "./current_reading";
+import { Animated } from "./motion";
 
-import { motion } from "framer-motion"
-import Image from "next/image"
-import Link from "next/link"
-import CurrentReading from "./current_reading"
-import Latest from "./latest"
-import Event from "./philosophy/event"
-import { readings } from './readings'
-const currentReading = readings[0]
+type HomeProps = {
+  reading: any;
+};
 
-export default function HomeV1() {
+export default function HomeV1({ reading }: HomeProps) {
   return (
     <>
-      <div className="h-3/6 flex justify-center">
+      <div className="h-3/6 min-h-[130px] flex justify-center">
         <div className="p-10 lg:p-0 lg:w-2/3 flex items-center justify-center border-l-[0px]">
           <div className="relative z-50 w-full md:text-center lg:text-center">
-            <motion.h1
+            <Animated
+              as="h1"
               className="text-3xl leading-normal md:text-4xl md:leading-normal font-thin"
               variants={{
                 hidden: { opacity: 0, y: 30 },
@@ -34,17 +33,18 @@ export default function HomeV1() {
                 >
                   philosophy
                 </Link>
-                ,<br />{" "}
-              </span>{" "}
+                ,<br />
+              </span>
               <span className="">
                 create digital <span className="">tools</span>, and dabble in{" "}
                 <span className="">photo-videography.</span>
               </span>
-            </motion.h1>
+            </Animated>
           </div>
         </div>
       </div>
-      <motion.header
+      <Animated
+        as="header"
         className="w-screen h-3/6 min-h-[200px] flex justify-center bg-sky-600"
         variants={{
           hidden: { opacity: 0 },
@@ -66,7 +66,7 @@ export default function HomeV1() {
           </div>
           <div className="relative w-full hidden md:grid grid-cols-3 grid-rows-2 place-content-stretch  border-t">
             <Cell bg="bg-sky-200">
-              {currentReading && <CurrentReading {...currentReading} />}
+              {reading && <CurrentReading {...reading} />}
             </Cell>
             <Cell bg="bg-sky-300" />
             <Cell bg="bg-sky-400" />
@@ -158,9 +158,9 @@ export default function HomeV1() {
           </Cell> */}
           </div>
         </div>
-      </motion.header>
+      </Animated>
     </>
-  )
+  );
 }
 
 function Cell({ children, bg }: any) {
@@ -173,11 +173,11 @@ function Cell({ children, bg }: any) {
       ></div> */}
 
       {/* <div className="flex flex-col"> */}
-        {/* <div className="text-white text-center">Latest App update</div> */}
-        {/* <div className="">Coming soon...</div> */}
+      {/* <div className="text-white text-center">Latest App update</div> */}
+      {/* <div className="">Coming soon...</div> */}
       {/* </div> */}
 
       {children}
     </div>
-  )
+  );
 }
