@@ -1,7 +1,8 @@
-"use client"
-import Nav from "../nav"
-import { motion } from "framer-motion"
-import PageWrapper from "../pagewrapper"
+"use client";
+import Nav from "../nav";
+import { motion } from "framer-motion";
+import PageWrapper from "../pagewrapper";
+import Link from "next/link";
 
 function Projects() {
   return (
@@ -14,9 +15,14 @@ function Projects() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 2 }}
-        className="h-full text-center text-4xl font-thin"
+        className="flex flex-col justify-stretch items-start w-full h-full text-center text-4xl font-thin"
       >
-        Coming Soon...
+        <Link
+          href="https://www.relaxation.video"
+          className="p-10 text-base bg-neutral-200 hover:bg-sky-800 transition-all duration-300 hover:text-white"
+        >
+          Relaxation.video: A curated collection of relaxing YouTube videos
+        </Link>
       </motion.div>
       <Nav
         fixed={true}
@@ -24,7 +30,7 @@ function Projects() {
         // linksClassName="first:text-white"
       />
     </motion.main>
-  )
+  );
 }
 
-export default Projects
+export default Projects;
