@@ -2,8 +2,10 @@ import Nav from "../nav";
 import { SideContent } from "@/components/SideContent";
 import Link from "next/link";
 import { getAllQuestions } from "@/lib/getWritings";
+import { revalidateTag } from "next/cache";
 
 export default async function QuestionsPage() {
+  // revalidateTag("questions");
   const questions = await getAllQuestions();
 
   return (

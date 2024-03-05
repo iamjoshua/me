@@ -13,7 +13,6 @@ export async function fetchGitMdFile(repo: string, path: string, tag: string) {
 
 export async function fetchGitFile(repo: string, path: string, tag: string) {
   const url = `${BASE_FILE_URL}/${repo}/main/${path}`;
-  console.log("url:", url);
   const response = await fetch(url, {
     cache: "force-cache",
     next: { tags: [tag] },
@@ -27,12 +26,11 @@ export async function getAllQuestions() {
   const questionFiles = await fetchMdFiles(path, "questions");
   const questions = [];
   for await (const question of questionFiles) {
-    const file = await fetchMdFile(question.path, question.name);
+    const file = await fetchMdFile(question.path, "questions");
     const { content } = await parseMdFile(file);
     const { data } = getFrontMatter(content);
-
-    // TODO: parse MD front matter
     const slug = question.name.replace(".md", "");
+
     if (data.published) {
       questions.push({ slug, question: data.question });
     }

@@ -3,8 +3,6 @@ import { fetchMdFile, getEssayTitles, parseMdFile } from "@/lib/getWritings";
 
 export async function generateStaticParams() {
   const titles = await getEssayTitles("essays/", "essays");
-  console.log("generate?", titles);
-
   return titles.map((title: string) => ({
     title: title.replaceAll(" ", "-"),
   }));

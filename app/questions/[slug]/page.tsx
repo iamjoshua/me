@@ -1,10 +1,16 @@
 import Nav from "@/app/nav";
 import { ReadingTime } from "@/components/ReadingTime/ReadingTime";
 import { SideContent } from "@/components/SideContent";
-import { getQuestion } from "@/lib/getWritings";
-import { revalidateTag } from "next/cache";
+import { getAllQuestions, getQuestion } from "@/lib/getWritings";
 import Link from "next/link";
 import "./question.css";
+
+export async function generateStaticParams() {
+  const questions = await getAllQuestions();
+  return questions.map((question) => ({
+    slug: question.slug,
+  }));
+}
 
 type QuestionPageProps = {
   params: { slug: string };
@@ -23,7 +29,6 @@ export default async function QuestionPage({ params }: QuestionPageProps) {
   } = await getQuestion(
     slug,
   );
-  // revalidateTag(slug);
 
   return (
     <main
