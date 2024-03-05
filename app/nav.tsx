@@ -1,22 +1,25 @@
-"use client"
-import { motion } from "framer-motion"
-import Link from "next/link"
-import { FaTwitter } from "react-icons/fa"
+"use client";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { FaTwitter } from "react-icons/fa";
 
 interface NavProps {
-  fixed?: boolean
-  className?: string
-  nameClassName?: string
-  linksClassName?: string
+  fixed?: boolean;
+  className?: string;
+  nameClassName?: string;
+  linksClassName?: string;
 }
 
-export default function Nav({ fixed, className, nameClassName, linksClassName }: NavProps) {
+export default function Nav(
+  { fixed, className, nameClassName, linksClassName }: NavProps,
+) {
   const pages = [
     ["philosophy", "/philosophy"],
     ["projects", "/projects"],
+    ["questions", "/questions"],
     // ["writings", "./on"],
     // ["reading list", "./"],
-  ]
+  ];
   return (
     <motion.nav
       className={`${
@@ -37,7 +40,9 @@ export default function Nav({ fixed, className, nameClassName, linksClassName }:
         Joshua Heiland
       </Link>
       <div className="w-7/12 flex display">
-        <div className={`w-full flex items-center space-x-10 pl-0 -ml-5 tracking-wide text-md `}>
+        <div
+          className={`w-full flex items-center space-x-10 pl-0 -ml-5 tracking-wide text-md `}
+        >
           {pages.map(([name, url]) => (
             <Link
               key={name}
@@ -62,5 +67,5 @@ export default function Nav({ fixed, className, nameClassName, linksClassName }:
         </div>
       </div>
     </motion.nav>
-  )
+  );
 }

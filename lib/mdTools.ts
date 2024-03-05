@@ -1,4 +1,5 @@
 import yaml from "yaml";
+import matter from "gray-matter";
 
 type Meta = {
   type: string;
@@ -43,8 +44,8 @@ function getMetaDataAndContent(lines: string[]): {
   meta: Meta;
   content: string;
 } {
-  const metadataStart =
-    lines.findIndex((line) => line.startsWith("```yaml")) + 1;
+  const metadataStart = lines.findIndex((line) => line.startsWith("```yaml")) +
+    1;
   const metadataEnd = lines.findIndex(
     (line) => line.endsWith("```"),
     metadataStart,
