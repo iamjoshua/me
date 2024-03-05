@@ -33,8 +33,9 @@ export async function getAllQuestions() {
 
     // TODO: parse MD front matter
     const slug = question.name.replace(".md", "");
-
-    questions.push({ slug, question: data.question });
+    if (data.published) {
+      questions.push({ slug, question: data.question });
+    }
   }
 
   return questions;
