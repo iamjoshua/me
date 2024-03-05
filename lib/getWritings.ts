@@ -41,6 +41,17 @@ export async function getAllQuestions() {
   return questions;
 }
 
+type Question = {
+  slug: string;
+  url: string;
+  question: string;
+  elaboration: string;
+  position: string;
+  content: string;
+  createdAt: string;
+  lastUpdatedAt: string;
+};
+
 export async function getQuestion(slug: string) {
   const path = `/questions/${slug}.md`;
   const file = await fetchMdFile(path, slug);
@@ -60,7 +71,7 @@ export async function getQuestion(slug: string) {
     content: html,
     createdAt,
     lastUpdatedAt,
-  };
+  } as Question;
 }
 
 export async function getEssayTitles(path: string, tag: string) {

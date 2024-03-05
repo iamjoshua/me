@@ -17,7 +17,7 @@ export default async function QuestionsPage() {
             Questions
           </h1>
           <p className="text-2xl md:text-xl lg:text-2xl font-thin lg:leading-relaxed text-white">
-            I've never enjoyed writing essays, but I love engaging with
+            I&apos;ve never enjoyed writing essays, but I love engaging with
             questions.
           </p>
         </SideContent>
@@ -50,7 +50,7 @@ type QuestionBoxProps = {
   question: string;
 };
 
-export function QuestionBox({ slug, question }: QuestionBoxProps) {
+function QuestionBox({ slug, question }: QuestionBoxProps) {
   return (
     <div className="group bg-white hover:bg-sky-600 transition-all duration-300 flex justify-center content-center">
       <Link
