@@ -10,13 +10,16 @@ interface NavProps {
   linksClassName?: string;
 }
 
-export default function Nav(
-  { fixed, className, nameClassName, linksClassName }: NavProps,
-) {
+export default function Nav({
+  fixed,
+  className,
+  nameClassName,
+  linksClassName,
+}: NavProps) {
   const pages = [
-    ["philosophy", "/philosophy"],
-    ["projects", "/projects"],
-    ["questions", "/questions"],
+    // ["philosophy", "/philosophy"],
+    // ["projects", "/projects"],
+    // ["questions", "/questions"],
     // ["writings", "./on"],
     // ["reading list", "./"],
   ];
@@ -24,7 +27,7 @@ export default function Nav(
     <motion.nav
       className={`${
         fixed ? "fixed" : "sticky"
-      } bottom-0 z-10 w-full h-[110px] min-h-[50px] flex border-b-4 border-b-sky-600 text-neutral-600 bg-white/90 ${className}`}
+      } bottom-0 z-10 w-full h-[110px] min-h-[50px] flex border-b-4 border-b-sky-600 text-neutral-600 bg-white/80 sm:bg-white/10 ${className}`}
       variants={{
         hidden: { opacity: 0, y: 10 },
         visible: { opacity: 1, y: 0 },
@@ -57,7 +60,7 @@ export default function Nav(
           <Link
             target="__blank"
             href="http://twitter.com/iamjoshua"
-            className=""
+            className="hidden"
           >
             <FaTwitter
               size={25}

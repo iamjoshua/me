@@ -26,16 +26,11 @@ export default async function QuestionsPage() {
         <div className="h-full w-full md:w-7/12 min-h-[200px] mr-10 flex justify-start">
           <div className="flex flex-row flex-wrap w-full h-full">
             {questions.map(({ slug, question }, index) => (
-              <QuestionBox
-                key={index}
-                slug={slug}
-                question={question}
-              />
+              <QuestionBox key={index} slug={slug} question={question} />
             ))}
           </div>
           {/* Nav cover */}
-          <div className="fixed bottom-0 w-full h-[110px] bg-white/30 border-t border-t-gray-300 md:border-0">
-          </div>
+          <div className="fixed bottom-0 w-full h-[110px] bg-white/30 border-t border-t-gray-300 md:border-0"></div>
         </div>
       </div>
       <Nav
@@ -52,7 +47,7 @@ type QuestionBoxProps = {
   question: string;
 };
 
-function QuestionBox({ slug, question }: QuestionBoxProps) {
+export function QuestionBox({ slug, question }: QuestionBoxProps) {
   return (
     <div className="group bg-white hover:bg-sky-600 transition-all duration-300 flex justify-center content-center">
       <Link

@@ -2,20 +2,25 @@ import Nav from "./nav";
 import HomeV1 from "./homev1";
 import TheGrid from "./thegrid";
 import { getCurrentReading } from "@/lib/getCurrentReading";
+import HomeV2 from "./homev2";
+import { fetchGitMdFile, getAllQuestions } from "@/lib/getWritings";
+import { parseMarkdown } from "@/lib/mdTools";
 
 export default async function Home() {
   const reading = await getCurrentReading();
+  const wow = (await fetchGitMdFile(
+    "readings",
+    "readings.md",
+    "readings",
+  )) as string;
+  const readings = parseMarkdown(wow);
+  const questions = await getAllQuestions();
 
   return (
-    <main className="h-[100dvh] w-[100dvw] flex flex-col justify-between overflow-hidden">
+    <main className="w-[100dvw] h-full w-full flex flex-col justify-between overflow-hidden">
       <TheGrid />
-
-      <div className="h-full w-full flex flex-col justify-between">
-        <HomeV1 reading={reading} />
-      </div>
-
-      {/* Nav cover */}
-      <div className="w-full h-[111px] shrink-0 bg-white/90 border-t border-t-gray-100 md:border-0" />
+      <HomeV2 readings={readings} questions={questions} />
+      <div className="mb-20" />
       <Nav fixed={true} className="bg-transparent" />
     </main>
   );
