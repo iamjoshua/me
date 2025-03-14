@@ -16,7 +16,7 @@ export default function Nav({
   nameClassName,
   linksClassName,
 }: NavProps) {
-  const pages = [
+  const pages: any[] = [
     // ["philosophy", "/philosophy"],
     // ["projects", "/projects"],
     // ["questions", "/questions"],

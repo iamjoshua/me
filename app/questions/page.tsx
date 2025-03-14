@@ -47,7 +47,7 @@ type QuestionBoxProps = {
   question: string;
 };
 
-export function QuestionBox({ slug, question }: QuestionBoxProps) {
+function QuestionBox({ slug, question }: QuestionBoxProps) {
   return (
     <div className="group bg-white hover:bg-sky-600 transition-all duration-300 flex justify-center content-center">
       <Link

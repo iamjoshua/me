@@ -5,7 +5,6 @@ import { Animated } from "./motion";
 import Latest from "./latest";
 import Philosophy from "./philosophy/page";
 import { Readings } from "./philosophy/Readings";
-import { QuestionBox } from "./questions/page";
 
 type HomeProps = {
   readings: any;
@@ -49,19 +48,9 @@ export default function HomeV2({ readings, questions }: HomeProps) {
         </div>
         <div className="mt-0 md:mt-[250px] px-10">
           <h2 className="relative z-50 -mb-5 text-xs text-neutral-500 uppercase font-bold">
-            What I've been reading
+            What I&apos;ve been reading
           </h2>
           <Readings readings={readings} />
-        </div>
-      </div>
-      <div className="hidden flex">
-        <div className="p-5">
-          <h2 className="text-lg font-thin">What I've been thinking about</h2>
-          <div className="flex flex-row flex-wrap w-full h-full">
-            {questions.map(({ slug, question }, index) => (
-              <QuestionBox key={index} slug={slug} question={question} />
-            ))}
-          </div>
         </div>
       </div>
     </div>
