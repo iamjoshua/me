@@ -27,7 +27,7 @@ export default function Nav({
     <motion.nav
       className={`${
         fixed ? "fixed" : "sticky"
-      } bottom-0 z-10 w-full h-[110px] min-h-[50px] flex border-b-4 border-b-sky-600 text-neutral-600 bg-white/80 sm:bg-white/10 ${className}`}
+      } bottom-0 z-10 w-full h-[110px] min-h-[50px] flex border-b-4 border-b-sky-600 text-neutral-600 bg-white/80 lg:bg-white/10 ${className}`}
       variants={{
         hidden: { opacity: 0, y: 10 },
         visible: { opacity: 1, y: 0 },

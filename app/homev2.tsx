@@ -14,9 +14,9 @@ type HomeProps = {
 export default function HomeV2({ readings, questions }: HomeProps) {
   return (
     <div className="flex flex-col w-full min-h-[100dvh]">
-      <div className="flex flex-col md:flex-row h-full w-full">
-        <div className="h-[100dvh] w-full md:w-3/5 flex items-center justify-center">
-          <div className="relative md:fixed z-50 px-10 md:px-0 text-left md:text-right">
+      <div className="flex flex-col lg:flex-row h-full w-full">
+        <div className="h-[100dvh] w-full lg:w-3/5 flex items-center justify-center">
+          <div className="relative lg:fixed z-50 px-10 md:px-0 text-left md:text-right">
             <Animated
               as="h1"
               className="text-3xl leading-normal md:text-4xl md:leading-normal font-thin"
@@ -46,8 +46,8 @@ export default function HomeV2({ readings, questions }: HomeProps) {
             </Animated>
           </div>
         </div>
-        <div className="mt-0 md:mt-[250px] px-10">
-          <h2 className="relative z-50 -mb-5 text-xs text-neutral-500 uppercase font-bold">
+        <div className="mt-0 lg:mt-[250px] px-10">
+          <h2 className="relative z-10 -mb-5 text-xs text-neutral-500 uppercase font-bold">
             What I&apos;ve been reading
           </h2>
           <Readings readings={readings} />
