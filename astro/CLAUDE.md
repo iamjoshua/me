@@ -28,6 +28,7 @@ This is Joshua Heiland's personal website being migrated from Next.js to Astro v
 3. **Use `npx astro add` when adding integrations** - Always use the official integration system rather than manual installation
 4. **STOP MAKING ASSUMPTIONS** - If you don't know something, go to the docs. Don't guess or assume anything. Think through each step of the problem systematically.
 5. **NEVER DO ANYTHING WITHOUT EXPLICIT CONFIRMATION** - Do not implement, create, or modify anything unless explicitly asked or confirmed by the user. Always wait for confirmation.
+6. **NO INLINE STYLE TAGS OR CUSTOM CSS** - This project uses Tailwind CSS. Do not suggest `<style>` tags, custom CSS, or CSS-in-JS approaches. Work within the Tailwind framework.
 
 ## Development Commands
 

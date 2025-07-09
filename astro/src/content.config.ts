@@ -1,4 +1,15 @@
 import { defineCollection, z } from "astro:content";
+import matter from "gray-matter";
+import { questionsLoader } from "./loaders/questions";
+
+const questions = defineCollection({
+  loader: questionsLoader(),
+  schema: z.object({
+    title: z.string(),
+    date: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+  }),
+});
 
 const readings = defineCollection({
   loader: async () => {
@@ -115,4 +126,4 @@ function parseReadingsMarkdown(content: string) {
   return readings;
 }
 
-export const collections = { readings };
+export const collections = { questions, readings };

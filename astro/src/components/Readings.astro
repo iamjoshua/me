@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import ReadingCard from "./ReadingCard.astro";
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+let readings = await getCollection("readings");
+
+if (limit) {
+  readings = readings.slice(0, limit);
+}
+---
+
+{
+  readings.map((reading, index) => (
+    <div class="motion-preset-fade">
+      <ReadingCard {...reading.data} />
+    </div>
+  ))
+}
