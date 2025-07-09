@@ -6,8 +6,12 @@ const questions = defineCollection({
   loader: questionsLoader(),
   schema: z.object({
     title: z.string(),
+    excerpt: z.string(),
+    elaboration: z.string().optional(),
+    position: z.string().optional(),
     date: z.string().optional(),
     tags: z.array(z.string()).optional(),
+    published: z.boolean().optional(),
   }),
 });
 

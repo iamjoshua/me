@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+import QuestionCard from "../../components/QuestionCard.astro";
 
 const questions = await getCollection("questions");
 ---
@@ -9,16 +10,15 @@ const questions = await getCollection("questions");
   <main class="max-w-4xl mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-8">Questions</h1>
 
-    <div class="space-y-4">
+    <div class="grid gap-6 md:grid-cols-2">
       {
         questions.map((question) => (
-          <div class="rounded-lg p-4">
-            <h2 class="text-xl font-semibold">
-              <a href={`/questions/${question.id}`} class="hover:text-blue-600">
-                <span transition:name={`title`}>{question.data.title}</span>
-              </a>
-            </h2>
-          </div>
+          <QuestionCard 
+            title={question.data.title}
+            excerpt={question.data.excerpt}
+            position={question.data.position}
+            id={question.id}
+          />
         ))
       }
     </div>

@@ -1,0 +1,21 @@
+---
+import { getEntry } from "astro:content";
+import QuestionCard from "./QuestionCard.astro";
+
+interface Props {
+  questionId: string;
+}
+
+const { questionId } = Astro.props;
+
+// Get the specific featured question
+const featuredQuestion = await getEntry("questions", questionId);
+const questions = featuredQuestion ? [featuredQuestion] : [];
+---
+
+{
+  questions.map((question) => (
+    <QuestionCard {...question.data} id={question.id} />
+  ))
+}
+

@@ -31,12 +31,26 @@ export function questionsLoader(): Loader {
               .replace(/-/g, " ")
               .replace(/^./, (str: String) => str.toUpperCase());
 
+          // Only import questions that are published
+          if (frontmatter.published !== true) {
+            continue;
+          }
+
+          const excerpt = frontmatter.elaboration || frontmatter.excerpt || 
+            content.split('\n')
+              .find(line => line.trim() && !line.startsWith('#'))
+              ?.trim() || "";
+
           store.set({
             id,
             data: {
               title,
+              excerpt,
+              elaboration: frontmatter.elaboration,
+              position: frontmatter.position,
               date: frontmatter.date,
               tags: frontmatter.tags,
+              published: frontmatter.published,
             },
             rendered: await renderMarkdown(content),
           });
