@@ -18,6 +18,7 @@ This is Joshua Heiland's personal website being migrated from Next.js to Astro v
 - Focus on readability and content hierarchy
 - Use proper semantic HTML and accessibility patterns
 - Leverage Astro's performance benefits
+- Let code speak for itself - avoid explanatory comments except for gotchas or critical information
 
 ## Decision Making Guidelines
 

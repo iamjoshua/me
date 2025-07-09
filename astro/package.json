@@ -9,11 +9,16 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@fontsource/crimson-text": "^5.2.6",
+    "@fontsource/inter": "^5.2.6",
+    "@fontsource/space-mono": "^5.2.8",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
     "astro": "^5.11.0",
     "astro-github-file-loader": "^1.1.0",
+    "clsx": "^2.1.1",
     "gray-matter": "^4.0.3",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
     "tailwindcss-motion": "^1.1.1"
   },

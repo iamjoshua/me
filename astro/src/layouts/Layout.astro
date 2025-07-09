@@ -1,31 +1,40 @@
 ---
 import "../styles/global.css";
+import "@fontsource/inter";
+import "@fontsource/crimson-text/400.css";
+import "@fontsource/crimson-text/600.css";
+import "@fontsource/crimson-text/400-italic.css";
+import "@fontsource/space-mono/400.css";
+import "@fontsource/space-mono/700.css";
 import Logo from "../components/Logo.astro";
 import { ClientRouter } from "astro:transitions";
 ---
+
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-		<ClientRouter />
-	</head>
-	<body>
-		<header class="p-5 border-b border-gray-200">
-			<Logo />
-		</header>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro Basics</title>
+    <ClientRouter />
+  </head>
+  <body class="">
+    <slot />
+    <header
+      class="fixed bottom-0 p-5 pl-10 border-b border-gray-200 justify-center flex"
+    >
+      <Logo />
+    </header>
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
 </style>

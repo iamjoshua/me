@@ -15,7 +15,7 @@ const questions = await getCollection("questions");
           <div class="rounded-lg p-4">
             <h2 class="text-xl font-semibold">
               <a href={`/questions/${question.id}`} class="hover:text-blue-600">
-                {question.data.title}
+                <span transition:name={`title`}>{question.data.title}</span>
               </a>
             </h2>
           </div>
