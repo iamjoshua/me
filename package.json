@@ -1,27 +1,31 @@
 {
-  "name": "me",
-  "version": "0.1.0",
-  "private": true,
+  "name": "",
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "next": "15.3.5"
+    "@astrojs/vercel": "^8.2.1",
+    "@fontsource/crimson-text": "^5.2.6",
+    "@fontsource/inter": "^5.2.6",
+    "@fontsource/space-mono": "^5.2.8",
+    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/vite": "^4.1.11",
+    "astro": "^5.11.0",
+    "astro-github-file-loader": "^1.1.0",
+    "clsx": "^2.1.1",
+    "gray-matter": "^4.0.3",
+    "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.11",
+    "tailwindcss-motion": "^1.1.1"
   },
   "devDependencies": {
-    "typescript": "^5",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
-    "eslint": "^9",
-    "eslint-config-next": "15.3.5",
-    "@eslint/eslintrc": "^3"
+    "@astrojs/ts-plugin": "^1.10.4",
+    "prettier-plugin-astro": "^0.14.1",
+    "typescript": "^5.8.3"
   }
 }

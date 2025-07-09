@@ -1,97 +1,52 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this Astro project.
 
 ## Project Overview
 
-This is Joshua Heiland's personal website built with Next.js 15 and TypeScript. The site focuses on philosophy readings and content fetched from external GitHub repositories.
+This is Joshua Heiland's personal website being migrated from Next.js to Astro v5. The goal is to pull content from multiple GitHub repositories and display them on the website.
 
-## Architecture
+## Content Sources
 
-### Framework & Dependencies
-- **Next.js 15.3.5** with App Router and Turbopack for development
-- **TypeScript** with strict configuration
-- **Tailwind CSS 4** for styling
-- **React 19** for UI components
+- **Readings**: GitHub repository "iamjoshua/readings" 
+- **Writings**: GitHub repository "iamjoshua/writings"
+- **Additional repositories**: More content sources to be added in the future
 
-### Content Management
-- **External Content Source**: Fetches reading data from GitHub repository "iamjoshua/readings"
-- **Content Format**: Parses `readings.md` file with custom markdown format containing:
-  - Title (# heading)
-  - Author (## heading)
-  - YAML metadata block with type, category, status, dates
-  - Optional content/notes after metadata
-- **Caching**: Uses Next.js cache with `tags: ['readings']` and `revalidate: 3600` for webhook invalidation
+## Design Principles
 
-### File Structure
-```
-src/
-  app/
-    readings/page.tsx          # Readings list page
-    debug/page.tsx             # Debug page for testing
-    page.tsx                   # Homepage with navigation
-    layout.tsx                 # Root layout
-  components/
-    ReadingCard.tsx            # Individual reading card component
-  lib/
-    readings.ts                # Data fetching and parsing logic
-```
+- Minimal, clean design aesthetic
+- Focus on readability and content hierarchy
+- Use proper semantic HTML and accessibility patterns
+- Leverage Astro's performance benefits
+- Let code speak for itself - avoid explanatory comments except for gotchas or critical information
 
-### Component Architecture
-- **ReadingCard**: Reusable component that takes individual props (not objects)
-  - Props: title, author, type, category, status, startedAt, completedAt, content
-  - Includes status badges with color coding and metadata display
-- **Pages**: Use async components to fetch data server-side
+## Decision Making Guidelines
 
-### Data Flow
-1. `lib/readings.ts` fetches `readings.md` from GitHub API
-2. `parseReadingsMarkdown()` parses custom markdown format
-3. Pages display data using ReadingCard components
+**HIGH IMPORTANCE: Always follow these steps when making decisions:**
+
+1. **Always verify with Astro v5 docs** - Check current documentation before implementing any feature or making recommendations
+2. **Use Astro CLI tools where possible** - Leverage built-in commands for project management
+3. **Use `npx astro add` when adding integrations** - Always use the official integration system rather than manual installation
+4. **STOP MAKING ASSUMPTIONS** - If you don't know something, go to the docs. Don't guess or assume anything. Think through each step of the problem systematically.
+5. **NEVER DO ANYTHING WITHOUT EXPLICIT CONFIRMATION** - Do not implement, create, or modify anything unless explicitly asked or confirmed by the user. Always wait for confirmation.
+6. **NO INLINE STYLE TAGS OR CUSTOM CSS** - This project uses Tailwind CSS. Do not suggest `<style>` tags, custom CSS, or CSS-in-JS approaches. Work within the Tailwind framework.
 
 ## Development Commands
 
 ```bash
-# Development (with Turbopack)
+# Development
 npm run dev
 
 # Build
 npm run build
 
-# Start production server  
-npm start
+# Preview production build
+npm run preview
 
-# Lint
-npm run lint
+# Add integrations
+npx astro add [integration-name]
 ```
 
-## Content Format Example
+## Question Hitlist
 
-The readings.md file follows this format:
-```markdown
-# Book Title
-
-## Author Name
-
-```yaml
-type: book
-category: philosophy
-status: reading
-startedAt: Date
-completedAt: Date
-```
-
-Optional notes content here.
-```
-
-## Caching Strategy
-
-- GitHub API calls are cached with `tags: ['readings']`
-- Cache can be invalidated via webhook calling `revalidateTag('readings')`
-- Fallback revalidation every 3600 seconds (1 hour)
-
-## Design Principles
-
-- Minimal, clean design aesthetic
-- Components should receive individual props, not entire objects
-- Focus on readability and content hierarchy
-- Use proper semantic HTML and accessibility patterns
+- Is there a way to cache the loaders during development to avoid refetching when restarting the dev server?
