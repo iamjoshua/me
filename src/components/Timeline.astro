@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+
+interface Props {
+  limit?: number;
+}
+
+const { limit } = Astro.props;
+
+const allReadings = (
+  await getCollection("readings", ({ data }) => {
+    return data.startedAt || data.completedAt;
+  })
+).sort((a, b) => {
+  const dateA = new Date(a.data.startedAt || a.data.completedAt || "");
+  const dateB = new Date(b.data.startedAt || b.data.completedAt || "");
+  return dateB.getTime() - dateA.getTime();
+});
+
+const readings = limit ? allReadings.slice(0, limit) : allReadings;
+---
+
+<div class="relative">
+  <div class="absolute left-2 top-0 bottom-0 w-px bg-gray-200"></div>
+
+  {
+    readings.map((reading) => (
+      <div class="relative flex items-start mb-6">
+        <div class="absolute left-0 w-4 h-4 bg-white border-2 border-gray-300 rounded-full" />
+        <div class="ml-8">
+          <div class="text-sm text-gray-500 mb-1">
+            {reading.data.startedAt || reading.data.completedAt}
+          </div>
+          <div class="font-semibold text-gray-900">{reading.data.title}</div>
+          <div class="text-gray-600">{reading.data.author}</div>
+          {reading.data.notes && (
+            <div class="text-gray-700 mt-1">{reading.data.notes}</div>
+          )}
+        </div>
+      </div>
+    ))
+  }
+</div>
