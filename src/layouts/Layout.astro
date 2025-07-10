@@ -7,6 +7,7 @@ import "@fontsource/crimson-text/400-italic.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/700.css";
 import Logo from "../components/Logo.astro";
+import Frame from "@/components/Frame.astro";
 import { ClientRouter } from "astro:transitions";
 ---
 
@@ -20,10 +21,11 @@ import { ClientRouter } from "astro:transitions";
     <title>Joshua Heiland | Philosopher & Creator</title>
     <ClientRouter />
   </head>
-  <body class="">
+  <body class="bg-white p-5">
+    <Frame bgColor="bg-gray-200/50" borderColor="border-white" />
     <slot />
     <header
-      class="fixed bottom-0 p-5 pl-10 border-b border-gray-200 justify-center flex"
+      class="absolute top-0 lg:top-auto lg:fixed lg:bottom-0 p-5 md:pl-10"
     >
       <Logo />
     </header>

@@ -1,0 +1,25 @@
+---
+import { cn } from "@/lib/utils";
+const { bgColor, borderColor } = Astro.props;
+const coverColor = borderColor.replace("border", "bg");
+---
+
+<div
+  class={cn("fixed top-0 left-[25px] right-[25px] z-50 h-[10px]", coverColor)}
+>
+</div>
+<div
+  class={cn(
+    "fixed bottom-0 left-[25px] right-[25px] z-50 h-[10px]",
+    coverColor,
+  )}
+>
+</div>
+<div
+  class={cn(
+    "fixed -z-1 -m-5 w-full h-dvh rounded-3xl border-10",
+    bgColor,
+    borderColor,
+  )}
+>
+</div>
