@@ -4,6 +4,7 @@ import Timeline from "@/components/Timeline.astro";
 import Hero from "@/components/Hero.astro";
 import Header from "@/components/elements/Header.astro";
 import FeaturedWritings from "@/components/FeaturedWritings.astro";
+import { cn } from "@/lib/utils";
 ---
 
 <Layout>
@@ -16,7 +17,9 @@ import FeaturedWritings from "@/components/FeaturedWritings.astro";
     <div
       class="w-full h-full lg:w-1/2 flex flex-col items-center justify-center p-5"
     >
-      <div class="flex flex-col md:flex-row lg:flex-col gap-14">
+      <div
+        class={cn("flex flex-col gap-14 pb-20", "md:flex-row", "lg:flex-col")}
+      >
         <div>
           <a
             href="/readings"
@@ -26,7 +29,7 @@ import FeaturedWritings from "@/components/FeaturedWritings.astro";
           </a>
           <Timeline limit={3} />
         </div>
-        <div class="w-[400px]">
+        <div class="w-full md:w-[400px]">
           <a
             href="/questions"
             class="text-sky-800 hover:text-blue-800 text-sm font-medium"
