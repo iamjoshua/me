@@ -18,6 +18,9 @@ export function questionsLoader(): Loader {
 
           // 3. Parse the markdown content
           const { data: frontmatter, content } = matter(contents);
+          
+          // Strip out all ::: blocks (draft, review, etc.)
+          const publishedContent = content.replace(/^:::.*$[\s\S]*?^:::.*$/gm, '');
           const id = file.name
             .replace(".md", "")
             .toLowerCase()
@@ -37,7 +40,7 @@ export function questionsLoader(): Loader {
           }
 
           const excerpt = frontmatter.elaboration || frontmatter.excerpt || 
-            content.split('\n')
+            publishedContent.split('\n')
               .find(line => line.trim() && !line.startsWith('#'))
               ?.trim() || "";
 
@@ -52,7 +55,7 @@ export function questionsLoader(): Loader {
               tags: frontmatter.tags,
               published: frontmatter.published,
             },
-            rendered: await renderMarkdown(content),
+            rendered: await renderMarkdown(publishedContent),
           });
         }
       }
