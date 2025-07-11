@@ -1,73 +1,37 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import Readings from "../components/Readings.astro";
-import Container from "../components/Container.astro";
+import TwoColumnView from "../components/views/TwoColumnView.astro";
+import Back from "../components/elements/Back.astro";
 import { cn } from "@/lib/utils";
 ---
 
 <Layout>
-  <div class="flex flex-col lg:flex-row">
-    <header
-      class={cn(
-        "h-[calc(100dvh/4)] shrink-0 flex mt-10 justify-center",
-        "lg:h-dvh lg:w-[24%] lg:mt-0 lg:justify-start"
-      )}
-    >
+  <TwoColumnView>
+    <div slot="sidebar">
+      <Back href="/" label="Home" />
       <div
-        class={cn(
-          "w-full rounded-4xl flex flex-col justify-center items-center m-4",
-          "md:m-10",
-          "lg:w-[24%] lg:h-dvh lg:fixed lg:items-start lg:m-10 lg:mt-0",
-        )}
+        class="hidden text-sm font-medium tracking-widest text-gray-500 uppercase mb-4"
       >
-        <div class="hidden lg:block absolute top-10 left-0">
-          <a
-            href="/"
-            class="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-medium"
-          >
-            <svg
-              class="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Home
-          </a>
-        </div>
-        <div
-          class="hidden text-sm font-medium tracking-widest text-gray-500 uppercase mb-4"
-        >
-          Reading
-        </div>
-        <div
-          class="text-3xl md:text-4xl font-light text-gray-700 md:mb-18 italic leading-tight font-[Crimson_Text] text-center lg:text-left flex justify-center lg:justify-start"
-        >
-          Things I've read
-        </div>
-
-        <h1
-          class="hidden text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800"
-        >
-          Books
-        </h1>
+        Reading
       </div>
-    </header>
+      <div
+        class="text-3xl md:text-4xl font-light text-gray-700 md:mb-18 italic leading-tight font-[Crimson_Text] text-center lg:text-left flex justify-center lg:justify-start"
+      >
+        Things I've read
+      </div>
 
-    <Container tw="w-3/4 flex w-full p-0 xl:p-0">
-      <main class="w-full">
-        <div class="h-0 lg:h-[calc(100dvh/5)]"></div>
-        <div class="mb-22">
-          <div class="flex flex-wrap gap-5">
-            <Readings />
-          </div>
-        </div>
-      </main>
-    </Container>
-  </div>
+      <h1
+        class="hidden text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800"
+      >
+        Books
+      </h1>
+    </div>
+
+    <div slot="main">
+      <div class="flex flex-wrap gap-5">
+        <Readings />
+      </div>
+    </div>
+  </TwoColumnView>
 </Layout>
