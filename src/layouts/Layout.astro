@@ -6,10 +6,10 @@ import "@fontsource/crimson-text/600.css";
 import "@fontsource/crimson-text/400-italic.css";
 import "@fontsource/space-mono/400.css";
 import "@fontsource/space-mono/700.css";
-import Logo from "../components/Logo.astro";
-import Books from "@/components/icons/Books.astro";
-import Typewriter from "@/components/icons/Typewriter.astro";
+import Logo from "@/components/elements/Logo.astro";
+import Navigation from "@/components/elements/Navigation.astro";
 import Frame from "@/components/Frame.astro";
+import { cn } from "@/lib/utils";
 import { ClientRouter } from "astro:transitions";
 ---
 
@@ -27,35 +27,14 @@ import { ClientRouter } from "astro:transitions";
     <Frame bgColor="bg-gray-200/50" borderColor="border-white" />
     <slot />
     <header
-      class="absolute top-5 lg:top-auto lg:fixed lg:bottom-5 p-5 md:pl-10"
+      class={cn(
+        "absolute top-5 flex items-center justify-between",
+        "md:pl-10",
+        "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
+      )}
     >
-      <div class="flex items-center gap-10">
-        <Logo />
-        <div class="flex gap-5">
-          <a
-            href="/readings"
-            class={`text-gray-600 hover:text-gray-900 transition-colors ${Astro.url.pathname === "/readings" ? "text-gray-900" : ""}`}
-          >
-            <Books
-              size="w-5 h-5"
-              class={Astro.url.pathname === "/readings"
-                ? "opacity-100"
-                : "opacity-70"}
-            />
-            <a
-              href="/questions"
-              class={`text-gray-600 hover:text-gray-900 transition-colors ${Astro.url.pathname === "/questions" ? "text-gray-900" : ""}`}
-            >
-              <Typewriter
-                size="w-5 h-5"
-                class={Astro.url.pathname === "/questions"
-                  ? "opacity-100"
-                  : "opacity-70"}
-              />
-            </a>
-          </a>
-        </div>
-      </div>
+      <Logo />
+      <Navigation />
     </header>
   </body>
 </html>
