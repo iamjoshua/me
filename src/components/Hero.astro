@@ -1,15 +1,22 @@
 ---
-
+import { cn } from "@/lib/utils";
 ---
 
 <div class="py-16 px-4">
   <div class="max-w-4xl mx-auto">
     <h1
-      class="text-3xl md:text-4xl font-thin leading-normal text-left md:text-right"
+      class={cn(
+        "text-3xl md:text-4xl font-thin leading-normal text-left md:text-right",
+        //"bg-red-200 md:bg-blue-200 lg:bg-green-200 xl:bg-yellow-200",
+      )}
     >
-      <span>I engage with problems in philosophy,</span><br />
-      <span>create digital tools, and shoot video.</span>
+      <span class="block md:block lg:inline xl:inline">I engage with</span>
+      <span class="block md:block lg:inline xl:inline"
+        >problems in philosophy,</span
+      >
+      <span class="block md:block lg:block xl:block">create digital tools,</span
+      >
+      <span class="block md:block lg:inline xl:inline">and shoot video.</span>
     </h1>
   </div>
 </div>
-
