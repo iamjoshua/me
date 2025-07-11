@@ -55,8 +55,8 @@ const questions = await getCollection("questions");
     <Container>
       <main class="h-full max-w-4xl mx-auto">
         <div class="h-[calc(100dvh/5)]"></div>
-        <div class="w-2/3 mb-22">
-          <div class="grid gap-6">
+        <div class="w-full lg:w-2/3 mb-22">
+          <div class="grid gap-8">
             {
               questions.map((question) => (
                 <QuestionCard
