@@ -1,8 +1,10 @@
 ---
-const { stuff } = Astro.props;
+import { cn } from "@/lib/utils";
+
+const { tw } = Astro.props;
 const debugSize =
   "bg-blue-100 sm:bg-blue-200 md:bg-blue-300 lg:bg-blue-400 xl:bg-blue-500";
 const padding = "p-3 sm:p-4 lg:p-10 xl:p-18";
 ---
 
-<div class={`${!debugSize} ${padding}`}><slot /></div>
+<div class={cn(!debugSize, padding, tw)}><slot /></div>
