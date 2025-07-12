@@ -1,5 +1,7 @@
 ---
 import ArrowLeft from "@/components/icons/ArrowLeft.astro";
+import Animate from "@/components/Animate.astro";
+import { slide } from "astro:transitions";
 
 interface Props {
   href: string;
@@ -9,12 +11,17 @@ interface Props {
 const { href, label } = Astro.props;
 ---
 
-<div class="hidden lg:block absolute top-10 left-0">
+<Animate
+  name="back"
+  type="slideRight"
+  duration="fast"
+  class="hidden lg:block absolute top-5 -left-5"
+>
   <a
     href={href}
-    class="flex items-center gap-2 text-gray-600 hover:text-gray-900 text-sm font-medium"
+    class="flex items-center gap-2 p-5 text-gray-600 hover:text-gray-900 text-sm font-medium hover:-translate-x-2.5 transition-transform"
   >
     <ArrowLeft />
     {label}
   </a>
-</div>
+</Animate>

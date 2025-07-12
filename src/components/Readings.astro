@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import ReadingCard from "./ReadingCard.astro";
+import AnimateOnLoad from "./AnimateOnLoad.astro";
 
 interface Props {
   limit?: number;
@@ -13,12 +14,25 @@ let readings = await getCollection("readings");
 if (limit) {
   readings = readings.slice(0, limit);
 }
+
+let lastDelay = 0;
+let incr = 0.05;
+const nextDelay = () => {
+  const delay = lastDelay;
+  lastDelay = lastDelay + incr;
+  incr = incr - 0.001;
+  return delay;
+};
 ---
 
 {
   readings.map((reading, index) => (
-    <div class="motion-preset-fade">
+    <AnimateOnLoad
+      type="slideUp"
+      delay={nextDelay()}
+      class="motion-preset-fade"
+    >
       <ReadingCard {...reading.data} />
-    </div>
+    </AnimateOnLoad>
   ))
 }

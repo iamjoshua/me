@@ -1,5 +1,6 @@
 ---
 import { getCollection } from "astro:content";
+import AnimateOnLoad from "./AnimateOnLoad.astro";
 
 interface Props {
   limit?: number;
@@ -24,8 +25,12 @@ const readings = limit ? allReadings.slice(0, limit) : allReadings;
   <div class="absolute left-2 top-0 bottom-0 w-px bg-gray-200"></div>
 
   {
-    readings.map((reading) => (
-      <div class="relative flex items-start mb-6">
+    readings.map((reading, index) => (
+      <AnimateOnLoad
+        type="slideUp"
+        delay={index * 0.3}
+        class="relative flex items-start mb-6"
+      >
         <div class="absolute left-0 w-4 h-4 bg-white border-2 border-gray-300 rounded-full" />
         <div class="ml-8">
           <div class="text-sm text-gray-500 mb-1">
@@ -37,7 +42,7 @@ const readings = limit ? allReadings.slice(0, limit) : allReadings;
             <div class="text-gray-700 mt-1">{reading.data.notes}</div>
           )}
         </div>
-      </div>
+      </AnimateOnLoad>
     ))
   }
 </div>

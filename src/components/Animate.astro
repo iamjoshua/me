@@ -1,0 +1,31 @@
+---
+import {
+  getAnimation,
+  type AnimationType,
+  type AnimationDuration,
+  type AnimationDelay,
+} from "@/lib/animations";
+
+interface Props {
+  type?: AnimationType;
+  duration?: AnimationDuration;
+  delay?: AnimationDelay;
+  name?: string;
+  class?: string;
+}
+
+const {
+  type = "fade",
+  duration = "normal",
+  delay = "none",
+  name,
+  class: className = "",
+} = Astro.props;
+
+const animation = getAnimation(type, duration, delay);
+---
+
+<div class={className} transition:animate={animation} transition:name={name}>
+  <slot />
+</div>
+

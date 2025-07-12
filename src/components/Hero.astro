@@ -1,8 +1,9 @@
 ---
 import { cn } from "@/lib/utils";
+import AnimateOnLoad from "./AnimateOnLoad.astro";
 ---
 
-<div class="py-16 px-4">
+<AnimateOnLoad type="slideUp" duration="slow" class="py-16 px-4">
   <div class="max-w-4xl mx-auto">
     <h1
       class={cn(
@@ -19,4 +20,4 @@ import { cn } from "@/lib/utils";
       <span class="block md:block lg:inline xl:inline">and shoot video.</span>
     </h1>
   </div>
-</div>
+</AnimateOnLoad>

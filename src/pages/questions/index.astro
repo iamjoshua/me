@@ -4,6 +4,7 @@ import Layout from "../../layouts/Layout.astro";
 import TwoColumnView from "../../components/views/TwoColumnView.astro";
 import QuestionCard from "../../components/QuestionCard.astro";
 import Back from "../../components/elements/Back.astro";
+import AnimateOnLoad from "@/components/AnimateOnLoad.astro";
 
 const questions = await getCollection("questions");
 ---
@@ -35,13 +36,18 @@ const questions = await getCollection("questions");
         <div class="w-full lg:w-2/3 mb-22">
           <div class="grid gap-8">
             {
-              questions.map((question) => (
-                <QuestionCard
-                  title={question.data.title}
-                  excerpt={question.data.excerpt}
-                  position={question.data.position}
-                  id={question.id}
-                />
+              questions.map((question, index) => (
+                <AnimateOnLoad
+                  type="slideUp"
+                  delay={index * 0.1}
+                >
+                  <QuestionCard
+                    title={question.data.title}
+                    excerpt={question.data.excerpt}
+                    position={question.data.position}
+                    id={question.id}
+                  />
+                </AnimateOnLoad>
               ))
             }
           </div>

@@ -1,0 +1,317 @@
+---
+interface Props {
+  type?: "fade" | "slideUp" | "slideDown" | "slideLeft" | "slideRight";
+  duration?: "fast" | "normal" | "slow";
+  delay?: "none" | "short" | "medium" | "long" | number;
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+
+const { 
+  type = "fade",
+  duration = "normal",
+  delay = "none",
+  as: Tag = "div",
+  class: className = ""
+} = Astro.props;
+
+const delayValue = typeof delay === "number" ? `${delay}s` : delay;
+const animationClass = typeof delay === "number" ? `animate-${type}-${duration}-custom` : `animate-${type}-${duration}-${delay}`;
+---
+
+<Tag class={`${className} ${animationClass}`} style={typeof delay === "number" ? `animation-delay: ${delayValue}; animation-fill-mode: both;` : ""}>
+  <slot />
+</Tag>
+
+<style>
+  /* Fade animations */
+  .animate-fade-fast-none {
+    animation: fadeIn 0.2s ease-out;
+  }
+  .animate-fade-normal-none {
+    animation: fadeIn 0.3s ease-out;
+  }
+  .animate-fade-slow-none {
+    animation: fadeIn 0.5s ease-out;
+  }
+  .animate-fade-fast-short {
+    animation: fadeIn 0.2s ease-out 0.1s both;
+  }
+  .animate-fade-normal-short {
+    animation: fadeIn 0.3s ease-out 0.1s both;
+  }
+  .animate-fade-slow-short {
+    animation: fadeIn 0.5s ease-out 0.1s both;
+  }
+  .animate-fade-fast-medium {
+    animation: fadeIn 0.2s ease-out 0.2s both;
+  }
+  .animate-fade-normal-medium {
+    animation: fadeIn 0.3s ease-out 0.2s both;
+  }
+  .animate-fade-slow-medium {
+    animation: fadeIn 0.5s ease-out 0.2s both;
+  }
+  .animate-fade-fast-long {
+    animation: fadeIn 0.2s ease-out 0.4s both;
+  }
+  .animate-fade-normal-long {
+    animation: fadeIn 0.3s ease-out 0.4s both;
+  }
+  .animate-fade-slow-long {
+    animation: fadeIn 0.5s ease-out 0.4s both;
+  }
+
+  /* Slide Up animations */
+  .animate-slideUp-fast-none {
+    animation: slideUp 0.2s ease-out;
+  }
+  .animate-slideUp-normal-none {
+    animation: slideUp 0.3s ease-out;
+  }
+  .animate-slideUp-slow-none {
+    animation: slideUp 0.5s ease-out;
+  }
+  .animate-slideUp-fast-short {
+    animation: slideUp 0.2s ease-out 0.1s both;
+  }
+  .animate-slideUp-normal-short {
+    animation: slideUp 0.3s ease-out 0.1s both;
+  }
+  .animate-slideUp-slow-short {
+    animation: slideUp 0.5s ease-out 0.1s both;
+  }
+  .animate-slideUp-fast-medium {
+    animation: slideUp 0.2s ease-out 0.2s both;
+  }
+  .animate-slideUp-normal-medium {
+    animation: slideUp 0.3s ease-out 0.2s both;
+  }
+  .animate-slideUp-slow-medium {
+    animation: slideUp 0.5s ease-out 0.2s both;
+  }
+  .animate-slideUp-fast-long {
+    animation: slideUp 0.2s ease-out 0.4s both;
+  }
+  .animate-slideUp-normal-long {
+    animation: slideUp 0.3s ease-out 0.4s both;
+  }
+  .animate-slideUp-slow-long {
+    animation: slideUp 0.5s ease-out 0.4s both;
+  }
+  
+  /* Custom animations (delay set via style) */
+  .animate-fade-fast-custom {
+    animation: fadeIn 0.2s ease-out both;
+  }
+  .animate-fade-normal-custom {
+    animation: fadeIn 0.3s ease-out both;
+  }
+  .animate-fade-slow-custom {
+    animation: fadeIn 0.5s ease-out both;
+  }
+  .animate-slideUp-fast-custom {
+    animation: slideUp 0.2s ease-out both;
+  }
+  .animate-slideUp-normal-custom {
+    animation: slideUp 0.3s ease-out both;
+  }
+  .animate-slideUp-slow-custom {
+    animation: slideUp 0.5s ease-out both;
+  }
+  .animate-slideDown-fast-custom {
+    animation: slideDown 0.2s ease-out both;
+  }
+  .animate-slideDown-normal-custom {
+    animation: slideDown 0.3s ease-out both;
+  }
+  .animate-slideDown-slow-custom {
+    animation: slideDown 0.5s ease-out both;
+  }
+  .animate-slideLeft-fast-custom {
+    animation: slideLeft 0.2s ease-out both;
+  }
+  .animate-slideLeft-normal-custom {
+    animation: slideLeft 0.3s ease-out both;
+  }
+  .animate-slideLeft-slow-custom {
+    animation: slideLeft 0.5s ease-out both;
+  }
+  .animate-slideRight-fast-custom {
+    animation: slideRight 0.2s ease-out both;
+  }
+  .animate-slideRight-normal-custom {
+    animation: slideRight 0.3s ease-out both;
+  }
+  .animate-slideRight-slow-custom {
+    animation: slideRight 0.5s ease-out both;
+  }
+
+  /* Slide Down animations */
+  .animate-slideDown-fast-none {
+    animation: slideDown 0.2s ease-out;
+  }
+  .animate-slideDown-normal-none {
+    animation: slideDown 0.3s ease-out;
+  }
+  .animate-slideDown-slow-none {
+    animation: slideDown 0.5s ease-out;
+  }
+  .animate-slideDown-fast-short {
+    animation: slideDown 0.2s ease-out 0.1s both;
+  }
+  .animate-slideDown-normal-short {
+    animation: slideDown 0.3s ease-out 0.1s both;
+  }
+  .animate-slideDown-slow-short {
+    animation: slideDown 0.5s ease-out 0.1s both;
+  }
+  .animate-slideDown-fast-medium {
+    animation: slideDown 0.2s ease-out 0.2s both;
+  }
+  .animate-slideDown-normal-medium {
+    animation: slideDown 0.3s ease-out 0.2s both;
+  }
+  .animate-slideDown-slow-medium {
+    animation: slideDown 0.5s ease-out 0.2s both;
+  }
+  .animate-slideDown-fast-long {
+    animation: slideDown 0.2s ease-out 0.4s both;
+  }
+  .animate-slideDown-normal-long {
+    animation: slideDown 0.3s ease-out 0.4s both;
+  }
+  .animate-slideDown-slow-long {
+    animation: slideDown 0.5s ease-out 0.4s both;
+  }
+
+  /* Slide Left animations */
+  .animate-slideLeft-fast-none {
+    animation: slideLeft 0.2s ease-out;
+  }
+  .animate-slideLeft-normal-none {
+    animation: slideLeft 0.3s ease-out;
+  }
+  .animate-slideLeft-slow-none {
+    animation: slideLeft 0.5s ease-out;
+  }
+  .animate-slideLeft-fast-short {
+    animation: slideLeft 0.2s ease-out 0.1s both;
+  }
+  .animate-slideLeft-normal-short {
+    animation: slideLeft 0.3s ease-out 0.1s both;
+  }
+  .animate-slideLeft-slow-short {
+    animation: slideLeft 0.5s ease-out 0.1s both;
+  }
+  .animate-slideLeft-fast-medium {
+    animation: slideLeft 0.2s ease-out 0.2s both;
+  }
+  .animate-slideLeft-normal-medium {
+    animation: slideLeft 0.3s ease-out 0.2s both;
+  }
+  .animate-slideLeft-slow-medium {
+    animation: slideLeft 0.5s ease-out 0.2s both;
+  }
+  .animate-slideLeft-fast-long {
+    animation: slideLeft 0.2s ease-out 0.4s both;
+  }
+  .animate-slideLeft-normal-long {
+    animation: slideLeft 0.3s ease-out 0.4s both;
+  }
+  .animate-slideLeft-slow-long {
+    animation: slideLeft 0.5s ease-out 0.4s both;
+  }
+
+  /* Slide Right animations */
+  .animate-slideRight-fast-none {
+    animation: slideRight 0.2s ease-out;
+  }
+  .animate-slideRight-normal-none {
+    animation: slideRight 0.3s ease-out;
+  }
+  .animate-slideRight-slow-none {
+    animation: slideRight 0.5s ease-out;
+  }
+  .animate-slideRight-fast-short {
+    animation: slideRight 0.2s ease-out 0.1s both;
+  }
+  .animate-slideRight-normal-short {
+    animation: slideRight 0.3s ease-out 0.1s both;
+  }
+  .animate-slideRight-slow-short {
+    animation: slideRight 0.5s ease-out 0.1s both;
+  }
+  .animate-slideRight-fast-medium {
+    animation: slideRight 0.2s ease-out 0.2s both;
+  }
+  .animate-slideRight-normal-medium {
+    animation: slideRight 0.3s ease-out 0.2s both;
+  }
+  .animate-slideRight-slow-medium {
+    animation: slideRight 0.5s ease-out 0.2s both;
+  }
+  .animate-slideRight-fast-long {
+    animation: slideRight 0.2s ease-out 0.4s both;
+  }
+  .animate-slideRight-normal-long {
+    animation: slideRight 0.3s ease-out 0.4s both;
+  }
+  .animate-slideRight-slow-long {
+    animation: slideRight 0.5s ease-out 0.4s both;
+  }
+
+  /* Keyframe definitions */
+  @keyframes fadeIn {
+    from { 
+      opacity: 0; 
+    }
+    to { 
+      opacity: 1; 
+    }
+  }
+
+  @keyframes slideUp {
+    from { 
+      opacity: 0; 
+      transform: translateY(10px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes slideDown {
+    from { 
+      opacity: 0; 
+      transform: translateY(-10px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateY(0); 
+    }
+  }
+
+  @keyframes slideLeft {
+    from { 
+      opacity: 0; 
+      transform: translateX(10px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+
+  @keyframes slideRight {
+    from { 
+      opacity: 0; 
+      transform: translateX(-10px); 
+    }
+    to { 
+      opacity: 1; 
+      transform: translateX(0); 
+    }
+  }
+</style>
