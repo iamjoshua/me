@@ -27,12 +27,16 @@ export function questionsLoader(): Loader {
             .replace(/[^a-z0-9]+/g, "-");
           console.log("id", id);
 
-          const title =
+          let title =
             frontmatter.title ||
             file.name
               .replace(".md", "")
               .replace(/-/g, " ")
               .replace(/^./, (str: String) => str.toUpperCase());
+          
+          if (!title.endsWith("?")) {
+            title += "?";
+          }
 
           // Only import questions that are published
           if (frontmatter.published !== true) {
