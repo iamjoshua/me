@@ -16,8 +16,8 @@ export async function cloneRepository({ repo, targetDir, branch = "master" }: Cl
   
   // Check if directory already exists
   if (existsSync(absolutePath)) {
-    console.log(`Repository already exists at ${absolutePath}, pulling latest changes...`);
-    await execAsync(`cd ${absolutePath} && git pull origin ${branch}`);
+    console.log(`Repository already exists at ${absolutePath}, cleaning and pulling latest changes...`);
+    await execAsync(`cd ${absolutePath} && git clean -fd && git pull origin ${branch}`);
   } else {
     console.log(`Cloning repository ${repo} to ${absolutePath}...`);
     await execAsync(`git clone --branch ${branch} https://github.com/${repo}.git ${absolutePath}`);
