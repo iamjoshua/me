@@ -11,6 +11,8 @@ export const questionSchema = z.object({
   date: z.string().optional(),
   tags: z.array(z.string()).optional(),
   published: z.boolean().optional(),
+  editedAt: z.string().optional(),
+  createdAt: z.string().optional(),
 });
 
 export function questionsLoader(): Loader {

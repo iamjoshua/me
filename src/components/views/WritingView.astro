@@ -1,0 +1,127 @@
+---
+import Container from "@/components/Container.astro";
+import Back from "@/components/elements/Back.astro";
+import AnimateOnLoad from "@/components/AnimateOnLoad.astro";
+import Clock from "@/components/icons/Clock.astro";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  title: string;
+  backHref: string;
+  backLabel: string;
+  sectionLabel: string;
+  sectionTitle: string;
+  excerpt?: string;
+  editedAt?: string;
+  tags?: string[];
+  contentClass?: string;
+}
+
+const {
+  title,
+  backHref,
+  backLabel,
+  sectionLabel,
+  sectionTitle,
+  excerpt,
+  editedAt,
+  tags,
+  contentClass = ""
+} = Astro.props;
+
+function formatDate(dateString: string | undefined) {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+---
+
+<div class="flex flex-col lg:flex-row">
+  <header class="h-[calc(100dvh*0.8)] lg:h-dvh lg:w-1/3">
+    <div
+      class="w-full lg:w-1/3 h-dvh lg:h-dvh lg:fixed rounded-4xl flex flex-col justify-center m-4 md:m-10 lg:m-10 lg:mt-0"
+    >
+      <Back href={backHref} label={backLabel} />
+      <AnimateOnLoad
+        type="fade"
+        class="text-sm font-medium tracking-widest text-gray-500 uppercase mb-4"
+      >
+        {sectionLabel}
+      </AnimateOnLoad>
+      <AnimateOnLoad
+        type="slideDown"
+        class={`text-3xl md:text-4xl font-light text-gray-700 mb-18 italic leading-tight font-[Crimson_Text]`}
+      >
+        {sectionTitle}
+      </AnimateOnLoad>
+      <AnimateOnLoad type="slideUp" name={title}>
+        <h1
+          class="text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800 mb-8"
+        >
+          {title}
+        </h1>
+      </AnimateOnLoad>
+
+      {
+        editedAt && (
+          <div class="mb-6">
+            <span class="inline-flex items-center text-gray-400 text-xs font-medium tracking-wider">
+              <Clock size="w-3 h-3" class="mr-2" />
+              <span class="italic pr-2 uppercase">Edited</span>
+              <span class="text-gray-500">
+                {formatDate(editedAt)}
+              </span>
+            </span>
+          </div>
+        )
+      }
+      {
+        tags && (
+          <div class="flex flex-wrap gap-2 mb-6">
+            {tags.map((tag) => (
+              <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded text-sm">
+                {tag}
+              </span>
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </header>
+
+  <Container>
+    <main class="h-full max-w-4xl mx-auto">
+      <div class="h-[calc(100dvh/5)]"></div>
+      <div class="w-full md:w-2/3 mb-22">
+        {
+          excerpt && (
+            <AnimateOnLoad
+              as="p"
+              delay={0.2}
+              class="text-2xl text-neutral-700 font-thin leading-10 mb-12"
+            >
+              {excerpt}
+            </AnimateOnLoad>
+          )
+        }
+      </div>
+
+      <AnimateOnLoad type="slideUp" delay={0.3}>
+        <article
+          class={cn(
+            "prose prose-base max-w-none pb-32 prose-stone",
+            "[&_.warning]:bg-gray-100 [&_.warning]:border-0 [&_.warning]:bg-red-800/3 [&_.warning]:px-4 [&_.warning]:py-3 [&_.warning]:my-4 [&_.warning]:rounded-md [&_.warning]:text-red-800/70 [&_.warning]:font-bold",
+            contentClass
+          )}
+        >
+          <slot />
+        </article>
+      </AnimateOnLoad>
+    </main>
+  </Container>
+</div>
