@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import TwoColumnView from "../../components/views/TwoColumnView.astro";
+import EssayCard from "../../components/EssayCard.astro";
+import Back from "../../components/elements/Back.astro";
+import AnimateOnLoad from "@/components/AnimateOnLoad.astro";
+
+const essays = await getCollection("essays");
+---
+
+<Layout title="Essays">
+  <TwoColumnView>
+    <Fragment slot="sidebar">
+      <Back href="/" label="Home" />
+      <div
+        class="text-sm font-medium tracking-widest text-gray-500 uppercase mb-2 lg:mb-4"
+      >
+        Writing
+      </div>
+      <div
+        class={`text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+      >
+        Essays
+      </div>
+
+      <h1
+        class="hidden text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800"
+      >
+        Essays
+      </h1>
+    </Fragment>
+
+    <div slot="main">
+      <div class="h-full max-w-4xl mx-auto">
+        <div class="w-full lg:w-2/3 mb-22">
+          <div class="grid gap-8">
+            {
+              essays.map((essay, index) => (
+                <AnimateOnLoad
+                  type="slideUp"
+                  delay={index * 0.1}
+                >
+                  <EssayCard
+                    title={essay.data.title}
+                    excerpt={essay.data.excerpt}
+                    category={essay.data.category}
+                    id={essay.id}
+                  />
+                </AnimateOnLoad>
+              ))
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </TwoColumnView>
+</Layout>
