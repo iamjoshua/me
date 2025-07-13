@@ -1,5 +1,6 @@
 import type { Loader } from "astro/loaders";
 import matter from "gray-matter";
+import { processBlocks } from "../lib/utils";
 
 export function questionsLoader(): Loader {
   return {
@@ -10,6 +11,12 @@ export function questionsLoader(): Loader {
       );
       const data = await response.json();
 
+      // Check if data is an array
+      if (!Array.isArray(data)) {
+        console.error("GitHub API error:", data);
+        return;
+      }
+
       // 2. Fetch each question file
       for (const file of data) {
         if (file.type === "file" && file.name.endsWith(".md")) {
@@ -19,8 +26,8 @@ export function questionsLoader(): Loader {
           // 3. Parse the markdown content
           const { data: frontmatter, content } = matter(contents);
           
-          // Strip out all ::: blocks (draft, review, etc.)
-          const publishedContent = content.replace(/^:::.*$[\s\S]*?^:::.*$/gm, '');
+          // Process blocks (remove drafts, wrap others)
+          const publishedContent = processBlocks(content);
           const id = file.name
             .replace(".md", "")
             .toLowerCase()

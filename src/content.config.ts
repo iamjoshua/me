@@ -2,6 +2,8 @@ import { defineCollection, z } from "astro:content";
 import matter from "gray-matter";
 import { questionsLoader } from "./loaders/questions";
 import { readingsLoader } from "./loaders/readings";
+import { essaysLoader } from "./loaders/essays";
+import { essaysLocalLoader } from "./loaders/essaysLocal";
 
 const questions = defineCollection({
   loader: questionsLoader(),
@@ -31,5 +33,18 @@ const readings = defineCollection({
   }),
 });
 
+const essays = defineCollection({
+  loader: essaysLocalLoader(),
+  schema: z.object({
+    title: z.string(),
+    excerpt: z.string(),
+    date: z.string().optional(),
+    tags: z.array(z.string()).optional(),
+    published: z.boolean().optional(),
+    category: z.string().optional(),
+    lastEdited: z.string().optional(),
+    createdAt: z.string().optional(),
+  }),
+});
 
-export const collections = { questions, readings };
+export const collections = { essays };

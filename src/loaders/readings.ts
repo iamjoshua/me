@@ -8,7 +8,19 @@ export function readingsLoader(): Loader {
       const response = await fetch(
         "https://api.github.com/repos/iamjoshua/readings/contents/readings.csv",
       );
+      
+      if (!response.ok) {
+        console.error("Failed to fetch readings:", response.status, response.statusText);
+        return;
+      }
+      
       const data = await response.json();
+      
+      if (!data.content) {
+        console.error("GitHub API error for readings:", data);
+        return;
+      }
+      
       const content = Buffer.from(data.content, "base64").toString("utf-8");
 
       // 2. Parse CSV into individual readings
