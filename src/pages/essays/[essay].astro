@@ -1,0 +1,33 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import WritingView from "@/components/views/WritingView.astro";
+
+export async function getStaticPaths() {
+  const essays = await getCollection("essays");
+  return essays.map((essay) => ({
+    params: { essay: essay.id },
+  }));
+}
+
+const { essay } = Astro.params;
+const entry = await getEntry("essays", essay);
+if (!entry) return Astro.redirect("/404");
+
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title}>
+  <WritingView
+    title={entry.data.title}
+    backHref="/essays"
+    backLabel="Essays"
+    sectionLabel="Writing"
+    sectionTitle="Essays"
+    excerpt={entry.data.excerpt}
+    editedAt={entry.data.editedAt}
+    tags={entry.data.tags}
+  >
+    <Content />
+  </WritingView>
+</Layout>
