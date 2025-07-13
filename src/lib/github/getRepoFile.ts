@@ -1,4 +1,4 @@
-import { cloneRepository } from "./cloneRepository";
+import { repositoryCache } from "./repositoryCache";
 import { readFile } from "fs/promises";
 import { join } from "path";
 
@@ -16,7 +16,7 @@ export async function getRepoFile({
   repo,
   filePath
 }: RepoFileOptions): Promise<RepoFileResult> {
-  const repoPath = await cloneRepository({
+  const repoPath = await repositoryCache.getRepository({
     repo,
     targetDir: "/tmp/readings-repo",
     branch: "main",

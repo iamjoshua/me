@@ -1,4 +1,4 @@
-import { cloneRepository } from "./cloneRepository";
+import { repositoryCache } from "./repositoryCache";
 import { getFiles } from "./getFiles";
 import { join } from "path";
 
@@ -22,7 +22,7 @@ export async function getRepoFiles({
   subPath,
   pattern
 }: RepoFilesOptions): Promise<RepoFilesResult> {
-  const repoPath = await cloneRepository({
+  const repoPath = await repositoryCache.getRepository({
     repo,
     targetDir: "/tmp/writings-repo",
   });
