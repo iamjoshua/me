@@ -25,28 +25,3 @@ export async function cloneRepository({ repo, targetDir, branch = "master" }: Cl
   
   return absolutePath;
 }
-
-export interface FileTimestamp {
-  lastEdited: string;
-  createdAt: string;
-}
-
-export async function getGitFileTimestamps(
-  repoPath: string,
-  filePath: string
-): Promise<FileTimestamp> {
-  // Get last edited date
-  const { stdout: lastEdited } = await execAsync(
-    `cd ${repoPath} && git log -1 --format="%aI" -- "${filePath}"`
-  );
-  
-  // Get creation date
-  const { stdout: createdAt } = await execAsync(
-    `cd ${repoPath} && git log --reverse --format="%aI" -- "${filePath}" | head -1`
-  );
-  
-  return {
-    lastEdited: lastEdited.trim(),
-    createdAt: createdAt.trim()
-  };
-}

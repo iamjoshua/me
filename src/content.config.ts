@@ -1,50 +1,21 @@
-import { defineCollection, z } from "astro:content";
-import matter from "gray-matter";
-import { questionsLoader } from "./loaders/questions";
-import { readingsLoader } from "./loaders/readings";
-import { essaysLoader } from "./loaders/essays";
-import { essaysLocalLoader } from "./loaders/essaysLocal";
+import { defineCollection } from "astro:content";
+import { questionsLoader, questionSchema } from "@/lib/loaders/questionsLoader";
+import { readingsLoader, readingSchema } from "@/lib/loaders/readingsLoader";
+import { essaysLoader, essaySchema } from "@/lib/loaders/essaysLoader";
 
 const questions = defineCollection({
   loader: questionsLoader(),
-  schema: z.object({
-    title: z.string(),
-    excerpt: z.string(),
-    elaboration: z.string().optional(),
-    position: z.string().optional(),
-    date: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-    published: z.boolean().optional(),
-  }),
+  schema: questionSchema,
 });
 
 const readings = defineCollection({
   loader: readingsLoader(),
-  schema: z.object({
-    title: z.string(),
-    author: z.string(),
-    type: z.string(),
-    category: z.string(),
-    status: z.string(),
-    startedAt: z.string().optional(),
-    completedAt: z.string().optional(),
-    rating: z.string().optional(),
-    notes: z.string().optional(),
-  }),
+  schema: readingSchema,
 });
 
 const essays = defineCollection({
-  loader: essaysLocalLoader(),
-  schema: z.object({
-    title: z.string(),
-    excerpt: z.string(),
-    date: z.string().optional(),
-    tags: z.array(z.string()).optional(),
-    published: z.boolean().optional(),
-    category: z.string().optional(),
-    lastEdited: z.string().optional(),
-    createdAt: z.string().optional(),
-  }),
+  loader: essaysLoader(),
+  schema: essaySchema,
 });
 
-export const collections = { essays };
+export const collections = { essays, readings, questions };

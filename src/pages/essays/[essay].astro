@@ -6,6 +6,7 @@ import Header from "@/components/elements/Header.astro";
 import Back from "@/components/elements/Back.astro";
 import Animate from "@/components/Animate.astro";
 import AnimateOnLoad from "@/components/AnimateOnLoad.astro";
+import Clock from "@/components/icons/Clock.astro";
 import { cn } from "@/lib/utils";
 
 export async function getStaticPaths() {
@@ -23,6 +24,17 @@ if (!entry) {
 }
 
 const { Content } = await render(entry);
+
+function formatDate(dateString: string | undefined) {
+  if (!dateString) return null;
+
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
 ---
 
 <Layout title={entry.data.title}>
@@ -46,21 +58,25 @@ const { Content } = await render(entry);
         </AnimateOnLoad>
         <AnimateOnLoad type="slideUp" name={entry.id}>
           <h1
-            class="text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800"
+            class="text-7xl md:text-6xl lg:text-7xl xl:text-7xl xl:tracking-tight lg:leading-18 font-bold leading-none tracking-tighter text-neutral-800 mb-8"
           >
             {entry.data.title}
           </h1>
         </AnimateOnLoad>
 
         {
-          entry.data.lastEdited && (
-            <p class="text-gray-500 text-sm mb-4">
-              hello Edited on:{" "}
-              {new Date(entry.data.lastEdited).toLocaleDateString()}
-            </p>
+          entry.data.editedAt && (
+            <div class="mb-6">
+              <span class="inline-flex items-center text-gray-400 text-xs font-medium tracking-wider">
+                <Clock size="w-3 h-3" class="mr-2" />
+                <span class="italic pr-2 uppercase">Edited</span>
+                <span class="text-gray-500">
+                  {formatDate(entry.data.editedAt)}
+                </span>
+              </span>
+            </div>
           )
         }
-        {entry.data.date && <p class="text-gray-600 mb-6">{entry.data.date}</p>}
         {
           entry.data.tags && (
             <div class="flex flex-wrap gap-2 mb-6">
