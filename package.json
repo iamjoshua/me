@@ -3,10 +3,11 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npm run clearGitTemp && astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "clearGitTemp": "rm -rf /tmp/readings-repo /tmp/writings-repo 2>/dev/null || true"
   },
   "dependencies": {
     "@astrojs/vercel": "^8.2.1",
