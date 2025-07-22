@@ -19,6 +19,9 @@ export function readingsLoader(): Loader {
   return {
     name: "readings-loader",
     async load({ store }) {
+      // NOTE: Astro caches data between builds; clear if data is stale or not updating as expected
+      store.clear();
+
       const { content } = await getRepoFile({
         repo: "iamjoshua/readings",
         filePath: "readings.csv",

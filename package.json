@@ -20,6 +20,7 @@
     "astro": "^5.11.0",
     "astro-github-file-loader": "^1.1.0",
     "clsx": "^2.1.1",
+    "csv-parse": "^6.1.0",
     "glob": "^11.0.3",
     "gray-matter": "^4.0.3",
     "tailwind-merge": "^3.3.1",
