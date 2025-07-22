@@ -30,7 +30,8 @@ const nextDelay = () => {
     <AnimateOnLoad
       type="slideUp"
       delay={nextDelay()}
-      class="motion-preset-fade"
+      class="motion-preset-fade reading-item"
+      data-category={reading.data.category}
     >
       <ReadingCard {...reading.data} />
     </AnimateOnLoad>

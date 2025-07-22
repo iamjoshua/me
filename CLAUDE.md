@@ -47,6 +47,27 @@ npm run preview
 npx astro add [integration-name]
 ```
 
+## Development Server and Debugging
+
+**IMPORTANT: Never run the dev server or any blocking commands in Claude Code**
+
+- The user manages the dev server separately (typically runs on http://localhost:4322/)
+- To inspect rendered HTML output for debugging, use: `curl -s http://localhost:4322/[page]`
+- To search for specific elements: `curl -s http://localhost:4322/[page] | grep [pattern]`
+- To extract data attributes: `curl -s http://localhost:4322/[page] | grep -o 'data-[attribute]="[^"]*"'`
+
+Examples:
+```bash
+# View full page HTML
+curl -s http://localhost:4322/readings
+
+# Find all category values
+curl -s http://localhost:4322/readings | grep -o 'data-category="[^"]*"' | sort | uniq
+
+# Count specific category items
+curl -s http://localhost:4322/readings | grep -o 'data-category="philosophy"' | wc -l
+```
+
 ## Question Hitlist
 
 - Is there a way to cache the loaders during development to avoid refetching when restarting the dev server?

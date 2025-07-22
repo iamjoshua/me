@@ -5,6 +5,7 @@ interface Props {
   delay?: "none" | "short" | "medium" | "long" | number;
   as?: keyof HTMLElementTagNameMap;
   class?: string;
+  [key: string]: any; // Allow any additional props to be passed through
 }
 
 const { 
@@ -12,14 +13,15 @@ const {
   duration = "normal",
   delay = "none",
   as: Tag = "div",
-  class: className = ""
+  class: className = "",
+  ...rest
 } = Astro.props;
 
 const delayValue = typeof delay === "number" ? `${delay}s` : delay;
 const animationClass = typeof delay === "number" ? `animate-${type}-${duration}-custom` : `animate-${type}-${duration}-${delay}`;
 ---
 
-<Tag class={`${className} ${animationClass}`} style={typeof delay === "number" ? `animation-delay: ${delayValue}; animation-fill-mode: both;` : ""}>
+<Tag class={`${className} ${animationClass}`} style={typeof delay === "number" ? `animation-delay: ${delayValue}; animation-fill-mode: both;` : ""} {...rest}>
   <slot />
 </Tag>
 
