@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  currentCategory?: string;
+  basePath?: string;
+}
+
+const { currentCategory, basePath = "/readings" } = Astro.props;
+
+const readings = await getCollection("readings");
+const categories = [
+  ...new Set(readings.map((reading) => reading.data.category)),
+];
+const categoryCounts = categories.reduce((acc, cat) => {
+  acc[cat] = readings.filter((reading) => reading.data.category === cat).length;
+  return acc;
+}, {});
+
+const filterItems = [
+  {
+    label: `All (${readings.length})`,
+    href: basePath,
+    isActive: !currentCategory,
+  },
+  ...categories.map((cat) => ({
+    label: `${cat
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ")} (${categoryCounts[cat]})`,
+    href: `${basePath}/${cat.replace(/ /g, "_")}`,
+    isActive: currentCategory === cat,
+  })),
+];
+---
+
+<div
+  class="w-screen lg:w-full space-y-2 mt-12 lg:mt-12 mb-6 lg:max-w-5/6 overflow-hidden lg:overflow-visible"
+>
+  <div
+    class="flex flex-nowrap lg:flex-wrap gap-2 px-5 lg:px-0 overflow-x-scroll lg:overflow-hidden pb-5"
+  >
+    {
+      filterItems.map((item) => (
+        <a
+          href={item.href}
+          class={cn(
+            "min-w-fit flex items-center px-3 py-1 text-sm border rounded-full text-gray-700 hover:border-gray-400 transition-colors border-gray-200",
+            item.isActive && "border-gray-400 bg-gray-100",
+          )}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </div>
+</div>
+

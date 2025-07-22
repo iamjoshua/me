@@ -1,0 +1,48 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Readings from "@/components/Readings.astro";
+import TwoColumnView from "@/components/views/TwoColumnView.astro";
+import Back from "@/components/elements/Back.astro";
+import FilterCategories from "@/components/FilterCategories.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const readings = await getCollection("readings");
+  const categories = [
+    ...new Set(readings.map((reading) => reading.data.category)),
+  ];
+
+  return [
+    {
+      params: { category: undefined },
+    },
+    ...categories.map((cat) => ({
+      params: { category: cat.replace(/ /g, "_") },
+    })),
+  ];
+}
+
+const { category: urlCategory } = Astro.params;
+const category = urlCategory ? urlCategory.replace(/_/g, " ") : undefined;
+---
+
+<Layout>
+  <TwoColumnView>
+    <div slot="sidebar">
+      <Back href="/" label="Home" />
+      <div
+        class="text-3xl md:text-4xl font-light text-gray-700 italic leading-tight font-[Crimson_Text] text-center lg:text-left flex justify-center lg:justify-start"
+      >
+        Things I've read
+      </div>
+
+      <FilterCategories currentCategory={category} />
+    </div>
+
+    <div slot="main">
+      <div class="flex flex-wrap gap-5">
+        <Readings category={category} />
+      </div>
+    </div>
+  </TwoColumnView>
+</Layout>

@@ -5,11 +5,16 @@ import AnimateOnLoad from "./AnimateOnLoad.astro";
 
 interface Props {
   limit?: number;
+  category?: string;
 }
 
-const { limit } = Astro.props;
+const { limit, category } = Astro.props;
 
 let readings = await getCollection("readings");
+
+if (category) {
+  readings = readings.filter(reading => reading.data.category === category);
+}
 
 if (limit) {
   readings = readings.slice(0, limit);
@@ -31,7 +36,6 @@ const nextDelay = () => {
       type="slideUp"
       delay={nextDelay()}
       class="motion-preset-fade reading-item"
-      data-category={reading.data.category}
     >
       <ReadingCard {...reading.data} />
     </AnimateOnLoad>
