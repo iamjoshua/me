@@ -20,15 +20,17 @@ const categoryCounts = categories.reduce((acc, cat) => {
 
 const filterItems = [
   {
-    label: `All (${readings.length})`,
+    label: "All",
+    count: readings.length,
     href: basePath,
     isActive: !currentCategory,
   },
   ...categories.map((cat) => ({
-    label: `${cat
+    label: cat
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ")} (${categoryCounts[cat]})`,
+      .join(" "),
+    count: categoryCounts[cat],
     href: `${basePath}/${cat.replace(/ /g, "_")}`,
     isActive: currentCategory === cat,
   })),
@@ -46,14 +48,21 @@ const filterItems = [
         <a
           href={item.href}
           class={cn(
-            "min-w-fit flex items-center px-3 py-1 text-sm border rounded-full text-gray-700 hover:border-gray-400 transition-colors border-gray-200",
-            item.isActive && "border-gray-400 bg-gray-100",
+            "min-w-fit flex items-center px-3 py-1 text-xs border rounded-full text-gray-700 hover:border-gray-400 transition-colors border-gray-200",
+            item.isActive && "border-transparent bg-sky-900 text-white",
           )}
         >
           {item.label}
+          <span
+            class={cn(
+              "inline-block px-2 py-1 ml-3 -mr-2 text-[10px] bg-gray-200 text-gray-600 rounded-full",
+              item.isActive && "bg-sky-950/50 text-sky-200",
+            )}
+          >
+            {item.count}
+          </span>
         </a>
       ))
     }
   </div>
 </div>
-
