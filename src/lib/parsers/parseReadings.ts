@@ -7,6 +7,8 @@ export function parseReadings(content: string) {
     author: string;
     type: string;
     category: string;
+    subject?: string;
+    topic?: string;
     status: string;
     startedAt?: string;
     completedAt?: string;
@@ -31,6 +33,8 @@ export function parseReadings(content: string) {
         author,
         type,
         category,
+        subject,
+        topic,
         status,
         startedAt,
         completedAt,
@@ -52,6 +56,8 @@ export function parseReadings(content: string) {
         author,
         type,
         category,
+        subject: subject || undefined,
+        topic: topic || undefined,
         status,
         startedAt: startedAt || undefined,
         completedAt: completedAt || undefined,
