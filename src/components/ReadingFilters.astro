@@ -1,0 +1,91 @@
+---
+import { getCollection } from "astro:content";
+import { buildReadingFilterOptions } from "@/lib/buildReadingFilterOptions";
+import Dropdown from "./elements/Dropdown.astro";
+
+interface Props {
+  currentCategory?: string;
+  currentSubject?: string;
+  currentTopic?: string;
+  basePath?: string;
+}
+
+const { currentCategory, currentSubject, currentTopic, basePath = "/readings" } = Astro.props;
+
+const readings = await getCollection("readings");
+
+// Category options
+const categoryOptions = [
+  {
+    label: "All",
+    count: readings.length,
+    href: basePath,
+    isActive: !currentCategory,
+  },
+  ...buildReadingFilterOptions(
+    readings,
+    'category',
+    currentCategory,
+    (cat) => `${basePath}/${cat.replace(/ /g, "_")}`
+  ),
+];
+
+// Subject options (filtered by category)
+const subjectReadings = currentCategory 
+  ? readings.filter(reading => reading.data.category === currentCategory)
+  : [];
+const subjectOptions = buildReadingFilterOptions(
+  subjectReadings,
+  'subject',
+  currentSubject,
+  (subject) => `${basePath}/${currentCategory?.replace(/ /g, "_")}/${subject.replace(/ /g, "_")}`
+);
+
+// Topic options (filtered by category + subject)
+const topicReadings = currentCategory && currentSubject
+  ? readings.filter(reading => reading.data.category === currentCategory && reading.data.subject === currentSubject)
+  : [];
+const topicOptions = buildReadingFilterOptions(
+  topicReadings,
+  'topic',
+  currentTopic,
+  (topic) => `${basePath}/${currentCategory?.replace(/ /g, "_")}/${currentSubject?.replace(/ /g, "_")}/${topic.replace(/ /g, "_")}`
+);
+---
+
+<div class="w-screen lg:w-full space-y-2 mt-12 lg:mt-12 mb-6 lg:max-w-5/6 overflow-visible">
+  <div class="px-5 lg:px-0 flex flex-col gap-4">
+    
+    <Dropdown
+      id="category"
+      label="Category"
+      options={categoryOptions}
+      activeButtonClass="border-transparent bg-sky-900 text-white"
+      activeCountClass="bg-sky-950/50 text-sky-200"
+      menuActiveClass="bg-sky-50 text-sky-900 font-medium"
+    />
+
+    {subjectOptions.length > 0 && (
+      <Dropdown
+        id="subject"
+        label="Subject"
+        options={subjectOptions}
+        activeButtonClass="border-transparent bg-slate-600 text-white"
+        activeCountClass="bg-slate-700/50 text-slate-200"
+        menuActiveClass="bg-slate-50 text-slate-900 font-medium"
+      />
+    )}
+
+    {topicOptions.length > 0 && (
+      <Dropdown
+        id="topic"
+        label="Topic"
+        options={topicOptions}
+        activeButtonClass="border-transparent bg-amber-600 text-white"
+        activeCountClass="bg-amber-700/50 text-amber-200"
+        menuActiveClass="bg-amber-50 text-amber-900 font-medium"
+      />
+    )}
+
+  </div>
+</div>

@@ -3,9 +3,7 @@ import Layout from "@/layouts/Layout.astro";
 import Readings from "@/components/Readings.astro";
 import TwoColumnView from "@/components/views/TwoColumnView.astro";
 import Back from "@/components/elements/Back.astro";
-import FilterCategories from "@/components/FilterCategories.astro";
-import FilterSubjects from "@/components/FilterSubjects.astro";
-import FilterTopics from "@/components/FilterTopics.astro";
+import ReadingFilters from "@/components/ReadingFilters.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -69,9 +67,7 @@ const topic = pathParts[2] ? pathParts[2].replace(/_/g, " ") : undefined;
         Things I've read
       </div>
 
-      <FilterCategories currentCategory={category} />
-      <FilterSubjects currentCategory={category} currentSubject={subject} />
-      <FilterTopics currentCategory={category} currentSubject={subject} currentTopic={topic} />
+      <ReadingFilters currentCategory={category} currentSubject={subject} currentTopic={topic} />
     </div>
 
     <div slot="main">
