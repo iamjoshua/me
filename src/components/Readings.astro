@@ -6,14 +6,24 @@ import AnimateOnLoad from "./AnimateOnLoad.astro";
 interface Props {
   limit?: number;
   category?: string;
+  subject?: string;
+  topic?: string;
 }
 
-const { limit, category } = Astro.props;
+const { limit, category, subject, topic } = Astro.props;
 
 let readings = await getCollection("readings");
 
 if (category) {
   readings = readings.filter(reading => reading.data.category === category);
+}
+
+if (subject) {
+  readings = readings.filter(reading => reading.data.subject === subject);
+}
+
+if (topic) {
+  readings = readings.filter(reading => reading.data.topic === topic);
 }
 
 if (limit) {

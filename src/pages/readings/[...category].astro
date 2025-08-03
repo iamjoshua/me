@@ -4,6 +4,8 @@ import Readings from "@/components/Readings.astro";
 import TwoColumnView from "@/components/views/TwoColumnView.astro";
 import Back from "@/components/elements/Back.astro";
 import FilterCategories from "@/components/FilterCategories.astro";
+import FilterSubjects from "@/components/FilterSubjects.astro";
+import FilterTopics from "@/components/FilterTopics.astro";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -12,7 +14,7 @@ export async function getStaticPaths() {
     ...new Set(readings.map((reading) => reading.data.category)),
   ];
 
-  return [
+  const paths = [
     {
       params: { category: undefined },
     },
@@ -20,10 +22,41 @@ export async function getStaticPaths() {
       params: { category: cat.replace(/ /g, "_") },
     })),
   ];
+
+  // Add category/subject paths
+  for (const cat of categories) {
+    const categoryReadings = readings.filter((reading) => reading.data.category === cat);
+    const subjects = [...new Set(categoryReadings.map((reading) => reading.data.subject).filter(Boolean))];
+    
+    for (const subject of subjects) {
+      paths.push({
+        params: { 
+          category: `${cat.replace(/ /g, "_")}/${subject.replace(/ /g, "_")}` 
+        },
+      });
+
+      // Add category/subject/topic paths
+      const subjectReadings = categoryReadings.filter((reading) => reading.data.subject === subject);
+      const topics = [...new Set(subjectReadings.map((reading) => reading.data.topic).filter(Boolean))];
+      
+      for (const topic of topics) {
+        paths.push({
+          params: { 
+            category: `${cat.replace(/ /g, "_")}/${subject.replace(/ /g, "_")}/${topic.replace(/ /g, "_")}` 
+          },
+        });
+      }
+    }
+  }
+
+  return paths;
 }
 
-const { category: urlCategory } = Astro.params;
-const category = urlCategory ? urlCategory.replace(/_/g, " ") : undefined;
+const { category: urlPath } = Astro.params;
+const pathParts = urlPath ? urlPath.split('/') : [];
+const category = pathParts[0] ? pathParts[0].replace(/_/g, " ") : undefined;
+const subject = pathParts[1] ? pathParts[1].replace(/_/g, " ") : undefined;
+const topic = pathParts[2] ? pathParts[2].replace(/_/g, " ") : undefined;
 ---
 
 <Layout>
@@ -37,11 +70,13 @@ const category = urlCategory ? urlCategory.replace(/_/g, " ") : undefined;
       </div>
 
       <FilterCategories currentCategory={category} />
+      <FilterSubjects currentCategory={category} currentSubject={subject} />
+      <FilterTopics currentCategory={category} currentSubject={subject} currentTopic={topic} />
     </div>
 
     <div slot="main">
       <div class="flex flex-wrap gap-5">
-        <Readings category={category} />
+        <Readings category={category} subject={subject} topic={topic} />
       </div>
     </div>
   </TwoColumnView>

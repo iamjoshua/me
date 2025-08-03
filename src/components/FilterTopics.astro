@@ -1,0 +1,77 @@
+---
+import { getCollection } from "astro:content";
+import { cn } from "@/lib/utils";
+
+interface Props {
+  currentCategory?: string;
+  currentSubject?: string;
+  currentTopic?: string;
+  basePath?: string;
+}
+
+const { currentCategory, currentSubject, currentTopic, basePath = "/readings" } = Astro.props;
+
+const readings = await getCollection("readings");
+
+// Filter readings by category and subject if specified
+let filteredReadings = readings;
+if (currentCategory) {
+  filteredReadings = filteredReadings.filter((reading) => reading.data.category === currentCategory);
+}
+if (currentSubject) {
+  filteredReadings = filteredReadings.filter((reading) => reading.data.subject === currentSubject);
+}
+
+// Get topics from filtered readings
+const topics = [
+  ...new Set(filteredReadings.map((reading) => reading.data.topic).filter(Boolean)),
+].sort();
+
+const topicCounts = topics.reduce((acc, topic) => {
+  acc[topic] = filteredReadings.filter((reading) => reading.data.topic === topic).length;
+  return acc;
+}, {});
+
+const topicItems = topics.map((topic) => {
+  // Find the category and subject for this topic
+  const topicReading = filteredReadings.find(reading => reading.data.topic === topic);
+  const topicCategory = topicReading?.data.category;
+  const topicSubject = topicReading?.data.subject;
+  
+  return {
+    label: topic
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" "),
+    count: topicCounts[topic],
+    href: `${basePath}/${topicCategory.replace(/ /g, "_")}/${topicSubject.replace(/ /g, "_")}/${topic.replace(/ /g, "_")}`,
+    isActive: currentTopic === topic,
+  };
+});
+---
+
+{topicItems.length > 0 && (
+  <div class="w-screen lg:w-full space-y-2 mb-6 lg:max-w-5/6 overflow-hidden lg:overflow-visible">
+    <div class="flex flex-nowrap lg:flex-wrap gap-2 px-5 lg:px-0 overflow-x-scroll lg:overflow-hidden pb-5">
+      {topicItems.map((item) => (
+        <a
+          href={item.href}
+          class={cn(
+            "min-w-fit flex items-center px-3 py-1 text-xs border rounded-full text-gray-700 hover:border-gray-400 transition-colors border-gray-200",
+            item.isActive && "border-transparent bg-amber-600 text-white",
+          )}
+        >
+          {item.label}
+          <span
+            class={cn(
+              "inline-block px-2 py-1 ml-3 -mr-2 text-[10px] bg-gray-200 text-gray-600 rounded-full",
+              item.isActive && "bg-amber-700/50 text-amber-200",
+            )}
+          >
+            {item.count}
+          </span>
+        </a>
+      ))}
+    </div>
+  </div>
+)}
