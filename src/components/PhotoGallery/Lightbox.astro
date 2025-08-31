@@ -1,0 +1,77 @@
+<!-- Lightbox Modal -->
+<div
+  id="lightbox"
+  class="fixed inset-0 z-50 bg-white bg-opacity-95 flex items-center justify-center p-4 lightbox-hidden"
+>
+  <div class="relative w-full h-full flex items-center justify-center">
+    <img
+      id="lightbox-image"
+      src=""
+      alt=""
+      class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
+    />
+    <button
+      id="close-lightbox"
+      class="absolute top-4 right-4 text-gray-600 text-2xl font-light hover:text-gray-800 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center z-10 cursor-pointer"
+      onclick="closeLightbox()"
+    >
+      ×
+    </button>
+  </div>
+</div>
+
+<script>
+  function openLightbox(imageUrl: string, title: string) {
+    const lightbox = document.getElementById("lightbox");
+    const image = document.getElementById("lightbox-image") as HTMLImageElement;
+
+    if (lightbox && image) {
+      image.src = imageUrl;
+      image.alt = title;
+      lightbox.classList.remove("lightbox-hidden");
+      lightbox.classList.add("lightbox-visible");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  function closeLightbox() {
+    const lightbox = document.getElementById("lightbox");
+    if (lightbox) {
+      lightbox.classList.remove("lightbox-visible");
+      lightbox.classList.add("lightbox-hidden");
+      document.body.style.overflow = "auto";
+    }
+  }
+
+  // Close lightbox on escape key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeLightbox();
+    }
+  });
+
+  // Close lightbox on background click
+  document.getElementById("lightbox")?.addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) {
+      closeLightbox();
+    }
+  });
+
+  // Make functions globally available
+  (window as any).openLightbox = openLightbox;
+  (window as any).closeLightbox = closeLightbox;
+</script>
+
+<style>
+  .lightbox-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .lightbox-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease-in-out;
+  }
+</style>

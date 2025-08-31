@@ -2,7 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import TwoColumnView from "../components/views/TwoColumnView.astro";
-import PhotoGallery from "@/components/PhotoGallery.astro";
+import PhotoGallery from "@/components/PhotoGallery/PhotoGallery.astro";
 import Back from "../components/elements/Back.astro";
 
 const photos = await getCollection("photos");

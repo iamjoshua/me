@@ -1,0 +1,27 @@
+---
+import Photograph from "./Photograph.astro";
+import Lightbox from "./Lightbox.astro";
+
+interface Props {
+  photos: Array<{
+    id: string;
+    data: {
+      filename: string;
+      title: string;
+      imageUrl: string;
+      path: string;
+    };
+  }>;
+}
+
+const { photos } = Astro.props;
+---
+
+<div class="w-full mb-22">
+  <div class="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
+    {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
+  </div>
+</div>
+
+<Lightbox />
+

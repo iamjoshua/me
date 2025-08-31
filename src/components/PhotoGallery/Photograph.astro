@@ -1,0 +1,37 @@
+---
+import { Image } from "astro:assets";
+import AnimateOnLoad from "../AnimateOnLoad.astro";
+
+interface Props {
+  photo: {
+    id: string;
+    data: {
+      filename: string;
+      title: string;
+      imageUrl: string;
+      path: string;
+    };
+  };
+  index: number;
+}
+
+const { photo, index } = Astro.props;
+---
+
+<AnimateOnLoad type="slideUp" delay={index * 0.1}>
+  <div
+    class="group cursor-pointer w-full md:w-auto"
+    onclick={`openLightbox('${photo.data.imageUrl}', '${photo.data.title}')`}
+  >
+    <div class="overflow-hidden rounded-lg bg-gray-100">
+      <Image
+        src={photo.data.imageUrl}
+        alt={photo.data.title}
+        width={400}
+        height={300}
+        class="w-full md:h-96 md:w-auto h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</AnimateOnLoad>
