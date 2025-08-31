@@ -1,6 +1,7 @@
 ---
 import Books from "@/components/icons/Books.astro";
 import Typewriter from "@/components/icons/Typewriter.astro";
+import Camera from "@/components/icons/Camera.astro";
 import { cn } from "@/lib/utils";
 
 const style = "text-gray-600 hover:text-gray-900 transition-colors p-5";
@@ -12,7 +13,9 @@ function getActiveClass(route: string) {
 }
 ---
 
-<div class="flex items-center ml-8">
+<div
+  class="flex items-center ml-8 bg-transparent backdrop-blur-xs rounded-full"
+>
   <a href="/readings" class={cn(style, getActiveClass("/readings"))}>
     <Books size="w-5 h-5" />
   </a>
@@ -23,5 +26,10 @@ function getActiveClass(route: string) {
   <a href="/questions" class={cn(style, getActiveClass("/questions"))}>
     <Typewriter size="w-5 h-5" />
   </a>
+  <div class="h-3 w-[2px] border-r border-transparent"></div>
+  <div class="h-3 w-[1px] border-l border-neutral-300"></div>
+  <div class="h-3 w-[1px] border-r border-white"></div>
+  <a href="/photography" class={cn(style, getActiveClass("/photography"))}>
+    <Camera size="w-[1.34375rem] h-[1.34375rem]" />
+  </a>
 </div>
-
