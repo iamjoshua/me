@@ -2,6 +2,7 @@ import { defineCollection } from "astro:content";
 import { questionsLoader, questionSchema } from "@/lib/loaders/questionsLoader";
 import { readingsLoader, readingSchema } from "@/lib/loaders/readingsLoader";
 import { essaysLoader, essaySchema } from "@/lib/loaders/essaysLoader";
+import { photosLoader, photoSchema } from "@/lib/loaders/photosLoader";
 
 const questions = defineCollection({
   loader: questionsLoader(),
@@ -18,4 +19,9 @@ const essays = defineCollection({
   schema: essaySchema,
 });
 
-export const collections = { essays, readings, questions };
+const photos = defineCollection({
+  loader: photosLoader(),
+  schema: photoSchema,
+});
+
+export const collections = { essays, readings, questions, photos };
