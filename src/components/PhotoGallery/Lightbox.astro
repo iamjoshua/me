@@ -21,7 +21,7 @@
 </div>
 
 <script>
-  function openLightbox(imageUrl: string, title: string) {
+  function openLightbox(imageUrl: string, title: string, photoId?: string) {
     const lightbox = document.getElementById("lightbox");
     const image = document.getElementById("lightbox-image") as HTMLImageElement;
 
@@ -31,6 +31,11 @@
       lightbox.classList.remove("lightbox-hidden");
       lightbox.classList.add("lightbox-visible");
       document.body.style.overflow = "hidden";
+      
+      // Update URL hash if photoId provided
+      if (photoId) {
+        history.pushState(null, '', `#${photoId}`);
+      }
     }
   }
 
@@ -40,8 +45,49 @@
       lightbox.classList.remove("lightbox-visible");
       lightbox.classList.add("lightbox-hidden");
       document.body.style.overflow = "auto";
+      
+      // Clear URL hash
+      history.pushState(null, '', window.location.pathname);
     }
   }
+  
+  // Check for hash on page load and open lightbox if photo found
+  function checkHashAndOpen() {
+    let hash = window.location.hash.slice(1); // Remove #
+    if (hash) {
+      // Decode URL encoded hash
+      hash = decodeURIComponent(hash);
+      
+      // Find the photo element with matching ID
+      const photoElement = document.querySelector(`[data-photo-id="${hash}"]`);
+      if (photoElement) {
+        const imageUrl = photoElement.getAttribute('data-image-url');
+        const title = photoElement.getAttribute('data-title');
+        if (imageUrl && title) {
+          openLightbox(imageUrl, title, hash);
+        }
+      } else {
+        // If element not found, try again after a short delay
+        setTimeout(checkHashAndOpen, 100);
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', checkHashAndOpen);
+  
+  // Also try after a delay to ensure photos are rendered
+  setTimeout(checkHashAndOpen, 500);
+  
+  // Handle browser back/forward buttons
+  window.addEventListener('popstate', () => {
+    let hash = window.location.hash.slice(1);
+    if (!hash) {
+      closeLightbox();
+    } else {
+      hash = decodeURIComponent(hash);
+      checkHashAndOpen();
+    }
+  });
 
   // Close lightbox on escape key
   document.addEventListener("keydown", (e) => {
@@ -50,9 +96,9 @@
     }
   });
 
-  // Close lightbox on background click
+  // Close lightbox on background click or image click
   document.getElementById("lightbox")?.addEventListener("click", (e) => {
-    if (e.target === e.currentTarget) {
+    if (e.target === e.currentTarget || e.target === document.getElementById("lightbox-image")) {
       closeLightbox();
     }
   });

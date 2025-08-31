@@ -21,7 +21,10 @@ const { photo, index } = Astro.props;
 <AnimateOnLoad type="slideUp" delay={index * 0.1}>
   <div
     class="group cursor-pointer w-full md:w-auto"
-    onclick={`openLightbox('${photo.data.imageUrl}', '${photo.data.title}')`}
+    data-photo-id={photo.id}
+    data-image-url={photo.data.imageUrl}
+    data-title={photo.data.title}
+    onclick={`openLightbox('${photo.data.imageUrl}', '${photo.data.title}', '${photo.id}')`}
   >
     <div class="overflow-hidden rounded-lg bg-gray-100">
       <Image

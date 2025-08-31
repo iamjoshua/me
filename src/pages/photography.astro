@@ -10,7 +10,7 @@ console.log(photos);
 ---
 
 <Layout title="Photography">
-  <TwoColumnView>
+  <TwoColumnView disableTopSpace>
     <Fragment slot="sidebar">
       <Back href="/" label="Home" />
       <div
@@ -26,7 +26,7 @@ console.log(photos);
     </Fragment>
 
     <div slot="main">
-      <div class="h-full max-w-6xl mx-auto">
+      <div class="h-full max-w-6xl mx-auto pt-8">
         <PhotoGallery photos={photos} />
       </div>
     </div>

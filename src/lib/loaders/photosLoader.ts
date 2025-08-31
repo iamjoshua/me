@@ -14,6 +14,9 @@ export function photosLoader(): Loader {
     name: "photos-loader",
     async load({ store }) {
       try {
+        // NOTE: Astro caches data between builds; clear if data is stale or not updating as expected
+        store.clear();
+
         console.log("Loading photos from iamjoshua/photography...");
         const files = await getRepoContents("iamjoshua/photography", "photos");
 
