@@ -13,15 +13,17 @@
     <button
       id="close-lightbox"
       class="absolute top-4 right-4 text-gray-600 text-2xl font-light hover:text-gray-800 hover:scale-110 transition-all duration-200 w-8 h-8 flex items-center justify-center z-10 cursor-pointer"
-      onclick="closeLightbox()"
+      onclick="handleCloseClick()"
     >
       ×
     </button>
   </div>
+  
 </div>
 
 <script>
-  function openLightbox(imageUrl: string, title: string, photoId?: string) {
+  // Open by explicit URL and title (legacy)
+  function openLightbox(imageUrl: string, title: string) {
     const lightbox = document.getElementById("lightbox");
     const image = document.getElementById("lightbox-image") as HTMLImageElement;
 
@@ -31,81 +33,109 @@
       lightbox.classList.remove("lightbox-hidden");
       lightbox.classList.add("lightbox-visible");
       document.body.style.overflow = "hidden";
-      
-      // Update URL hash if photoId provided
-      if (photoId) {
-        history.pushState(null, '', `#${photoId}`);
+    }
+  }
+
+  // Open by photo ID: reads data from grid and updates URL
+  function openLightboxById(id: string) {
+    // Find the matching photo element to read data attributes
+    const el = document.querySelector(`[data-photo-id="${id}"]`) as HTMLElement | null;
+    if (!el) return;
+
+    const imageUrl = el.getAttribute('data-image-url') || '';
+    const title = el.getAttribute('data-title') || '';
+
+    openLightbox(imageUrl, title);
+
+    const targetPath = `/photography/${id}`;
+    if (location.pathname !== targetPath) {
+      history.pushState({ photoId: id }, '', targetPath);
+    } else {
+      // Ensure state exists so back() works consistently
+      if (!history.state || history.state.photoId !== id) {
+        history.replaceState({ photoId: id }, '', targetPath);
       }
     }
   }
 
-  function closeLightbox() {
+  function closeLightbox(immediate: boolean = false) {
     const lightbox = document.getElementById("lightbox");
     if (lightbox) {
-      lightbox.classList.remove("lightbox-visible");
-      lightbox.classList.add("lightbox-hidden");
-      document.body.style.overflow = "auto";
-      
-      // Clear URL hash
-      history.pushState(null, '', window.location.pathname);
-    }
-  }
-  
-  // Check for hash on page load and open lightbox if photo found
-  function checkHashAndOpen() {
-    let hash = window.location.hash.slice(1); // Remove #
-    if (hash) {
-      // Decode URL encoded hash
-      hash = decodeURIComponent(hash);
-      
-      // Find the photo element with matching ID
-      const photoElement = document.querySelector(`[data-photo-id="${hash}"]`);
-      if (photoElement) {
-        const imageUrl = photoElement.getAttribute('data-image-url');
-        const title = photoElement.getAttribute('data-title');
-        if (imageUrl && title) {
-          openLightbox(imageUrl, title, hash);
-        }
+      if (immediate) {
+        const prev = (lightbox as HTMLElement).style.transition;
+        (lightbox as HTMLElement).style.transition = 'none';
+        lightbox.classList.remove("lightbox-visible");
+        lightbox.classList.add("lightbox-hidden");
+        // Restore transition after state change so future opens animate
+        requestAnimationFrame(() => {
+          (lightbox as HTMLElement).style.transition = prev || '';
+        });
       } else {
-        // If element not found, try again after a short delay
-        setTimeout(checkHashAndOpen, 100);
+        lightbox.classList.remove("lightbox-visible");
+        lightbox.classList.add("lightbox-hidden");
       }
+      document.body.style.overflow = "auto";
     }
   }
 
-  document.addEventListener('DOMContentLoaded', checkHashAndOpen);
-  
-  // Also try after a delay to ensure photos are rendered
-  setTimeout(checkHashAndOpen, 500);
-  
-  // Handle browser back/forward buttons
-  window.addEventListener('popstate', () => {
-    let hash = window.location.hash.slice(1);
-    if (!hash) {
-      closeLightbox();
-    } else {
-      hash = decodeURIComponent(hash);
-      checkHashAndOpen();
+  function handleCloseClick() {
+    // Always normalize the URL in-place to avoid a history back navigation
+    if (location.pathname.startsWith('/photography/')) {
+      history.replaceState(null, '', '/photography');
     }
-  });
+    closeLightbox();
+  }
 
-  // Close lightbox on escape key
+  function syncFromUrl() {
+    const match = location.pathname.match(/^\/photography\/(.+)$/);
+    if (match && match[1]) {
+      const id = decodeURIComponent(match[1]);
+      // If already open to this image, do nothing
+      const img = document.getElementById("lightbox-image") as HTMLImageElement | null;
+      if (img && img.src && document.querySelector(`[data-photo-id="${id}"]`)?.getAttribute('data-image-url') === img.src) {
+        return;
+      }
+      openLightboxById(id);
+    } else if (location.pathname === '/photography') {
+      closeLightbox();
+    }
+  }
+
+  // Handle keyboard close
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
-      closeLightbox();
+      handleCloseClick();
     }
   });
 
-  // Close lightbox on background click or image click
+  // Close on background or image click
   document.getElementById("lightbox")?.addEventListener("click", (e) => {
     if (e.target === e.currentTarget || e.target === document.getElementById("lightbox-image")) {
-      closeLightbox();
+      handleCloseClick();
     }
   });
 
-  // Make functions globally available
+  // Sync when navigating with browser back/forward
+  window.addEventListener('popstate', () => {
+    // When navigating back to the gallery, close instantly to avoid visual jank
+    const isGallery = location.pathname === '/photography';
+    if (isGallery) {
+      closeLightbox(true);
+      return;
+    }
+    syncFromUrl();
+  });
+
+  // Sync on initial load as well
+  document.addEventListener('DOMContentLoaded', () => {
+    syncFromUrl();
+  });
+
+  // Expose globals for use in markup and compatibility
   (window as any).openLightbox = openLightbox;
+  (window as any).openLightboxById = openLightboxById;
   (window as any).closeLightbox = closeLightbox;
+  (window as any).handleCloseClick = handleCloseClick;
 </script>
 
 <style>

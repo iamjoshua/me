@@ -24,7 +24,7 @@ const { photo, index } = Astro.props;
     data-photo-id={photo.id}
     data-image-url={photo.data.imageUrl}
     data-title={photo.data.title}
-    onclick={`openLightbox('${photo.data.imageUrl}', '${photo.data.title}', '${photo.id}')`}
+    onclick={`openLightboxById('${photo.id}')`}
   >
     <div class="overflow-hidden rounded-lg bg-gray-100">
       <Image

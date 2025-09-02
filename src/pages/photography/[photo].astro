@@ -1,0 +1,60 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import TwoColumnView from "../../components/views/TwoColumnView.astro";
+import PhotoGallery from "@/components/PhotoGallery/PhotoGallery.astro";
+import Back from "../../components/elements/Back.astro";
+
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+  
+  return photos.map((photo) => ({
+    params: { photo: photo.id },
+    props: { selectedPhoto: photo },
+  }));
+}
+
+const { selectedPhoto } = Astro.props;
+const photos = await getCollection("photos");
+
+// Set up meta tags for the specific photo
+const title = `${selectedPhoto.data.title} - Photography`;
+const description = `View ${selectedPhoto.data.title} and other photographs by Joshua Heiland`;
+---
+
+<Layout title={title}>
+  <!-- Open Graph meta tags for social sharing -->
+  <meta slot="head" property="og:title" content={title} />
+  <meta slot="head" property="og:description" content={description} />
+  <meta slot="head" property="og:image" content={selectedPhoto.data.imageUrl} />
+  <meta slot="head" property="og:url" content={Astro.url} />
+  <meta slot="head" property="og:type" content="article" />
+  
+  <!-- Twitter meta tags -->
+  <meta slot="head" name="twitter:card" content="summary_large_image" />
+  <meta slot="head" name="twitter:image" content={selectedPhoto.data.imageUrl} />
+  <meta slot="head" name="twitter:title" content={title} />
+  <meta slot="head" name="twitter:description" content={description} />
+
+  <TwoColumnView disableTopSpace>
+    <Fragment slot="sidebar">
+      <Back href="/photography" label="Photography" />
+      <div
+        class="text-sm font-medium tracking-widest text-gray-500 uppercase mb-2 lg:mb-4"
+      >
+        some
+      </div>
+      <div
+        class={`text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+      >
+        Photography
+      </div>
+    </Fragment>
+
+    <div slot="main">
+      <div class="h-full max-w-6xl mx-auto pt-8">
+        <PhotoGallery photos={photos} />
+      </div>
+    </div>
+  </TwoColumnView>
+</Layout>
