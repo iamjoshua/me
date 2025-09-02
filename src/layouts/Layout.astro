@@ -3,7 +3,7 @@ interface Props {
   title?: string;
 }
 
-const { title } = Astro.props as Props;
+const { title, padding } = Astro.props as Props;
 
 import "../styles/global.css";
 import "@fontsource/inter";
@@ -56,42 +56,90 @@ import { ClientRouter } from "astro:transitions";
 
   /* Custom slide animations */
   @keyframes slideInLeft {
-    0% { transform: translateX(10px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+    0% {
+      transform: translateX(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
-  
+
   @keyframes slideOutLeft {
-    0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(-10px); opacity: 0; }
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(-10px);
+      opacity: 0;
+    }
   }
-  
+
   @keyframes slideInRight {
-    0% { transform: translateX(-10px); opacity: 0; }
-    100% { transform: translateX(0); opacity: 1; }
+    0% {
+      transform: translateX(-10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
   }
-  
+
   @keyframes slideOutRight {
-    0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(10px); opacity: 0; }
+    0% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(10px);
+      opacity: 0;
+    }
   }
-  
+
   @keyframes slideInUp {
-    0% { transform: translateY(10px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+    0% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-  
+
   @keyframes slideOutUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-10px); opacity: 0; }
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
   }
-  
+
   @keyframes slideInDown {
-    0% { transform: translateY(-10px); opacity: 0; }
-    100% { transform: translateY(0); opacity: 1; }
+    0% {
+      transform: translateY(-10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
   }
-  
+
   @keyframes slideOutDown {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(10px); opacity: 0; }
+    0% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
   }
 </style>

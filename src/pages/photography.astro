@@ -9,26 +9,41 @@ const photos = await getCollection("photos");
 ---
 
 <Layout title="Photography">
-  <TwoColumnView disableTopSpace>
-    <Fragment slot="sidebar">
-      <Back href="/" label="Home" />
+  <div class="relative ml-10">
+    <Back href="/" label="Home" />
+  </div>
+  <div
+    id="photography-page"
+    class="h-full w-[calc(100%+20px)] -ml-[10px] overflow-hidden flex flex-col"
+  >
+    <div class="h-1/5 flex justify-center items-center">
       <div
-        class="text-sm font-medium tracking-widest text-gray-500 uppercase mb-2 lg:mb-4"
-      >
-        some
-      </div>
-      <div
-        class={`text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+        class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
       >
         Photography
       </div>
-    </Fragment>
+    </div>
 
-    <div slot="main">
-      <div class="h-full max-w-6xl mx-auto pt-8">
+    <div class="h-3/5 w-full flex">
+      <div class="flex items-center">
         <PhotoGallery photos={photos} />
       </div>
     </div>
-  </TwoColumnView>
+    <div class="h-1/5"></div>
+  </div>
 </Layout>
 
+<style>
+  /* Remove bottom spacing within TwoColumnView to avoid page vertical scroll */
+  #photography-page .mb-22 {
+    margin-bottom: 0 !important;
+  }
+  /* Optionally ensure the gallery section doesn't cause vertical overflow */
+  #photography-page {
+    overflow-y: hidden;
+  }
+  /* Make sure the horizontal container can use full width */
+  #photography-page #photo-horizontal {
+    width: 100%;
+  }
+</style>

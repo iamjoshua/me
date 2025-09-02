@@ -15,13 +15,79 @@ interface Props {
 }
 
 const { photos } = Astro.props;
+// Duplicate current photos 10x so there is enough to test horizontal scroll
+const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
+const mid = Math.ceil(renderPhotos.length / 2);
+const row1 = renderPhotos.slice(0, mid);
+const row2 = renderPhotos.slice(mid);
+// const renderPhotos = photos;
 ---
 
-<div class="w-full mb-22">
-  <div class="flex flex-wrap gap-4 md:gap-6 lg:gap-8 justify-center">
-    {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
+<div id="photo-horizontal" class="w-full overflow-x-auto overflow-y-hidden">
+  <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
+    <div
+      class="flex flex-nowrap items-start justify-start gap-4 md:gap-6 lg:gap-8 px-12"
+    >
+      {row1.map((photo, index) => <Photograph photo={photo} index={index} />)}
+      <div class="w-12 h-full bg-blue-300 opacity-0">space</div>
+    </div>
+    <div
+      class="flex flex-nowrap items-start justify-start gap-4 md:gap-6 lg:gap-8 px-12"
+    >
+      {
+        row2.map((photo, index) => (
+          <Photograph photo={photo} index={index + row1.length} />
+        ))
+      }
+      <div class="w-12 h-full bg-blue-300 opacity-0">space</div>
+    </div>
   </div>
 </div>
 
 <Lightbox />
 
+<script>
+  // Translate vertical wheel to horizontal scroll within the gallery
+  const horizontal = document.getElementById("photo-horizontal");
+  if (horizontal) {
+    horizontal.addEventListener(
+      "wheel",
+      (e) => {
+        if (e.ctrlKey) return; // allow pinch-zoom
+        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+          e.preventDefault();
+          horizontal.scrollLeft += e.deltaY;
+        }
+      },
+      { passive: false },
+    );
+
+    // Also handle wheel events anywhere on the page to scroll the gallery
+    const onWindowWheel = (e) => {
+      if (e.ctrlKey) return;
+      // If lightbox is open, don't hijack scrolling
+      const lb = document.getElementById("lightbox");
+      const isLightboxVisible = lb && lb.classList.contains("lightbox-visible");
+      if (isLightboxVisible) return;
+
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        horizontal.scrollLeft += e.deltaY;
+      }
+    };
+    window.addEventListener("wheel", onWindowWheel, { passive: false });
+  }
+</script>
+
+<style>
+  /* Hide horizontal scrollbar while preserving scroll behavior */
+  #photo-horizontal::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  #photo-horizontal {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+</style>
