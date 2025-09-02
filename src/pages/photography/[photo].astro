@@ -7,7 +7,7 @@ import Back from "../../components/elements/Back.astro";
 
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
-  
+
   return photos.map((photo) => ({
     params: { photo: photo.id },
     props: { selectedPhoto: photo },
@@ -18,7 +18,7 @@ const { selectedPhoto } = Astro.props;
 const photos = await getCollection("photos");
 
 // Set up meta tags for the specific photo
-const title = `${selectedPhoto.data.title} - Photography`;
+const title = `Joshua Heiland | Photographs | ${selectedPhoto.data.title}`;
 const description = `View ${selectedPhoto.data.title} and other photographs by Joshua Heiland`;
 ---
 
@@ -29,10 +29,14 @@ const description = `View ${selectedPhoto.data.title} and other photographs by J
   <meta slot="head" property="og:image" content={selectedPhoto.data.imageUrl} />
   <meta slot="head" property="og:url" content={Astro.url} />
   <meta slot="head" property="og:type" content="article" />
-  
+
   <!-- Twitter meta tags -->
   <meta slot="head" name="twitter:card" content="summary_large_image" />
-  <meta slot="head" name="twitter:image" content={selectedPhoto.data.imageUrl} />
+  <meta
+    slot="head"
+    name="twitter:image"
+    content={selectedPhoto.data.imageUrl}
+  />
   <meta slot="head" name="twitter:title" content={title} />
   <meta slot="head" name="twitter:description" content={description} />
 
