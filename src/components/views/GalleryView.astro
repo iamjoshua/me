@@ -1,0 +1,62 @@
+---
+import Back from "@/components/elements/Back.astro";
+import PhotoGallery from "@/components/PhotoGallery/PhotoGallery.astro";
+
+interface Props {
+  photos: Array<{
+    id: string;
+    data: {
+      filename: string;
+      title: string;
+      imageUrl: string;
+      path: string;
+    };
+  }>;
+  backHref: string;
+  backLabel: string;
+  sectionTitle: string;
+}
+
+const { photos, backHref, backLabel, sectionTitle } = Astro.props;
+---
+
+<div class="gallery-page">
+  <div class="relative ml-10">
+    <Back href={backHref} label={backLabel} />
+  </div>
+
+  <div
+    id="photography-page"
+    class="min-h-screen lg:h-dvh md:w-[calc(100%+20px)] md:-ml-[10px] overflow-x-hidden lg:overflow-y-hidden flex flex-col"
+  >
+    <div class="h-[50vh] lg:h-1/5 flex justify-center items-center">
+      <div
+        class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+      >
+        {sectionTitle}
+      </div>
+    </div>
+
+    <div class="w-full block lg:flex lg:h-3/5 lg:items-center gallery-zone">
+      <div class="w-full">
+        <PhotoGallery photos={photos} />
+      </div>
+    </div>
+    <div class="h-0 lg:h-1/5"></div>
+  </div>
+</div>
+
+<style>
+  /* Remove bottom spacing within TwoColumnView to avoid page vertical scroll */
+  .gallery-page .mb-22 {
+    margin-bottom: 0 !important;
+  }
+  /* Make sure the horizontal container can use full width */
+  .gallery-page #photo-horizontal {
+    width: 100%;
+  }
+  /* On desktop, prevent page-level vertical scrolling entirely on photo pages */
+  @media (min-width: 1024px) {
+    body { overflow-y: hidden !important; }
+  }
+</style>

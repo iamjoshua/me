@@ -16,25 +16,25 @@ interface Props {
 
 const { photos } = Astro.props;
 // Desktop horizontal: duplicate for density if desired
-// const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
-const renderPhotos = photos;
+const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
+// const renderPhotos = photos;
 const mid = Math.ceil(renderPhotos.length / 2);
 const row1 = renderPhotos.slice(0, mid);
 const row2 = renderPhotos.slice(mid);
 // const renderPhotos = photos;
 ---
 
-<!-- Mobile: restore simple vertical flow with body scrolling -->
-<div class="md:hidden w-full">
+<!-- Mobile/Tablet: restore simple vertical flow with body scrolling -->
+<div class="lg:hidden w-full">
   <div class="flex flex-wrap gap-4 justify-center px-4">
     {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
   </div>
 </div>
 
-<!-- Desktop: horizontal two-row scroller -->
+<!-- Desktop (lg+): horizontal two-row scroller -->
 <div
   id="photo-horizontal"
-  class="hidden md:block w-full overflow-x-auto overflow-y-hidden"
+  class="hidden lg:block w-full overflow-x-auto overflow-y-hidden"
 >
   <div class="flex flex-col gap-6 lg:gap-8">
     <div
@@ -59,22 +59,69 @@ const row2 = renderPhotos.slice(mid);
 <Lightbox />
 
 <script>
-  // Desktop-only wheel-to-horizontal scroll with clean attach/detach on viewport changes.
-  const horizontal = document.getElementById("photo-horizontal");
-  let containerWheelHandler = null;
-  let windowWheelHandler = null;
+  // Desktop-only wheel-to-horizontal scroll with scoped, leak-free listeners.
+  let horizontal: HTMLElement | null = null;
+  const refreshHorizontal = () => {
+    horizontal = document.getElementById("photo-horizontal");
+  };
+  refreshHorizontal();
   const desktopMQ = window.matchMedia("(min-width: 1024px)");
   const finePointerMQ = window.matchMedia("(pointer: fine)");
 
+  // If a previous instance left handlers around (SPA navigations), clean them up first
+  const w = window as any;
+  if (typeof w.__photoGalleryCleanup === "function") {
+    try {
+      w.__photoGalleryCleanup();
+    } catch {}
+  }
+
+  let containerWheelHandler: ((e: WheelEvent) => void) | null = null;
+  let windowWheelHandler: ((e: WheelEvent) => void) | null = null;
+  let desktopMQHandler: ((e: MediaQueryListEvent) => void) | null = null;
+  let finePointerMQHandler: ((e: MediaQueryListEvent) => void) | null = null;
+  let pointerEnterHandler: ((e: Event) => void) | null = null;
+  let pointerLeaveHandler: ((e: Event) => void) | null = null;
+
   function detachHandlers() {
-    if (!horizontal) return;
-    if (containerWheelHandler) {
-      horizontal.removeEventListener("wheel", containerWheelHandler);
+    if (horizontal && containerWheelHandler) {
+      horizontal.removeEventListener(
+        "wheel",
+        containerWheelHandler as EventListener,
+      );
       containerWheelHandler = null;
     }
     if (windowWheelHandler) {
-      window.removeEventListener("wheel", windowWheelHandler);
+      window.removeEventListener("wheel", windowWheelHandler as EventListener);
       windowWheelHandler = null;
+    }
+    if (desktopMQHandler) {
+      desktopMQ.removeEventListener(
+        "change",
+        desktopMQHandler as EventListener,
+      );
+      desktopMQHandler = null;
+    }
+    if (finePointerMQHandler) {
+      finePointerMQ.removeEventListener(
+        "change",
+        finePointerMQHandler as EventListener,
+      );
+      finePointerMQHandler = null;
+    }
+    if (horizontal && pointerEnterHandler) {
+      horizontal.removeEventListener(
+        "pointerenter",
+        pointerEnterHandler as EventListener,
+      );
+      pointerEnterHandler = null;
+    }
+    if (horizontal && pointerLeaveHandler) {
+      horizontal.removeEventListener(
+        "pointerleave",
+        pointerLeaveHandler as EventListener,
+      );
+      pointerLeaveHandler = null;
     }
   }
 
@@ -85,34 +132,73 @@ const row2 = renderPhotos.slice(mid);
     detachHandlers();
     if (!isDesktop) return;
 
-    containerWheelHandler = (e) => {
+    // Keep pointer listeners no-op for now (can be used later if needed)
+    // No-op pointer listeners kept for parity; can be removed if undesired
+    pointerEnterHandler = () => {};
+    pointerLeaveHandler = () => {};
+    horizontal.addEventListener("pointerenter", pointerEnterHandler, { passive: true });
+    horizontal.addEventListener("pointerleave", pointerLeaveHandler, { passive: true });
+
+    containerWheelHandler = (e: WheelEvent) => {
       if (e.ctrlKey) return;
+      const el = horizontal as HTMLElement;
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        horizontal.scrollLeft += e.deltaY;
+        const prev = el.scrollLeft;
+        el.scrollLeft += e.deltaY;
+        if (el.scrollLeft !== prev) {
+          e.preventDefault();
+        }
       }
     };
-    horizontal.addEventListener("wheel", containerWheelHandler, {
-      passive: false,
-    });
+    horizontal.addEventListener(
+      "wheel",
+      containerWheelHandler as EventListener,
+      { passive: false },
+    );
 
-    windowWheelHandler = (e) => {
+    // Allow "scroll anywhere" to pan gallery on desktop
+    windowWheelHandler = (e: WheelEvent) => {
       if (e.ctrlKey) return;
       const lb = document.getElementById("lightbox");
       const isLightboxVisible = lb && lb.classList.contains("lightbox-visible");
       if (isLightboxVisible) return;
+      const el = document.getElementById("photo-horizontal");
+      if (!el) return;
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-        e.preventDefault();
-        horizontal.scrollLeft += e.deltaY;
+        const prev = el.scrollLeft;
+        el.scrollLeft += e.deltaY;
+        if (el.scrollLeft !== prev) {
+          e.preventDefault();
+        }
       }
     };
-    window.addEventListener("wheel", windowWheelHandler, { passive: false });
+    window.addEventListener("wheel", windowWheelHandler as EventListener, {
+      passive: false,
+    });
+
+    desktopMQHandler = () => attachHandlers();
+    finePointerMQHandler = () => attachHandlers();
+    desktopMQ.addEventListener("change", desktopMQHandler as EventListener);
+    finePointerMQ.addEventListener(
+      "change",
+      finePointerMQHandler as EventListener,
+    );
   }
 
-  // Initialize and respond to viewport changes
+  // Initialize
   attachHandlers();
-  desktopMQ.addEventListener("change", attachHandlers);
-  finePointerMQ.addEventListener("change", attachHandlers);
+  // Re-attach when a client navigation loads this page
+  window.addEventListener('astro:page-load', () => {
+    refreshHorizontal();
+    attachHandlers();
+  });
+
+  // Provide global cleanup for SPA navigations and hot reloads
+  const cleanup = () => {
+    detachHandlers();
+  };
+  w.__photoGalleryCleanup = cleanup;
+  window.addEventListener("astro:before-swap", cleanup, { once: true });
 </script>
 
 <style>
@@ -127,4 +213,5 @@ const row2 = renderPhotos.slice(mid);
     scrollbar-width: none; /* Firefox */
     touch-action: pan-y pinch-zoom; /* allow natural vertical scroll on touch */
   }
+  
 </style>

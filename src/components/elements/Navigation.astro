@@ -7,9 +7,11 @@ import { cn } from "@/lib/utils";
 const style = "text-gray-600 hover:text-gray-900 transition-colors p-5";
 
 function getActiveClass(route: string) {
-  return Astro.url.pathname === route
-    ? "text-gray-900 opacity-100"
-    : "opacity-70";
+  const path = Astro.url.pathname;
+  const isActive = route === "/photography"
+    ? path === "/photography" || path.startsWith("/photography/")
+    : path === route;
+  return isActive ? "text-gray-900 opacity-100" : "opacity-70";
 }
 ---
 

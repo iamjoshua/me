@@ -1,9 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
-import TwoColumnView from "../../components/views/TwoColumnView.astro";
-import PhotoGallery from "@/components/PhotoGallery/PhotoGallery.astro";
-import Back from "../../components/elements/Back.astro";
+import GalleryView from "@/components/views/GalleryView.astro";
 
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
@@ -40,25 +38,10 @@ const description = `View ${selectedPhoto.data.title} and other photographs by J
   <meta slot="head" name="twitter:title" content={title} />
   <meta slot="head" name="twitter:description" content={description} />
 
-  <TwoColumnView disableTopSpace>
-    <Fragment slot="sidebar">
-      <Back href="/photography" label="Photography" />
-      <div
-        class="text-sm font-medium tracking-widest text-gray-500 uppercase mb-2 lg:mb-4"
-      >
-        some
-      </div>
-      <div
-        class={`text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
-      >
-        Photography
-      </div>
-    </Fragment>
-
-    <div slot="main">
-      <div class="h-full max-w-6xl mx-auto pt-8">
-        <PhotoGallery photos={photos} />
-      </div>
-    </div>
-  </TwoColumnView>
+  <GalleryView
+    photos={photos}
+    backHref="/"
+    backLabel="Home"
+    sectionTitle="Moments I've Noticed"
+  />
 </Layout>

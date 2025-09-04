@@ -2,6 +2,8 @@
 <div
   id="lightbox"
   class="fixed inset-0 z-50 bg-white bg-opacity-95 flex items-center justify-center p-4 lightbox-hidden"
+  role="dialog"
+  aria-modal="true"
 >
   <div class="relative w-full h-full flex items-center justify-center">
     <img
@@ -101,41 +103,55 @@
     }
   }
 
-  // Handle keyboard close
-  document.addEventListener("keydown", (e) => {
+  // Attach listeners with cleanup to avoid duplication on SPA navigations
+  const w = window as any;
+  if (typeof w.__lightboxCleanup === 'function') {
+    try { w.__lightboxCleanup(); } catch {}
+  }
+
+  const onKeydown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       handleCloseClick();
     }
-  });
+  };
+  document.addEventListener("keydown", onKeydown);
 
-  // Close on background or image click
-  document.getElementById("lightbox")?.addEventListener("click", (e) => {
+  const onLightboxClick = (e: MouseEvent) => {
     if (e.target === e.currentTarget || e.target === document.getElementById("lightbox-image")) {
       handleCloseClick();
     }
-  });
+  };
+  document.getElementById("lightbox")?.addEventListener("click", onLightboxClick);
 
-  // Sync when navigating with browser back/forward
-  window.addEventListener('popstate', () => {
-    // When navigating back to the gallery, close instantly to avoid visual jank
+  const onPopState = () => {
     const isGallery = location.pathname === '/photography';
     if (isGallery) {
       closeLightbox(true);
       return;
     }
     syncFromUrl();
-  });
+  };
+  window.addEventListener('popstate', onPopState);
 
-  // Sync on initial load as well
-  document.addEventListener('DOMContentLoaded', () => {
-    syncFromUrl();
-  });
+  const onPageLoad = () => { syncFromUrl(); };
+  document.addEventListener('DOMContentLoaded', onPageLoad);
+  window.addEventListener('astro:page-load', onPageLoad);
+
+  const cleanup = () => {
+    document.removeEventListener('keydown', onKeydown);
+    document.getElementById("lightbox")?.removeEventListener('click', onLightboxClick as EventListener);
+    window.removeEventListener('popstate', onPopState);
+    document.removeEventListener('DOMContentLoaded', onPageLoad);
+    window.removeEventListener('astro:page-load', onPageLoad);
+  };
+  w.__lightboxCleanup = cleanup;
+  window.addEventListener('astro:before-swap', cleanup, { once: true });
 
   // Expose globals for use in markup and compatibility
-  (window as any).openLightbox = openLightbox;
-  (window as any).openLightboxById = openLightboxById;
-  (window as any).closeLightbox = closeLightbox;
-  (window as any).handleCloseClick = handleCloseClick;
+  w.openLightbox = openLightbox;
+  w.openLightboxById = openLightboxById;
+  w.closeLightbox = closeLightbox;
+  w.handleCloseClick = handleCloseClick;
 </script>
 
 <style>
