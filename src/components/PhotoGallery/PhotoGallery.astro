@@ -24,17 +24,17 @@ const row2 = renderPhotos.slice(mid);
 // const renderPhotos = photos;
 ---
 
-<!-- Mobile/Tablet: restore simple vertical flow with body scrolling -->
-<div class="lg:hidden w-full">
+<!-- Mobile (phones): vertical flow with body scrolling; hide from md up -->
+<div id="photo-vertical" class="md:hidden w-full">
   <div class="flex flex-wrap gap-4 justify-center px-4">
     {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
   </div>
 </div>
 
-<!-- Desktop (lg+): horizontal two-row scroller -->
+<!-- Tablet/Desktop (md+): horizontal two-row scroller -->
 <div
   id="photo-horizontal"
-  class="hidden lg:block w-full overflow-x-auto overflow-y-hidden"
+  class="hidden md:block w-full overflow-x-auto overflow-y-hidden"
 >
   <div class="flex flex-col gap-6 lg:gap-8">
     <div
@@ -187,6 +187,7 @@ const row2 = renderPhotos.slice(mid);
 
   // Initialize
   attachHandlers();
+  
   // Re-attach when a client navigation loads this page
   window.addEventListener('astro:page-load', () => {
     refreshHorizontal();
@@ -199,6 +200,8 @@ const row2 = renderPhotos.slice(mid);
   };
   w.__photoGalleryCleanup = cleanup;
   window.addEventListener("astro:before-swap", cleanup, { once: true });
+
+  // No JS breakpoint overrides; CSS handles md+ horizontal layout for tablets/desktops
 </script>
 
 <style>
@@ -211,7 +214,11 @@ const row2 = renderPhotos.slice(mid);
   #photo-horizontal {
     -ms-overflow-style: none; /* IE/Edge */
     scrollbar-width: none; /* Firefox */
-    touch-action: pan-y pinch-zoom; /* allow natural vertical scroll on touch */
+    /* On touch devices (iPad), allow horizontal panning and momentum */
+    touch-action: pan-x pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
   }
   
 </style>

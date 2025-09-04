@@ -55,8 +55,8 @@ const { photos, backHref, backLabel, sectionTitle } = Astro.props;
   .gallery-page #photo-horizontal {
     width: 100%;
   }
-  /* On desktop, prevent page-level vertical scrolling entirely on photo pages */
-  @media (min-width: 1024px) {
+  /* On desktop (fine pointer), prevent page vertical scroll on photo pages */
+  @media (min-width: 1024px) and (pointer: fine) {
     body { overflow-y: hidden !important; }
   }
 </style>
