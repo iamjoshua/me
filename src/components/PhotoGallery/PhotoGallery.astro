@@ -15,31 +15,43 @@ interface Props {
 }
 
 const { photos } = Astro.props;
-// Duplicate current photos 10x so there is enough to test horizontal scroll
-const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
+// Desktop horizontal: duplicate for density if desired
+// const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
+const renderPhotos = photos;
 const mid = Math.ceil(renderPhotos.length / 2);
 const row1 = renderPhotos.slice(0, mid);
 const row2 = renderPhotos.slice(mid);
 // const renderPhotos = photos;
 ---
 
-<div id="photo-horizontal" class="w-full overflow-x-auto overflow-y-hidden">
-  <div class="flex flex-col gap-4 md:gap-6 lg:gap-8">
+<!-- Mobile: restore simple vertical flow with body scrolling -->
+<div class="md:hidden w-full">
+  <div class="flex flex-wrap gap-4 justify-center px-4">
+    {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
+  </div>
+</div>
+
+<!-- Desktop: horizontal two-row scroller -->
+<div
+  id="photo-horizontal"
+  class="hidden md:block w-full overflow-x-auto overflow-y-hidden"
+>
+  <div class="flex flex-col gap-6 lg:gap-8">
     <div
-      class="flex flex-nowrap items-start justify-start gap-4 md:gap-6 lg:gap-8 px-12"
+      class="flex flex-nowrap items-start justify-start gap-6 lg:gap-8 px-12"
     >
       {row1.map((photo, index) => <Photograph photo={photo} index={index} />)}
-      <div class="w-12 h-full bg-blue-300 opacity-0">space</div>
+      <div class="w-12 h-full opacity-0">space</div>
     </div>
     <div
-      class="flex flex-nowrap items-start justify-start gap-4 md:gap-6 lg:gap-8 px-12"
+      class="flex flex-nowrap items-start justify-start gap-6 lg:gap-8 px-12"
     >
       {
         row2.map((photo, index) => (
           <Photograph photo={photo} index={index + row1.length} />
         ))
       }
-      <div class="w-12 h-full bg-blue-300 opacity-0">space</div>
+      <div class="w-12 h-full opacity-0">space</div>
     </div>
   </div>
 </div>
@@ -47,36 +59,60 @@ const row2 = renderPhotos.slice(mid);
 <Lightbox />
 
 <script>
-  // Translate vertical wheel to horizontal scroll within the gallery
+  // Desktop-only wheel-to-horizontal scroll with clean attach/detach on viewport changes.
   const horizontal = document.getElementById("photo-horizontal");
-  if (horizontal) {
-    horizontal.addEventListener(
-      "wheel",
-      (e) => {
-        if (e.ctrlKey) return; // allow pinch-zoom
-        if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
-          e.preventDefault();
-          horizontal.scrollLeft += e.deltaY;
-        }
-      },
-      { passive: false },
-    );
+  let containerWheelHandler = null;
+  let windowWheelHandler = null;
+  const desktopMQ = window.matchMedia("(min-width: 1024px)");
+  const finePointerMQ = window.matchMedia("(pointer: fine)");
 
-    // Also handle wheel events anywhere on the page to scroll the gallery
-    const onWindowWheel = (e) => {
+  function detachHandlers() {
+    if (!horizontal) return;
+    if (containerWheelHandler) {
+      horizontal.removeEventListener("wheel", containerWheelHandler);
+      containerWheelHandler = null;
+    }
+    if (windowWheelHandler) {
+      window.removeEventListener("wheel", windowWheelHandler);
+      windowWheelHandler = null;
+    }
+  }
+
+  function attachHandlers() {
+    if (!horizontal) return;
+    const isDesktop = desktopMQ.matches && finePointerMQ.matches;
+    // Always detach first so we don't duplicate or fight mobile scroll
+    detachHandlers();
+    if (!isDesktop) return;
+
+    containerWheelHandler = (e) => {
       if (e.ctrlKey) return;
-      // If lightbox is open, don't hijack scrolling
-      const lb = document.getElementById("lightbox");
-      const isLightboxVisible = lb && lb.classList.contains("lightbox-visible");
-      if (isLightboxVisible) return;
-
       if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
         e.preventDefault();
         horizontal.scrollLeft += e.deltaY;
       }
     };
-    window.addEventListener("wheel", onWindowWheel, { passive: false });
+    horizontal.addEventListener("wheel", containerWheelHandler, {
+      passive: false,
+    });
+
+    windowWheelHandler = (e) => {
+      if (e.ctrlKey) return;
+      const lb = document.getElementById("lightbox");
+      const isLightboxVisible = lb && lb.classList.contains("lightbox-visible");
+      if (isLightboxVisible) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        horizontal.scrollLeft += e.deltaY;
+      }
+    };
+    window.addEventListener("wheel", windowWheelHandler, { passive: false });
   }
+
+  // Initialize and respond to viewport changes
+  attachHandlers();
+  desktopMQ.addEventListener("change", attachHandlers);
+  finePointerMQ.addEventListener("change", attachHandlers);
 </script>
 
 <style>
@@ -89,5 +125,6 @@ const row2 = renderPhotos.slice(mid);
   #photo-horizontal {
     -ms-overflow-style: none; /* IE/Edge */
     scrollbar-width: none; /* Firefox */
+    touch-action: pan-y pinch-zoom; /* allow natural vertical scroll on touch */
   }
 </style>

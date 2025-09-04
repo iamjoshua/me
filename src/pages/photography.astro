@@ -14,22 +14,22 @@ const photos = await getCollection("photos");
   </div>
   <div
     id="photography-page"
-    class="h-full w-[calc(100%+20px)] -ml-[10px] overflow-hidden flex flex-col"
+    class="min-h-screen md:w-[calc(100%+20px)] md:-ml-[10px] overflow-x-hidden flex flex-col"
   >
-    <div class="h-1/5 flex justify-center items-center">
+    <div class="h-1/2 md:h-1/5 flex justify-center items-center">
       <div
         class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
       >
-        Photography
+        Moments I've noticed
       </div>
     </div>
 
-    <div class="h-3/5 w-full flex">
-      <div class="flex items-center">
+    <div class="w-full block md:flex gallery-zone">
+      <div class="w-full">
         <PhotoGallery photos={photos} />
       </div>
     </div>
-    <div class="h-1/5"></div>
+    <div class="h-0 md:h-1/5"></div>
   </div>
 </Layout>
 
@@ -38,10 +38,7 @@ const photos = await getCollection("photos");
   #photography-page .mb-22 {
     margin-bottom: 0 !important;
   }
-  /* Optionally ensure the gallery section doesn't cause vertical overflow */
-  #photography-page {
-    overflow-y: hidden;
-  }
+  /* Ensure normal vertical scroll across viewports */
   /* Make sure the horizontal container can use full width */
   #photography-page #photo-horizontal {
     width: 100%;
