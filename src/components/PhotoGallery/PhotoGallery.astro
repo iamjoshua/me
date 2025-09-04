@@ -15,13 +15,10 @@ interface Props {
 }
 
 const { photos } = Astro.props;
-// Desktop horizontal: duplicate for density if desired
-const renderPhotos = Array.from({ length: 3 }).flatMap(() => photos);
-// const renderPhotos = photos;
+const renderPhotos = photos;
 const mid = Math.ceil(renderPhotos.length / 2);
 const row1 = renderPhotos.slice(0, mid);
 const row2 = renderPhotos.slice(mid);
-// const renderPhotos = photos;
 ---
 
 <!-- Mobile (phones): vertical flow with body scrolling; hide from md up -->
@@ -136,8 +133,12 @@ const row2 = renderPhotos.slice(mid);
     // No-op pointer listeners kept for parity; can be removed if undesired
     pointerEnterHandler = () => {};
     pointerLeaveHandler = () => {};
-    horizontal.addEventListener("pointerenter", pointerEnterHandler, { passive: true });
-    horizontal.addEventListener("pointerleave", pointerLeaveHandler, { passive: true });
+    horizontal.addEventListener("pointerenter", pointerEnterHandler, {
+      passive: true,
+    });
+    horizontal.addEventListener("pointerleave", pointerLeaveHandler, {
+      passive: true,
+    });
 
     containerWheelHandler = (e: WheelEvent) => {
       if (e.ctrlKey) return;
@@ -187,9 +188,9 @@ const row2 = renderPhotos.slice(mid);
 
   // Initialize
   attachHandlers();
-  
+
   // Re-attach when a client navigation loads this page
-  window.addEventListener('astro:page-load', () => {
+  window.addEventListener("astro:page-load", () => {
     refreshHorizontal();
     attachHandlers();
   });
@@ -220,5 +221,4 @@ const row2 = renderPhotos.slice(mid);
     overscroll-behavior-x: contain;
     overscroll-behavior-y: none;
   }
-  
 </style>
