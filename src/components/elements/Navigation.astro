@@ -8,16 +8,15 @@ const style = "text-gray-600 hover:text-gray-900 transition-colors p-5";
 
 function getActiveClass(route: string) {
   const path = Astro.url.pathname;
-  const isActive = route === "/photography"
-    ? path === "/photography" || path.startsWith("/photography/")
-    : path === route;
+  const isActive =
+    route === "/photography"
+      ? path === "/photography" || path.startsWith("/photography/")
+      : path === route;
   return isActive ? "text-gray-900 opacity-100" : "opacity-70";
 }
 ---
 
-<div
-  class="flex items-center ml-8 bg-transparent backdrop-blur-xs rounded-full"
->
+<div class="flex items-center ml-8">
   <a href="/readings" class={cn(style, getActiveClass("/readings"))}>
     <Books size="w-5 h-5" />
   </a>

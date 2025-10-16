@@ -3,7 +3,12 @@ import { questionsLoader, questionSchema } from "@/lib/loaders/questionsLoader";
 import { readingsLoader, readingSchema } from "@/lib/loaders/readingsLoader";
 import { essaysLoader, essaySchema } from "@/lib/loaders/essaysLoader";
 import { photosLoader, photoSchema } from "@/lib/loaders/photosLoader";
-import { photoCollectionsLoader, photoCollectionSchema } from "@/lib/loaders/photoCollectionsLoader";
+import {
+  photoCollectionsLoader,
+  photoCollectionSchema,
+} from "@/lib/loaders/photoCollectionsLoader";
+import { localPhotoCollectionsLoader } from "./lib/loaders/localPhotoCollectionsLoader";
+import { localPhotosLoader } from "./lib/loaders/localPhotosLoader";
 
 const questions = defineCollection({
   loader: questionsLoader(),
@@ -21,13 +26,29 @@ const essays = defineCollection({
 });
 
 const photos = defineCollection({
-  loader: photosLoader(),
+  loader: localPhotosLoader(),
   schema: photoSchema,
 });
 
+// const photos = defineCollection({
+//   loader: photosLoader(),
+//   schema: photoSchema,
+// });
+
+// const photoCollections = defineCollection({
+//   loader: photoCollectionsLoader(),
+//   schema: photoCollectionSchema,
+// });
+
 const photoCollections = defineCollection({
-  loader: photoCollectionsLoader(),
+  loader: localPhotoCollectionsLoader(),
   schema: photoCollectionSchema,
 });
 
-export const collections = { essays, readings, questions, photos, photoCollections };
+export const collections = {
+  essays,
+  readings,
+  questions,
+  photos,
+  photoCollections,
+};

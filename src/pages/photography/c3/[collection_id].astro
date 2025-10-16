@@ -1,6 +1,9 @@
 ---
 import { getCollection } from "astro:content";
 import Layout from "@/layouts/CollectionV2Layout.astro";
+import Logo from "@/components/elements/Logo.astro";
+import Navigation from "@/components/elements/Navigation.astro";
+import { cn } from "@/lib/utils";
 
 export async function getStaticPaths() {
   const collections = await getCollection("photoCollections");
@@ -12,74 +15,30 @@ export async function getStaticPaths() {
 
 const { selectedCollection } = Astro.props;
 
-function encodePath(p: string) {
-  return p
-    .split("/")
-    .map((seg) => encodeURIComponent(seg))
-    .join("/");
-}
+const allPhotos = await getCollection("photos");
+const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<{
+  path: string;
+}>;
 
-// Build gallery entries directly from YAML photos[].path
-const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<any>;
-const photosInCollection = yamlPhotos
-  .map((it) => (typeof it?.path === "string" ? it.path : ""))
-  .filter(Boolean)
-  .map((p: string) => {
-    const clean = p.replace(/^\/+/, "");
-    const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
-    const filename = normalized.split("/").pop() || normalized;
-    const id = filename.replace(/\.[^/.]+$/, "");
-    const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(
-      normalized,
-    )}`;
-    return {
-      id,
-      data: {
-        filename,
-        title: id,
-        imageUrl,
-        path: normalized,
-      },
-    };
-  });
+// Match YAML photo paths to actual photo entries from the photos collection
+const galleryPhotos = yamlPhotos
+  .map((yamlPhoto) => {
+    const photoPath = yamlPhoto.path.replace(/^\/+/, "").replace(/^\.+\//, "");
+    const withoutPhotosPrefix = photoPath.startsWith("photos/")
+      ? photoPath.substring(7)
+      : photoPath;
+    return allPhotos.find((p) => p.data.path === withoutPhotosPrefix);
+  })
+  .filter((p): p is (typeof allPhotos)[0] => p !== undefined);
 
-// Ensure we have enough tiles to show the auto-layout pattern when collections are small
-const minimumGallerySize = 12;
-const galleryPhotos =
-  photosInCollection.length === 0
-    ? []
-    : Array.from(
-        {
-          length: Math.max(
-            1,
-            Math.ceil(minimumGallerySize / photosInCollection.length),
-          ),
-        },
-        (_, i) =>
-          photosInCollection.map((p, idx) => ({
-            ...p,
-            id: `${p.id}__dup${i}_${idx}`,
-          })),
-      )
-        .flat()
-        .slice(0, Math.max(photosInCollection.length, minimumGallerySize));
-
-const rawCoverPath = selectedCollection.data.cover_path;
-let coverImageUrl = selectedCollection.data.coverImageUrl;
-if (!coverImageUrl && typeof rawCoverPath === "string" && rawCoverPath.trim()) {
-  const clean = rawCoverPath.replace(/^\/+/, "");
-  const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
-  coverImageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(
-    normalized,
-  )}`;
-}
+const coverImageUrl = selectedCollection.data.coverImageUrl;
 const coverAlt = `${selectedCollection.data.title} cover image`;
 ---
 
 <Layout
   title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
 >
-  <div class="gallery-layout">
+  <div class="gallery-layout pb-25">
     <main class="flex flex-col">
       <div
         class="collection-info sticky top-0 z-30 bg-white/100 backdrop-blur p-5 md:px-10 border-b border-b-1 border-neutral-200"
@@ -106,6 +65,7 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
             />
           )
         }
+        <div class="bg-white w-full h-25"></div>
       </section>
 
       <section class="p-5 pt-5">
@@ -137,6 +97,17 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
     </main>
   </div>
 </Layout>
+<header
+  class={cn(
+    "absolute top-5 flex items-center justify-between",
+    "md:ml-10",
+    "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
+    "bg-white/90 backdrop-blur-sm rounded-full",
+  )}
+>
+  <Logo />
+  <Navigation />
+</header>
 <style>
   :root {
     --collection-info-height: 160px;
