@@ -1,0 +1,50 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/CollectionLayout.astro";
+import PhotographyCollectionView from "@/components/views/PhotographyCollectionView.astro";
+
+export async function getStaticPaths() {
+  const collections = await getCollection("photoCollections");
+  return collections.map((c) => ({
+    params: { collection_id: c.id },
+    props: { selectedCollection: c },
+  }));
+}
+
+const { selectedCollection } = Astro.props;
+
+// Build gallery entries directly from YAML photos[].path
+const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<any>;
+const photosInCollection = yamlPhotos
+  .map((it) => (typeof it?.path === "string" ? it.path : ""))
+  .filter(Boolean)
+  .map((p: string) => {
+    const clean = p.replace(/^\/+/, "");
+    const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
+    const filename = normalized.split("/").pop() || normalized;
+    const id = filename.replace(/\.[^/.]+$/, "");
+    const encodePath = (s: string) => s.split('/').map(encodeURIComponent).join('/');
+    const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(normalized)}`;
+    return {
+      id,
+      data: {
+        filename,
+        title: id,
+        imageUrl,
+        path: normalized,
+      },
+    };
+  });
+---
+
+<Layout
+  title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
+>
+  <PhotographyCollectionView
+    title={selectedCollection.data.title}
+    coverImageUrl={selectedCollection.data.coverImageUrl}
+    backHref="/photography"
+    backLabel="Photographs"
+    photos={photosInCollection}
+  />
+</Layout>

@@ -3,6 +3,7 @@ import { questionsLoader, questionSchema } from "@/lib/loaders/questionsLoader";
 import { readingsLoader, readingSchema } from "@/lib/loaders/readingsLoader";
 import { essaysLoader, essaySchema } from "@/lib/loaders/essaysLoader";
 import { photosLoader, photoSchema } from "@/lib/loaders/photosLoader";
+import { photoCollectionsLoader, photoCollectionSchema } from "@/lib/loaders/photoCollectionsLoader";
 
 const questions = defineCollection({
   loader: questionsLoader(),
@@ -24,4 +25,9 @@ const photos = defineCollection({
   schema: photoSchema,
 });
 
-export const collections = { essays, readings, questions, photos };
+const photoCollections = defineCollection({
+  loader: photoCollectionsLoader(),
+  schema: photoCollectionSchema,
+});
+
+export const collections = { essays, readings, questions, photos, photoCollections };

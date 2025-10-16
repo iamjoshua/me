@@ -1,0 +1,235 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/CollectionV2Layout.astro";
+
+export async function getStaticPaths() {
+  const collections = await getCollection("photoCollections");
+  return collections.map((c) => ({
+    params: { collection_id: c.id },
+    props: { selectedCollection: c },
+  }));
+}
+
+const { selectedCollection } = Astro.props;
+
+function encodePath(p: string) {
+  return p
+    .split("/")
+    .map((seg) => encodeURIComponent(seg))
+    .join("/");
+}
+
+// Build gallery entries directly from YAML photos[].path
+const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<any>;
+const photosInCollection = yamlPhotos
+  .map((it) => (typeof it?.path === "string" ? it.path : ""))
+  .filter(Boolean)
+  .map((p: string) => {
+    const clean = p.replace(/^\/+/, "");
+    const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
+    const filename = normalized.split("/").pop() || normalized;
+    const id = filename.replace(/\.[^/.]+$/, "");
+    const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(
+      normalized,
+    )}`;
+    return {
+      id,
+      data: {
+        filename,
+        title: id,
+        imageUrl,
+        path: normalized,
+      },
+    };
+  });
+
+// Ensure we have enough tiles to show the auto-layout pattern when collections are small
+const minimumGallerySize = 12;
+const galleryPhotos =
+  photosInCollection.length === 0
+    ? []
+    : Array.from(
+        { length: Math.max(1, Math.ceil(minimumGallerySize / photosInCollection.length)) },
+        (_, i) =>
+          photosInCollection.map((p, idx) => ({
+            ...p,
+            id: `${p.id}__dup${i}_${idx}`,
+          })),
+      )
+        .flat()
+        .slice(0, Math.max(photosInCollection.length, minimumGallerySize));
+---
+
+<Layout title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}>
+  <div class="gallery-layout">
+    <aside class="sidebar">
+      <div class="logo">&#8734;</div>
+    </aside>
+
+    <main class="main">
+      <h1>{selectedCollection.data.title}</h1>
+      {selectedCollection.data.description && (
+        <p class="intro">{selectedCollection.data.description}</p>
+      )}
+
+      {galleryPhotos.length === 0 ? (
+        <p class="empty-state">No photos found in this collection yet.</p>
+      ) : (
+        <div class="gallery">
+          {galleryPhotos.map((photo) => {
+            const photoTitle = photo.data.title || photo.data.filename;
+            const photoDescription = photo.data.path || photo.data.filename;
+            return (
+              <figure>
+                <img src={photo.data.imageUrl} alt={photoTitle} loading="lazy" decoding="async" />
+                <figcaption>
+                  <h3>{photoTitle}</h3>
+                  <p>{photoDescription}</p>
+                </figcaption>
+              </figure>
+            );
+          })}
+        </div>
+      )}
+    </main>
+  </div>
+
+  <style>
+    :global(*),
+    :global(*::before),
+    :global(*::after) {
+      box-sizing: border-box;
+    }
+
+    :global(body) {
+      font-family: system-ui, sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: #070707;
+      background: #fff;
+      min-block-size: 100vh;
+      min-block-size: 100dvh;
+      min-block-size: 100svh;
+      margin: 0;
+    }
+
+    .gallery-layout {
+      display: grid;
+      min-height: 100vh;
+      grid-template-columns:
+        [sidebar-start] 5rem
+        [sidebar-end main-start] 1fr
+        [main-end];
+    }
+
+    .sidebar {
+      grid-column: sidebar;
+      color: #fff;
+      background-color: #1d1d29;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 1rem;
+    }
+
+    .logo {
+      display: flex;
+      justify-content: center;
+      font-size: 3rem;
+      line-height: 1.5;
+    }
+
+    .main {
+      grid-column: main;
+      padding: 1.25rem;
+    }
+
+    .main h1 {
+      font-size: 1.75rem;
+      line-height: 1.5;
+      margin-block-end: 1rem;
+    }
+
+    .intro {
+      margin-block-end: 2rem;
+      color: #444;
+      max-width: 65ch;
+    }
+
+    .empty-state {
+      color: #777;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+      grid-auto-flow: dense;
+      gap: 0.75rem;
+      align-items: start;
+    }
+
+    .gallery figure {
+      container: figure / inline-size;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto;
+    }
+
+    .gallery img {
+      inline-size: 100%;
+      block-size: auto;
+      height: auto;
+      object-fit: contain;
+      grid-area: 1 / 1 / -1 / -1;
+      justify-self: stretch;
+      transition: scale 1s ease-in-out;
+    }
+
+    .gallery figure:hover img {
+      scale: 1.125;
+    }
+
+    .gallery figcaption {
+      grid-area: 1 / 1 / -1 / -1;
+      align-self: end;
+      z-index: 1;
+      padding: 3em 15% 1em 1em;
+      color: #fff;
+      font-size: 0.875rem;
+      line-height: 1.3;
+      background: linear-gradient(transparent 25%, rgb(0 0 0 / 0.75));
+      display: none;
+    }
+
+    @container figure (width > 20rem) {
+      .gallery figcaption {
+        display: block;
+      }
+    }
+
+    .gallery figcaption h3 {
+      font-size: 1.0625rem;
+    }
+
+    .gallery figcaption p {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    @media (width > 600px) {
+      .gallery figure:nth-child(1) {
+        grid-area: span 2 / span 2;
+      }
+
+      .gallery figure:nth-child(4n + 1) {
+        grid-row: span 2;
+      }
+
+      .gallery figure:nth-child(4n + 2) {
+        grid-column: span 2;
+      }
+    }
+  </style>
+</Layout>

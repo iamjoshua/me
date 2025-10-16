@@ -1,0 +1,260 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/CollectionV2Layout.astro";
+
+export async function getStaticPaths() {
+  const collections = await getCollection("photoCollections");
+  return collections.map((c) => ({
+    params: { collection_id: c.id },
+    props: { selectedCollection: c },
+  }));
+}
+
+const { selectedCollection } = Astro.props;
+
+function encodePath(p: string) {
+  return p
+    .split("/")
+    .map((seg) => encodeURIComponent(seg))
+    .join("/");
+}
+
+// Build gallery entries directly from YAML photos[].path
+const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<any>;
+const photosInCollection = yamlPhotos
+  .map((it) => (typeof it?.path === "string" ? it.path : ""))
+  .filter(Boolean)
+  .map((p: string) => {
+    const clean = p.replace(/^\/+/, "");
+    const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
+    const filename = normalized.split("/").pop() || normalized;
+    const id = filename.replace(/\.[^/.]+$/, "");
+    const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(
+      normalized,
+    )}`;
+    return {
+      id,
+      data: {
+        filename,
+        title: id,
+        imageUrl,
+        path: normalized,
+      },
+    };
+  });
+
+// Ensure we have enough tiles to show the auto-layout pattern when collections are small
+const minimumGallerySize = 12;
+const galleryPhotos =
+  photosInCollection.length === 0
+    ? []
+    : Array.from(
+        {
+          length: Math.max(
+            1,
+            Math.ceil(minimumGallerySize / photosInCollection.length),
+          ),
+        },
+        (_, i) =>
+          photosInCollection.map((p, idx) => ({
+            ...p,
+            id: `${p.id}__dup${i}_${idx}`,
+          })),
+      )
+        .flat()
+        .slice(0, Math.max(photosInCollection.length, minimumGallerySize));
+
+const rawCoverPath = selectedCollection.data.cover_path;
+let coverImageUrl = selectedCollection.data.coverImageUrl;
+if (!coverImageUrl && typeof rawCoverPath === "string" && rawCoverPath.trim()) {
+  const clean = rawCoverPath.replace(/^\/+/, "");
+  const normalized = clean.startsWith("photos/") ? clean : `photos/${clean}`;
+  coverImageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(
+    normalized,
+  )}`;
+}
+const coverAlt = `${selectedCollection.data.title} cover image`;
+---
+
+<Layout
+  title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
+>
+  <div class="gallery-layout">
+    <main class="flex flex-col">
+      <div
+        class="collection-info sticky top-0 z-30 bg-white/100 backdrop-blur p-5 md:px-10 border-b border-b-1 border-neutral-200"
+      >
+        <h1 class="text-lg font-semibold text-neutral-900">
+          {selectedCollection.data.title}
+        </h1>
+        {
+          selectedCollection.data.description && (
+            <p class="mt-4 max-w-[65ch] text-neutral-600">
+              {selectedCollection.data.description}
+            </p>
+          )
+        }
+      </div>
+      <section class="collection-cover flex flex-col">
+        {
+          coverImageUrl && (
+            <div
+              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat bg-fixed"
+              style={`background-image: url('${coverImageUrl}')`}
+              role="img"
+              aria-label={coverAlt}
+            />
+          )
+        }
+      </section>
+
+      <section class="p-5 pt-5">
+        {
+          galleryPhotos.length === 0 ? (
+            <p class="text-sm text-neutral-500">
+              No photos found in this collection yet.
+            </p>
+          ) : (
+            <div class="gallery">
+              {galleryPhotos.map((photo) => {
+                const photoTitle = photo.data.title || photo.data.filename;
+                const photoDescription = photo.data.path || photo.data.filename;
+                return (
+                  <div class="item">
+                    <img
+                      src={photo.data.imageUrl}
+                      alt={photoTitle}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )
+        }
+      </section>
+    </main>
+  </div>
+</Layout>
+<style>
+  :root {
+    --collection-info-height: 160px;
+  }
+
+  .collection-cover {
+    min-height: max(320px, calc(100vh - var(--collection-info-height, 160px)));
+  }
+
+  .gallery {
+    display: grid;
+    gap: 12px;
+    grid-auto-flow: dense; /* helps backfill gaps */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-rows: 8px; /* base unit for vertical spanning */
+  }
+
+  .gallery .item {
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .gallery .item.wide {
+    grid-column: span 2; /* landscape spans two columns */
+  }
+
+  /* Images keep intrinsic aspect ratio */
+  .gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover; /* harmless here; preserves crop behavior if needed */
+    border-radius: inherit;
+  }
+
+  /* Small screens: disable 2-col span so we don't force extra tracks */
+  @media (max-width: 640px) {
+    .gallery .item.wide {
+      grid-column: span 1;
+    }
+  }
+</style>
+
+<div class="gallery">
+  <div class="item"><img src="a.jpg" alt="" loading="lazy" /></div>
+  <div class="item"><img src="b.jpg" alt="" loading="lazy" /></div>
+  <!-- … -->
+</div>
+
+<script>
+  (function () {
+    const info = document.querySelector(".collection-info");
+    const setInfoHeightVar = () => {
+      if (!info) return;
+      const height = info.getBoundingClientRect().height;
+      document.documentElement.style.setProperty(
+        "--collection-info-height",
+        `${Math.round(height)}px`,
+      );
+    };
+
+    const initMasonry = (container) => {
+      const getMetrics = () => {
+        const s = getComputedStyle(container);
+        return {
+          row: parseFloat(s.getPropertyValue("grid-auto-rows")),
+          gap: parseFloat(s.getPropertyValue("gap")),
+        };
+      };
+
+      const setSpan = (item) => {
+        const { row, gap } = getMetrics();
+        const el = item.firstElementChild; // the img (or content wrapper)
+        if (!el) return;
+        const h = el.getBoundingClientRect().height;
+        const span = Math.ceil((h + gap) / (row + gap));
+        item.style.gridRowEnd = `span ${span}`;
+      };
+
+      const setOrientation = (item) => {
+        const img = item.querySelector("img");
+        if (!img) return;
+        const w = img.naturalWidth,
+          h = img.naturalHeight;
+        if (w && h) {
+          // Treat slightly-wide as landscape; squares count as portrait
+          const isLandscape = w / h > 1.05;
+          item.classList.toggle("wide", isLandscape);
+        }
+      };
+
+      const items = Array.from(container.children);
+
+      items.forEach((item) => {
+        const img = item.querySelector("img");
+        if (img) {
+          const onReady = () => {
+            setOrientation(item);
+            setSpan(item);
+          };
+          img.complete
+            ? onReady()
+            : img.addEventListener("load", onReady, { once: true });
+        } else {
+          setSpan(item);
+        }
+      });
+
+      // Recompute spans on resize (layout changes)
+      new ResizeObserver(() => items.forEach(setSpan)).observe(container);
+    };
+
+    if (info) {
+      setInfoHeightVar();
+      new ResizeObserver(setInfoHeightVar).observe(info);
+      window.addEventListener("resize", setInfoHeightVar, { passive: true });
+    }
+
+    document.querySelectorAll(".gallery").forEach(initMasonry);
+  })();
+</script>

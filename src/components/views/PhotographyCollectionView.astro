@@ -1,0 +1,70 @@
+---
+import Back from "@/components/elements/Back.astro";
+import PhotoGallery from "@/components/PhotoGallery/PhotoGallery.astro";
+
+interface Props {
+  title: string;
+  coverImageUrl?: string;
+  backHref?: string;
+  backLabel?: string;
+  photos?: Array<{
+    id: string;
+    data: {
+      filename: string;
+      title: string;
+      imageUrl: string;
+      path: string;
+    };
+  }>;
+}
+
+const {
+  title,
+  coverImageUrl = "",
+  backHref = "/photography",
+  backLabel = "Photographs",
+  photos = [],
+} = Astro.props as Props;
+---
+
+<div class="collection-view">
+  <div class="relative ml-10 z-50">
+    <Back href={backHref} label={backLabel} />
+  </div>
+
+  <div
+    class="min-h-screen lg:h-dvh w-full grid grid-cols-1 md:grid-cols-2 overflow-hidden"
+  >
+    <!-- Left: Cover image, must cover available space -->
+    <div class="relative w-full h-[50vh] md:h-auto md:min-h-full">
+      {
+        coverImageUrl && (
+          <img
+            src={coverImageUrl}
+            alt={`${title} cover`}
+            class="absolute inset-0 w-full h-full object-cover"
+            loading="eager"
+            decoding="async"
+          />
+        )
+      }
+    </div>
+
+    <!-- Right: Title centered vertically -->
+    <div class="flex items-center justify-center">
+      <h1
+        class="text-3xl md:text-4xl font-light text-gray-700 italic leading-tight font-[Crimson_Text] text-center"
+      >
+        {title}
+      </h1>
+    </div>
+  </div>
+  <!-- Below the fold: gallery of collection images -->
+  <div
+    class="w-full block lg:flex lg:items-center gallery-zone mt-8 lg:mt-12 lg:pb-25"
+  >
+    <div class="w-full">
+      <PhotoGallery photos={photos} />
+    </div>
+  </div>
+</div>

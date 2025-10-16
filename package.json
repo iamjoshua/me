@@ -26,7 +26,8 @@
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
     "tailwindcss-motion": "^1.1.1",
-    "title-case": "^4.3.2"
+    "title-case": "^4.3.2",
+    "yaml": "^2.8.1"
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.4",

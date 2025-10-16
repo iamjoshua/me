@@ -1,6 +1,8 @@
 import type { Loader } from "astro/loaders";
 import { z } from "astro:content";
-import { getRepoContents } from "@/lib/github/getRepoContents";
+import { repositoryCache } from "@/lib/github/repositoryCache";
+import { getFiles } from "@/lib/github/getFiles";
+import { join } from "path";
 
 export const photoSchema = z.object({
   filename: z.string(),
@@ -17,26 +19,38 @@ export function photosLoader(): Loader {
         // NOTE: Astro caches data between builds; clear if data is stale or not updating as expected
         store.clear();
 
-        console.log("Loading photos from iamjoshua/photography...");
-        const files = await getRepoContents("iamjoshua/photography", "photos");
+        console.log("Loading photos from iamjoshua/photography (recursive)...");
+        const repoPath = await repositoryCache.getRepository({
+          repo: "iamjoshua/photography",
+          targetDir: "/tmp/photography-repo",
+          branch: "main",
+        });
+        const baseDir = join(repoPath, "photos");
+        const files = await getFiles(baseDir, "**/*.{jpg,jpeg,png,webp}");
 
         console.log(`Found ${files.length} photo files`);
 
         for (const file of files) {
-          console.log(`Adding photo: ${file.name} -> ${file.download_url}`);
-          
+          const id = file.filename.replace(/\.[^/.]+$/, "");
+          const title = id;
+          const pathRel = `photos/${file.path}`.replace(/^\/+/, "");
+          const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${pathRel}`;
+
           store.set({
-            id: file.name.replace(/\.[^/.]+$/, ""), // Remove extension for ID
+            id,
             data: {
-              filename: file.name,
-              title: file.name.replace(/\.[^/.]+$/, ""), // Use filename as title for now
-              imageUrl: file.download_url,
-              path: file.path,
+              filename: file.filename,
+              title,
+              imageUrl,
+              path: pathRel,
             },
           });
         }
       } catch (error) {
-        console.warn("Photography repository not found or not accessible:", error.message);
+        console.warn(
+          "Photography repository not found or not accessible:",
+          (error as any)?.message || error,
+        );
         // Don't throw - just log and continue with empty collection
       }
     },
