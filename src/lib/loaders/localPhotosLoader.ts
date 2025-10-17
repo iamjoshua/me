@@ -18,15 +18,14 @@ export function localPhotosLoader(): Loader {
         for (const file of files) {
           const id = file.filename.replace(/\.[^/.]+$/, "");
           const title = id;
-          const imageUrl = `/local-photos/${file.path}`;
+          const path = file.path;
 
           store.set({
             id,
             data: {
               filename: file.filename,
               title,
-              imageUrl,
-              path: file.path,
+              path,
             },
           });
         }

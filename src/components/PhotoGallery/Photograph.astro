@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import AnimateOnLoad from "../AnimateOnLoad.astro";
+import { getPhotoUrl } from "@/lib/utils";
 
 interface Props {
   photo: {
@@ -8,7 +9,6 @@ interface Props {
     data: {
       filename: string;
       title: string;
-      imageUrl: string;
       path: string;
     };
   };
@@ -16,19 +16,21 @@ interface Props {
 }
 
 const { photo, index } = Astro.props;
+const thumbnailUrl = getPhotoUrl(photo.data.path, { width: 400 });
+const fullUrl = getPhotoUrl(photo.data.path, { width: 2400 });
 ---
 
 <AnimateOnLoad type="slideUp" delay={index * 0.1} class="md:flex-none">
   <div
     class="group cursor-pointer w-full md:w-auto"
     data-photo-id={photo.id}
-    data-image-url={photo.data.imageUrl}
+    data-image-url={fullUrl}
     data-title={photo.data.title}
     onclick={`openLightboxById('${photo.id}')`}
   >
     <div class="overflow-hidden rounded-lg bg-gray-100">
       <Image
-        src={photo.data.imageUrl}
+        src={thumbnailUrl}
         alt={photo.data.title}
         width={400}
         height={300}

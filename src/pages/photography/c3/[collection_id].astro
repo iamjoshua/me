@@ -4,7 +4,7 @@ import Layout from "@/layouts/CollectionV2Layout.astro";
 import Logo from "@/components/elements/Logo.astro";
 import Navigation from "@/components/elements/Navigation.astro";
 import Lightbox from "@/components/PhotoGallery/Lightbox.astro";
-import { cn } from "@/lib/utils";
+import { cn, getPhotoUrl } from "@/lib/utils";
 import Back from "@/components/elements/Back.astro";
 
 export async function getStaticPaths() {
@@ -95,17 +95,19 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
             <div class="gallery">
               {galleryPhotos.map((photo) => {
                 const photoTitle = photo.data.title || photo.data.filename;
+                const thumbnailUrl = getPhotoUrl(photo.data.path, { width: 600 });
+                const fullUrl = getPhotoUrl(photo.data.path, { width: 2400 });
                 return (
                   <div class="item">
                     <div
                       class="group cursor-pointer overflow-hidden rounded-lg"
                       data-photo-id={photo.id}
-                      data-image-url={photo.data.imageUrl}
+                      data-image-url={fullUrl}
                       data-title={photoTitle}
                       onclick={`openLightboxById('${photo.id}')`}
                     >
                       <img
-                        src={photo.data.imageUrl}
+                        src={thumbnailUrl}
                         alt={photoTitle}
                         loading="lazy"
                         decoding="async"

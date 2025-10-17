@@ -7,7 +7,6 @@ import { join } from "path";
 export const photoSchema = z.object({
   filename: z.string(),
   title: z.string(),
-  imageUrl: z.string().url(),
   path: z.string(),
 });
 
@@ -33,22 +32,13 @@ export function photosLoader(): Loader {
         for (const file of files) {
           const id = file.filename.replace(/\.[^/.]+$/, "");
           const title = id;
-
-          // Store path without photos/ prefix (matches local loader)
           const path = file.path;
-
-          // Build GitHub URL with photos/ prefix and URL encoding
-          const pathForGithub = `photos/${file.path}`.replace(/^\/+/, "");
-          const encodePath = (p: string) =>
-            p.split("/").map(encodeURIComponent).join("/");
-          const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(pathForGithub)}`;
 
           store.set({
             id,
             data: {
               filename: file.filename,
               title,
-              imageUrl,
               path,
             },
           });

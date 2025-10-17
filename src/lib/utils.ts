@@ -30,3 +30,32 @@ export function processBlocks(
     .replace(/\n\s*\n\s*\n/g, "\n\n")
     .trim();
 }
+
+export interface PhotoUrlOptions {
+  width?: number;
+  quality?: number;
+}
+
+export function getPhotoUrl(path: string, options?: PhotoUrlOptions): string {
+  const IS_LOCAL = process.env.USE_LOCAL_PHOTOS === "true";
+
+  if (IS_LOCAL) {
+    return `/local-photos/${path}`;
+  }
+
+  const domain = "https://photos.joshuaheiland.com";
+
+  if (options?.width) {
+    // Resized images can look blurry; add some padding to enhance clarity
+    const paddedWidth = options.width + 100;
+    const params = [
+      `width=${paddedWidth}`,
+      `format=webp`,
+      `quality=100`,
+      `sharpen=0.5`,
+    ];
+    return `${domain}/cdn-cgi/image/${params.join(",")}/${path}`;
+  }
+
+  return `${domain}/${path}`;
+}

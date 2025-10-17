@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 import GalleryView from "@/components/views/GalleryView.astro";
+import { getPhotoUrl } from "@/lib/utils";
 
 export async function getStaticPaths() {
   const photos = await getCollection("photos");
@@ -18,13 +19,14 @@ const photos = await getCollection("photos");
 // Set up meta tags for the specific photo
 const title = `Joshua Heiland | Photographs | ${selectedPhoto.data.title}`;
 const description = `View ${selectedPhoto.data.title} and other photographs by Joshua Heiland`;
+const ogImageUrl = getPhotoUrl(selectedPhoto.data.path, { width: 1200 });
 ---
 
 <Layout title={title}>
   <!-- Open Graph meta tags for social sharing -->
   <meta slot="head" property="og:title" content={title} />
   <meta slot="head" property="og:description" content={description} />
-  <meta slot="head" property="og:image" content={selectedPhoto.data.imageUrl} />
+  <meta slot="head" property="og:image" content={ogImageUrl} />
   <meta slot="head" property="og:url" content={Astro.url} />
   <meta slot="head" property="og:type" content="article" />
 
@@ -33,7 +35,7 @@ const description = `View ${selectedPhoto.data.title} and other photographs by J
   <meta
     slot="head"
     name="twitter:image"
-    content={selectedPhoto.data.imageUrl}
+    content={ogImageUrl}
   />
   <meta slot="head" name="twitter:title" content={title} />
   <meta slot="head" name="twitter:description" content={description} />
