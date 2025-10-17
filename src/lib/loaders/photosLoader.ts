@@ -33,8 +33,15 @@ export function photosLoader(): Loader {
         for (const file of files) {
           const id = file.filename.replace(/\.[^/.]+$/, "");
           const title = id;
-          const pathRel = `photos/${file.path}`.replace(/^\/+/, "");
-          const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${pathRel}`;
+
+          // Store path without photos/ prefix (matches local loader)
+          const path = file.path;
+
+          // Build GitHub URL with photos/ prefix and URL encoding
+          const pathForGithub = `photos/${file.path}`.replace(/^\/+/, "");
+          const encodePath = (p: string) =>
+            p.split("/").map(encodeURIComponent).join("/");
+          const imageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(pathForGithub)}`;
 
           store.set({
             id,
@@ -42,7 +49,7 @@ export function photosLoader(): Loader {
               filename: file.filename,
               title,
               imageUrl,
-              path: pathRel,
+              path,
             },
           });
         }
