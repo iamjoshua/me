@@ -40,21 +40,9 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
 >
   <div class="gallery-layout pb-25">
     <main class="flex flex-col">
-      <div
-        class="collection-info sticky top-0 z-30 bg-white/100 backdrop-blur p-5 md:px-10 border-b border-b-1 border-neutral-200"
+      <section
+        class="h-screen collection-cover flex flex-col relative items-center items-center"
       >
-        <h1 class="text-lg font-semibold text-neutral-900">
-          {selectedCollection.data.title}
-        </h1>
-        {
-          selectedCollection.data.description && (
-            <p class="mt-4 max-w-[65ch] text-neutral-600">
-              {selectedCollection.data.description}
-            </p>
-          )
-        }
-      </div>
-      <section class="collection-cover flex flex-col">
         {
           coverImageUrl && (
             <div
@@ -66,7 +54,21 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
           )
         }
         <div class="bg-white w-full h-25"></div>
+        <h1
+          class="hidden absolute top-10 text-lg rounded-full font-semibold text-neutral-900 bg-white/0 px-5 py-2 text-center self-center items-center"
+        >
+          {selectedCollection.data.title}
+        </h1>
       </section>
+      <div
+        class="-mt-25 h-25 collection-info sticky top-0 w-full bottom-0 z-0 bg-white/90 backdrop-blur md:px-10 border-b border-b-1 border-neutral-200 flex items-center justify-center"
+      >
+        <h1
+          class="text-2xl font-[Crimson_Text] font-light text-gray-700 italic leading-tight"
+        >
+          {selectedCollection.data.title}
+        </h1>
+      </div>
 
       <section class="p-5 pt-5">
         {
