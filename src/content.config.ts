@@ -10,7 +10,8 @@ import {
 import { localPhotoCollectionsLoader } from "./lib/loaders/localPhotoCollectionsLoader";
 import { localPhotosLoader } from "./lib/loaders/localPhotosLoader";
 
-const IS_LOCAL = true;
+const IS_LOCAL = process.env.USE_LOCAL_PHOTOS === "true";
+console.log("======IS LOCAL: ", IS_LOCAL);
 
 const questions = defineCollection({
   loader: questionsLoader(),
