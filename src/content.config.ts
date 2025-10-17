@@ -10,6 +10,8 @@ import {
 import { localPhotoCollectionsLoader } from "./lib/loaders/localPhotoCollectionsLoader";
 import { localPhotosLoader } from "./lib/loaders/localPhotosLoader";
 
+const IS_LOCAL = true;
+
 const questions = defineCollection({
   loader: questionsLoader(),
   schema: questionSchema,
@@ -26,22 +28,12 @@ const essays = defineCollection({
 });
 
 const photos = defineCollection({
-  loader: localPhotosLoader(),
+  loader: IS_LOCAL ? localPhotosLoader() : photosLoader(),
   schema: photoSchema,
 });
 
-// const photos = defineCollection({
-//   loader: photosLoader(),
-//   schema: photoSchema,
-// });
-
-// const photoCollections = defineCollection({
-//   loader: photoCollectionsLoader(),
-//   schema: photoCollectionSchema,
-// });
-
 const photoCollections = defineCollection({
-  loader: localPhotoCollectionsLoader(),
+  loader: IS_LOCAL ? localPhotoCollectionsLoader() : photoCollectionsLoader(),
   schema: photoCollectionSchema,
 });
 

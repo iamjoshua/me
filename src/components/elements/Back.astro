@@ -2,13 +2,15 @@
 import ArrowLeft from "@/components/icons/ArrowLeft.astro";
 import Animate from "@/components/Animate.astro";
 import { slide } from "astro:transitions";
+import { cn } from "@/lib/utils";
 
 interface Props {
   href: string;
   label: string;
+  style?: string;
 }
 
-const { href, label } = Astro.props;
+const { href, label, style } = Astro.props;
 ---
 
 <Animate
@@ -19,7 +21,10 @@ const { href, label } = Astro.props;
 >
   <a
     href={href}
-    class="flex items-center gap-2 p-5 text-gray-600 hover:text-gray-900 text-sm font-medium hover:-translate-x-2.5 transition-transform"
+    class={cn(
+      `flex items-center gap-2 p-5 text-gray-600 hover:text-gray-900 text-sm font-medium hover:-translate-x-2.5 transition-transform`,
+      style,
+    )}
   >
     <ArrowLeft />
     {label}

@@ -3,7 +3,9 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/CollectionV2Layout.astro";
 import Logo from "@/components/elements/Logo.astro";
 import Navigation from "@/components/elements/Navigation.astro";
+import Lightbox from "@/components/PhotoGallery/Lightbox.astro";
 import { cn } from "@/lib/utils";
+import Back from "@/components/elements/Back.astro";
 
 export async function getStaticPaths() {
   const collections = await getCollection("photoCollections");
@@ -38,6 +40,14 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
 <Layout
   title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
 >
+  <div class="relative z-10 ml-10">
+    <Back
+      href={"../"}
+      label={"Photography"}
+      style="text-white text-shadow-md shadow-gray-950 hover:text-white"
+    />
+  </div>
+
   <div class="gallery-layout pb-25">
     <main class="flex flex-col">
       <section
@@ -61,13 +71,18 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
         </h1>
       </section>
       <div
-        class="-mt-25 h-25 collection-info sticky top-0 w-full bottom-0 z-0 bg-white/90 backdrop-blur md:px-10 border-b border-b-1 border-neutral-200 flex items-center justify-center"
+        class="-mt-25 collection-info sticky top-0 w-full bottom-0 z-10 bg-white/90 backdrop-blur md:px-10 border-b border-b-1 border-neutral-200 flex flex-col md:flex-row items-center justify-center md:justify-center md:h-25 drop-shadow-[0_-8px_4px_rgba(0,0,0,0.1)] relative gap-0 md:gap-0 py-4 md:py-0"
       >
         <h1
           class="text-2xl font-[Crimson_Text] font-light text-gray-700 italic leading-tight"
         >
           {selectedCollection.data.title}
         </h1>
+        <p
+          class="text-sm md:text-md font-[Crimson_Text] font-light text-gray-700 italic md:absolute md:right-10"
+        >
+          {galleryPhotos.length} Photos
+        </p>
       </div>
 
       <section class="p-5 pt-5">
@@ -80,15 +95,23 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
             <div class="gallery">
               {galleryPhotos.map((photo) => {
                 const photoTitle = photo.data.title || photo.data.filename;
-                const photoDescription = photo.data.path || photo.data.filename;
                 return (
                   <div class="item">
-                    <img
-                      src={photo.data.imageUrl}
-                      alt={photoTitle}
-                      loading="lazy"
-                      decoding="async"
-                    />
+                    <div
+                      class="group cursor-pointer overflow-hidden rounded-lg"
+                      data-photo-id={photo.id}
+                      data-image-url={photo.data.imageUrl}
+                      data-title={photoTitle}
+                      onclick={`openLightboxById('${photo.id}')`}
+                    >
+                      <img
+                        src={photo.data.imageUrl}
+                        alt={photoTitle}
+                        loading="lazy"
+                        decoding="async"
+                        class="transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
                   </div>
                 );
               })}
@@ -99,12 +122,16 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
     </main>
   </div>
 </Layout>
+
+<Lightbox />
+
 <header
   class={cn(
-    "absolute top-5 flex items-center justify-between",
+    "absolute top-2 z-10 flex items-center justify-between",
     "md:ml-10",
     "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
-    "bg-white/90 backdrop-blur-sm rounded-full",
+    "bg-white/90 backdrop-blur-sm rounded-xl mx-2",
+    "md:bg-white/90 md:backdrop-blur-sm md:rounded-full",
   )}
 >
   <Logo />
