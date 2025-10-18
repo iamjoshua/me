@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import GalleryView from "@/components/views/GalleryView.astro";
+
+const photos = await getCollection("photos");
+---
+
+<Layout title="Joshua Heiland | Photography">
+  <GalleryView
+    photos={photos}
+    backHref="/"
+    backLabel="Home"
+    sectionTitle="Moments I've Noticed"
+  />
+</Layout>

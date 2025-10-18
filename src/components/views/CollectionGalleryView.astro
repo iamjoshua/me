@@ -42,7 +42,7 @@ const { title, subtitle = "", coverImageUrl = "", photos = [] } = Astro.props as
       <ul>
         {photos.map((photo) => (
           <li>
-            <a href={`/photography/${photo.id}`}>
+            <a href={`/photography/p/${photo.id}`}>
               <figure>
                 <img src={photo.data.imageUrl} alt={photo.data.title} loading="lazy" decoding="async" />
                 <figcaption>{photo.data.title}</figcaption>

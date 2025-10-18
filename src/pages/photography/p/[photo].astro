@@ -1,0 +1,96 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Back from "@/components/elements/Back.astro";
+import CollectionGallery from "@/components/CollectionGallery.astro";
+import Lightbox from "@/components/PhotoGallery/Lightbox.astro";
+import Photograph from "@/components/PhotoGallery/Photograph.astro";
+import { getPhotoUrl } from "@/lib/utils";
+
+export async function getStaticPaths() {
+  const photos = await getCollection("photos");
+
+  return photos.map((photo) => ({
+    params: { photo: photo.id },
+    props: { selectedPhoto: photo },
+  }));
+}
+
+const { selectedPhoto } = Astro.props;
+const collections = await getCollection("photoCollections");
+const photos = await getCollection("photos");
+
+// Set up meta tags for the specific photo
+const title = `Joshua Heiland | Photographs | ${selectedPhoto.data.title}`;
+const description = `View ${selectedPhoto.data.title} and other photographs by Joshua Heiland`;
+const ogImageUrl = getPhotoUrl(selectedPhoto.data.path, { width: 1200 });
+---
+
+<Layout title={title}>
+  <!-- Open Graph meta tags for social sharing -->
+  <meta slot="head" property="og:title" content={title} />
+  <meta slot="head" property="og:description" content={description} />
+  <meta slot="head" property="og:image" content={ogImageUrl} />
+  <meta slot="head" property="og:url" content={Astro.url} />
+  <meta slot="head" property="og:type" content="article" />
+
+  <!-- Twitter meta tags -->
+  <meta slot="head" name="twitter:card" content="summary_large_image" />
+  <meta
+    slot="head"
+    name="twitter:image"
+    content={ogImageUrl}
+  />
+  <meta slot="head" name="twitter:title" content={title} />
+  <meta slot="head" name="twitter:description" content={description} />
+
+  <div class="gallery-page">
+    <div class="relative ml-10">
+      <Back href="/" label="Home" />
+    </div>
+
+    <div
+      id="photography-page"
+      class="min-h-screen lg:h-dvh md:w-[calc(100%+20px)] md:-ml-[10px] overflow-x-hidden lg:overflow-y-hidden flex flex-col"
+    >
+      <div class="h-[50vh] lg:h-1/5 flex justify-center items-center">
+        <div
+          class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+        >
+          Photography
+        </div>
+      </div>
+
+      <div class="w-full block lg:flex lg:h-3/5 lg:items-center gallery-zone">
+        <div class="w-full">
+          <CollectionGallery collections={collections} />
+        </div>
+      </div>
+      <div class="h-0 lg:h-1/5"></div>
+    </div>
+  </div>
+
+  <!-- Hidden photo data for lightbox - photos need data-photo-id attributes -->
+  <div style="position: absolute; visibility: hidden; pointer-events: none;">
+    {photos.map((photo, index) => <Photograph photo={photo} index={index} />)}
+  </div>
+
+  <Lightbox />
+</Layout>
+
+<style>
+  /* Remove bottom spacing within TwoColumnView to avoid page vertical scroll */
+  .gallery-page .mb-22 {
+    margin-bottom: 0 !important;
+  }
+  /* Make sure the horizontal container can use full width */
+  .gallery-page #collection-horizontal {
+    width: 100%;
+  }
+  /* On desktop (fine pointer), prevent page vertical scroll on photo pages */
+  @media (min-width: 1024px) and (pointer: fine) {
+    body {
+      overflow-y: hidden !important;
+    }
+  }
+</style>

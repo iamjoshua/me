@@ -67,7 +67,7 @@
 
     openLightbox(imageUrl, title);
 
-    const targetPath = `/photography/${id}`;
+    const targetPath = `/photography/p/${id}`;
     if (location.pathname !== targetPath) {
       history.pushState({ photoId: id }, "", targetPath);
     } else {
@@ -100,14 +100,14 @@
 
   function handleCloseClick() {
     // Always normalize the URL in-place to avoid a history back navigation
-    if (location.pathname.startsWith("/photography/")) {
+    if (location.pathname.startsWith("/photography/p/")) {
       history.replaceState(null, "", "/photography");
     }
     closeLightbox();
   }
 
   function syncFromUrl() {
-    const match = location.pathname.match(/^\/photography\/(.+)$/);
+    const match = location.pathname.match(/^\/photography\/p\/(.+)$/);
     if (match && match[1]) {
       const id = decodeURIComponent(match[1]);
       // If already open to this image, do nothing
@@ -208,7 +208,7 @@
   }
 
   function getCurrentIdFromUrl(): string | null {
-    const m = location.pathname.match(/^\/photography\/(.+)$/);
+    const m = location.pathname.match(/^\/photography\/p\/(.+)$/);
     return m ? decodeURIComponent(m[1]) : null;
   }
 

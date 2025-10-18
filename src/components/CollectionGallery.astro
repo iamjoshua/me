@@ -1,0 +1,224 @@
+---
+import CollectionCard from "./CollectionCard.astro";
+
+interface Props {
+  collections: Array<{
+    id: string;
+    data: {
+      title: string;
+      coverImageUrl?: string;
+    };
+  }>;
+}
+
+const { collections } = Astro.props;
+const renderCollections = collections;
+const mid = Math.ceil(renderCollections.length / 2);
+const row1 = renderCollections.slice(0, mid);
+const row2 = renderCollections.slice(mid);
+---
+
+<!-- Mobile (phones): vertical flow with body scrolling; hide from md up -->
+<div id="collection-vertical" class="md:hidden w-full">
+  <div class="flex flex-wrap gap-4 justify-center px-4">
+    {
+      collections.map((collection, index) => (
+        <CollectionCard collection={collection} index={index} />
+      ))
+    }
+  </div>
+</div>
+
+<!-- Tablet/Desktop (md+): horizontal two-row scroller -->
+<div
+  id="collection-horizontal"
+  class="hidden md:block w-full overflow-x-auto overflow-y-hidden"
+>
+  <div class="flex flex-col gap-6 lg:gap-8">
+    <div
+      class="flex flex-nowrap items-start justify-start gap-6 lg:gap-8 px-12"
+    >
+      {
+        row1.map((collection, index) => (
+          <CollectionCard collection={collection} index={index} />
+        ))
+      }
+      <div class="w-12 h-full opacity-0">space</div>
+    </div>
+    <div
+      class="flex flex-nowrap items-start justify-start gap-6 lg:gap-8 px-12"
+    >
+      {
+        row2.map((collection, index) => (
+          <CollectionCard collection={collection} index={index + row1.length} />
+        ))
+      }
+      <div class="w-12 h-full opacity-0">space</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Desktop-only wheel-to-horizontal scroll with scoped, leak-free listeners.
+  let horizontal: HTMLElement | null = null;
+  const refreshHorizontal = () => {
+    horizontal = document.getElementById("collection-horizontal");
+  };
+  refreshHorizontal();
+  const desktopMQ = window.matchMedia("(min-width: 1024px)");
+  const finePointerMQ = window.matchMedia("(pointer: fine)");
+
+  // If a previous instance left handlers around (SPA navigations), clean them up first
+  const w = window as any;
+  if (typeof w.__collectionGalleryCleanup === "function") {
+    try {
+      w.__collectionGalleryCleanup();
+    } catch {}
+  }
+
+  let containerWheelHandler: ((e: WheelEvent) => void) | null = null;
+  let windowWheelHandler: ((e: WheelEvent) => void) | null = null;
+  let desktopMQHandler: ((e: MediaQueryListEvent) => void) | null = null;
+  let finePointerMQHandler: ((e: MediaQueryListEvent) => void) | null = null;
+  let pointerEnterHandler: ((e: Event) => void) | null = null;
+  let pointerLeaveHandler: ((e: Event) => void) | null = null;
+
+  function detachHandlers() {
+    if (horizontal && containerWheelHandler) {
+      horizontal.removeEventListener(
+        "wheel",
+        containerWheelHandler as EventListener,
+      );
+      containerWheelHandler = null;
+    }
+    if (windowWheelHandler) {
+      window.removeEventListener("wheel", windowWheelHandler as EventListener);
+      windowWheelHandler = null;
+    }
+    if (desktopMQHandler) {
+      desktopMQ.removeEventListener(
+        "change",
+        desktopMQHandler as EventListener,
+      );
+      desktopMQHandler = null;
+    }
+    if (finePointerMQHandler) {
+      finePointerMQ.removeEventListener(
+        "change",
+        finePointerMQHandler as EventListener,
+      );
+      finePointerMQHandler = null;
+    }
+    if (horizontal && pointerEnterHandler) {
+      horizontal.removeEventListener(
+        "pointerenter",
+        pointerEnterHandler as EventListener,
+      );
+      pointerEnterHandler = null;
+    }
+    if (horizontal && pointerLeaveHandler) {
+      horizontal.removeEventListener(
+        "pointerleave",
+        pointerLeaveHandler as EventListener,
+      );
+      pointerLeaveHandler = null;
+    }
+  }
+
+  function attachHandlers() {
+    if (!horizontal) return;
+    const isDesktop = desktopMQ.matches && finePointerMQ.matches;
+    // Always detach first so we don't duplicate or fight mobile scroll
+    detachHandlers();
+    if (!isDesktop) return;
+
+    // Keep pointer listeners no-op for now (can be used later if needed)
+    // No-op pointer listeners kept for parity; can be removed if undesired
+    pointerEnterHandler = () => {};
+    pointerLeaveHandler = () => {};
+    horizontal.addEventListener("pointerenter", pointerEnterHandler, {
+      passive: true,
+    });
+    horizontal.addEventListener("pointerleave", pointerLeaveHandler, {
+      passive: true,
+    });
+
+    containerWheelHandler = (e: WheelEvent) => {
+      if (e.ctrlKey) return;
+      const el = horizontal as HTMLElement;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const prev = el.scrollLeft;
+        el.scrollLeft += e.deltaY;
+        if (el.scrollLeft !== prev) {
+          e.preventDefault();
+        }
+      }
+    };
+    horizontal.addEventListener(
+      "wheel",
+      containerWheelHandler as EventListener,
+      { passive: false },
+    );
+
+    // Allow "scroll anywhere" to pan gallery on desktop
+    windowWheelHandler = (e: WheelEvent) => {
+      if (e.ctrlKey) return;
+      const el = document.getElementById("collection-horizontal");
+      if (!el) return;
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        const prev = el.scrollLeft;
+        el.scrollLeft += e.deltaY;
+        if (el.scrollLeft !== prev) {
+          e.preventDefault();
+        }
+      }
+    };
+    window.addEventListener("wheel", windowWheelHandler as EventListener, {
+      passive: false,
+    });
+
+    desktopMQHandler = () => attachHandlers();
+    finePointerMQHandler = () => attachHandlers();
+    desktopMQ.addEventListener("change", desktopMQHandler as EventListener);
+    finePointerMQ.addEventListener(
+      "change",
+      finePointerMQHandler as EventListener,
+    );
+  }
+
+  // Initialize
+  attachHandlers();
+
+  // Re-attach when a client navigation loads this page
+  window.addEventListener("astro:page-load", () => {
+    refreshHorizontal();
+    attachHandlers();
+  });
+
+  // Provide global cleanup for SPA navigations and hot reloads
+  const cleanup = () => {
+    detachHandlers();
+  };
+  w.__collectionGalleryCleanup = cleanup;
+  window.addEventListener("astro:before-swap", cleanup, { once: true });
+
+  // No JS breakpoint overrides; CSS handles md+ horizontal layout for tablets/desktops
+</script>
+
+<style>
+  /* Hide horizontal scrollbar while preserving scroll behavior */
+  #collection-horizontal::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  #collection-horizontal {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none; /* Firefox */
+    /* On touch devices (iPad), allow horizontal panning and momentum */
+    touch-action: pan-x pinch-zoom;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    overscroll-behavior-y: none;
+  }
+</style>

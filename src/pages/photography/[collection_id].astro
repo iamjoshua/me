@@ -1,0 +1,264 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/CollectionV2Layout.astro";
+import Logo from "@/components/elements/Logo.astro";
+import Navigation from "@/components/elements/Navigation.astro";
+import Lightbox from "@/components/PhotoGallery/Lightbox.astro";
+import { cn, getPhotoUrl } from "@/lib/utils";
+import Back from "@/components/elements/Back.astro";
+
+export async function getStaticPaths() {
+  const collections = await getCollection("photoCollections");
+  return collections.map((c) => ({
+    params: { collection_id: c.id },
+    props: { selectedCollection: c },
+  }));
+}
+
+const { selectedCollection } = Astro.props;
+
+const allPhotos = await getCollection("photos");
+const yamlPhotos = (selectedCollection.data.photos ?? []) as Array<{
+  path: string;
+}>;
+
+// Match YAML photo paths to actual photo entries from the photos collection
+const galleryPhotos = yamlPhotos
+  .map((yamlPhoto) => {
+    const photoPath = yamlPhoto.path.replace(/^\/+/, "").replace(/^\.+\//, "");
+    const withoutPhotosPrefix = photoPath.startsWith("photos/")
+      ? photoPath.substring(7)
+      : photoPath;
+    return allPhotos.find((p) => p.data.path === withoutPhotosPrefix);
+  })
+  .filter((p): p is (typeof allPhotos)[0] => p !== undefined);
+
+const coverImageUrl = selectedCollection.data.coverImageUrl;
+const coverAlt = `${selectedCollection.data.title} cover image`;
+---
+
+<Layout
+  title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
+>
+  <div class="relative z-10 ml-10">
+    <Back
+      href={"./"}
+      label={"Photography"}
+      style="text-white text-shadow-md shadow-gray-950 hover:text-white"
+    />
+  </div>
+
+  <div class="gallery-layout pb-25">
+    <main class="flex flex-col">
+      <section
+        class="h-screen collection-cover flex flex-col relative items-center items-center"
+      >
+        {
+          coverImageUrl && (
+            <div
+              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat bg-fixed"
+              style={`background-image: url('${coverImageUrl}')`}
+              role="img"
+              aria-label={coverAlt}
+            />
+          )
+        }
+        <div class="bg-white w-full h-25"></div>
+        <h1
+          class="hidden absolute top-10 text-lg rounded-full font-semibold text-neutral-900 bg-white/0 px-5 py-2 text-center self-center items-center"
+        >
+          {selectedCollection.data.title}
+        </h1>
+      </section>
+      <div
+        class="-mt-25 collection-info sticky top-0 w-full bottom-0 z-10 bg-white/90 backdrop-blur md:px-10 border-b border-b-1 border-neutral-200 flex flex-col md:flex-row items-center justify-center md:justify-center md:h-25 drop-shadow-[0_-8px_4px_rgba(0,0,0,0.1)] relative gap-0 md:gap-0 py-4 md:py-0"
+      >
+        <h1
+          class="text-2xl font-[Crimson_Text] font-light text-gray-700 italic leading-tight"
+        >
+          {selectedCollection.data.title}
+        </h1>
+        <p
+          class="text-sm md:text-md font-[Crimson_Text] font-light text-gray-700 italic md:absolute md:right-10"
+        >
+          {galleryPhotos.length} Photos
+        </p>
+      </div>
+
+      <section class="p-5 pt-5">
+        {
+          galleryPhotos.length === 0 ? (
+            <p class="text-sm text-neutral-500">
+              No photos found in this collection yet.
+            </p>
+          ) : (
+            <div class="gallery">
+              {galleryPhotos.map((photo) => {
+                const photoTitle = photo.data.title || photo.data.filename;
+                const thumbnailUrl = getPhotoUrl(photo.data.path, {
+                  width: 600,
+                });
+                const fullUrl = getPhotoUrl(photo.data.path, { width: 2400 });
+                return (
+                  <div class="item">
+                    <div
+                      class="group cursor-pointer overflow-hidden rounded-lg"
+                      data-photo-id={photo.id}
+                      data-image-url={fullUrl}
+                      data-title={photoTitle}
+                      onclick={`openLightboxById('${photo.id}')`}
+                    >
+                      <img
+                        src={thumbnailUrl}
+                        alt={photoTitle}
+                        loading="lazy"
+                        decoding="async"
+                        class="transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )
+        }
+      </section>
+    </main>
+  </div>
+</Layout>
+
+<Lightbox />
+
+<header
+  class={cn(
+    "absolute top-2 z-10 flex items-center justify-between",
+    "md:ml-10",
+    "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
+    "bg-white/90 backdrop-blur-sm rounded-xl mx-2",
+    "md:bg-white/90 md:backdrop-blur-sm md:rounded-full",
+  )}
+>
+  <Logo />
+  <Navigation />
+</header>
+<style>
+  :root {
+    --collection-info-height: 160px;
+  }
+
+  .collection-cover {
+    min-height: max(320px, calc(100vh - var(--collection-info-height, 160px)));
+  }
+
+  .gallery {
+    display: grid;
+    gap: 12px;
+    grid-auto-flow: dense; /* helps backfill gaps */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-auto-rows: 8px; /* base unit for vertical spanning */
+  }
+
+  .gallery .item {
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .gallery .item.wide {
+    grid-column: span 2; /* landscape spans two columns */
+  }
+
+  /* Images keep intrinsic aspect ratio */
+  .gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover; /* harmless here; preserves crop behavior if needed */
+    border-radius: inherit;
+  }
+
+  /* Small screens: disable 2-col span so we don't force extra tracks */
+  @media (max-width: 640px) {
+    .gallery .item.wide {
+      grid-column: span 1;
+    }
+  }
+</style>
+
+<div class="gallery">
+  <div class="item"><img src="a.jpg" alt="" loading="lazy" /></div>
+  <div class="item"><img src="b.jpg" alt="" loading="lazy" /></div>
+  <!-- … -->
+</div>
+
+<script>
+  (function () {
+    const info = document.querySelector(".collection-info");
+    const setInfoHeightVar = () => {
+      if (!info) return;
+      const height = info.getBoundingClientRect().height;
+      document.documentElement.style.setProperty(
+        "--collection-info-height",
+        `${Math.round(height)}px`,
+      );
+    };
+
+    const initMasonry = (container) => {
+      const getMetrics = () => {
+        const s = getComputedStyle(container);
+        return {
+          row: parseFloat(s.getPropertyValue("grid-auto-rows")),
+          gap: parseFloat(s.getPropertyValue("gap")),
+        };
+      };
+
+      const setSpan = (item) => {
+        const { row, gap } = getMetrics();
+        const el = item.firstElementChild; // the img (or content wrapper)
+        if (!el) return;
+        const h = el.getBoundingClientRect().height;
+        const span = Math.ceil((h + gap) / (row + gap));
+        item.style.gridRowEnd = `span ${span}`;
+      };
+
+      const setOrientation = (item) => {
+        const img = item.querySelector("img");
+        if (!img) return;
+        const w = img.naturalWidth,
+          h = img.naturalHeight;
+        if (w && h) {
+          // Treat slightly-wide as landscape; squares count as portrait
+          const isLandscape = w / h > 1.05;
+          item.classList.toggle("wide", isLandscape);
+        }
+      };
+
+      const items = Array.from(container.children);
+
+      items.forEach((item) => {
+        const img = item.querySelector("img");
+        if (img) {
+          const onReady = () => {
+            setOrientation(item);
+            setSpan(item);
+          };
+          img.complete
+            ? onReady()
+            : img.addEventListener("load", onReady, { once: true });
+        } else {
+          setSpan(item);
+        }
+      });
+
+      // Recompute spans on resize (layout changes)
+      new ResizeObserver(() => items.forEach(setSpan)).observe(container);
+    };
+
+    if (info) {
+      setInfoHeightVar();
+      new ResizeObserver(setInfoHeightVar).observe(info);
+      window.addEventListener("resize", setInfoHeightVar, { passive: true });
+    }
+
+    document.querySelectorAll(".gallery").forEach(initMasonry);
+  })();
+</script>
