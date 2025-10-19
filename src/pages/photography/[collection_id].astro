@@ -195,5 +195,30 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
       new ResizeObserver(setInfoHeightVar).observe(info);
       window.addEventListener("resize", setInfoHeightVar, { passive: true });
     }
+
+    // Back button color change on scroll
+    const backButton = document.querySelector("[data-back-button]");
+    const coverSection = document.querySelector(".collection-cover");
+
+    if (backButton && coverSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Cover is visible - white text with shadow
+              backButton.classList.remove("!text-gray-900", "!shadow-none");
+              backButton.classList.add("text-white", "text-shadow-md", "shadow-gray-950");
+            } else {
+              // Cover is out of view - black text without shadow
+              backButton.classList.remove("text-white", "text-shadow-md", "shadow-gray-950");
+              backButton.classList.add("!text-gray-900", "!shadow-none");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(coverSection);
+    }
   })();
 </script>

@@ -21,8 +21,9 @@ const { href, label, style } = Astro.props;
 >
   <a
     href={href}
+    data-back-button
     class={cn(
-      `flex items-center gap-2 p-5 text-gray-600 hover:text-gray-900 text-sm font-medium hover:-translate-x-2.5 transition-transform`,
+      `flex items-center gap-2 p-5 text-gray-600 hover:text-gray-900 text-sm font-medium hover:-translate-x-2.5 transition-all duration-300`,
       style,
     )}
   >
