@@ -40,7 +40,7 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
 <Layout
   title={`Joshua Heiland | Photography | ${selectedCollection.data.title}`}
 >
-  <div class="relative z-10 ml-10">
+  <div class="fixed z-50 ml-10">
     <Back
       href={"./"}
       label={"Photography"}
@@ -92,7 +92,7 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
               No photos found in this collection yet.
             </p>
           ) : (
-            <div class="gallery">
+            <div class="photo-columns">
               {galleryPhotos.map((photo) => {
                 const photoTitle = photo.data.title || photo.data.filename;
                 const thumbnailUrl = getPhotoUrl(photo.data.path, {
@@ -100,22 +100,20 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
                 });
                 const fullUrl = getPhotoUrl(photo.data.path, { width: 2400 });
                 return (
-                  <div class="item">
-                    <div
-                      class="group cursor-pointer overflow-hidden rounded-lg"
-                      data-photo-id={photo.id}
-                      data-image-url={fullUrl}
-                      data-title={photoTitle}
-                      onclick={`openLightboxById('${photo.id}')`}
-                    >
-                      <img
-                        src={thumbnailUrl}
-                        alt={photoTitle}
-                        loading="lazy"
-                        decoding="async"
-                        class="transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
+                  <div
+                    class="group cursor-pointer overflow-hidden rounded-lg mb-3"
+                    data-photo-id={photo.id}
+                    data-image-url={fullUrl}
+                    data-title={photoTitle}
+                    onclick={`openLightboxById('${photo.id}')`}
+                  >
+                    <img
+                      src={thumbnailUrl}
+                      alt={photoTitle}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-auto transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
                 );
               })}
@@ -150,45 +148,35 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
     min-height: max(320px, calc(100vh - var(--collection-info-height, 160px)));
   }
 
-  .gallery {
-    display: grid;
-    gap: 12px;
-    grid-auto-flow: dense; /* helps backfill gaps */
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    grid-auto-rows: 8px; /* base unit for vertical spanning */
+  .photo-columns {
+    column-count: 1;
+    column-gap: 12px;
+    column-fill: balance;
   }
 
-  .gallery .item {
-    overflow: hidden;
-    border-radius: 8px;
-  }
-
-  .gallery .item.wide {
-    grid-column: span 2; /* landscape spans two columns */
-  }
-
-  /* Images keep intrinsic aspect ratio */
-  .gallery img {
-    width: 100%;
-    height: auto;
-    display: block;
-    object-fit: cover; /* harmless here; preserves crop behavior if needed */
-    border-radius: inherit;
-  }
-
-  /* Small screens: disable 2-col span so we don't force extra tracks */
-  @media (max-width: 640px) {
-    .gallery .item.wide {
-      grid-column: span 1;
+  @media (min-width: 640px) {
+    .photo-columns {
+      column-count: 2;
     }
   }
-</style>
 
-<div class="gallery">
-  <div class="item"><img src="a.jpg" alt="" loading="lazy" /></div>
-  <div class="item"><img src="b.jpg" alt="" loading="lazy" /></div>
-  <!-- … -->
-</div>
+  @media (min-width: 1024px) {
+    .photo-columns {
+      column-count: 3;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .photo-columns {
+      column-count: 4;
+    }
+  }
+
+  .photo-columns > * {
+    break-inside: avoid;
+    display: block;
+  }
+</style>
 
 <script>
   (function () {
@@ -202,63 +190,10 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
       );
     };
 
-    const initMasonry = (container) => {
-      const getMetrics = () => {
-        const s = getComputedStyle(container);
-        return {
-          row: parseFloat(s.getPropertyValue("grid-auto-rows")),
-          gap: parseFloat(s.getPropertyValue("gap")),
-        };
-      };
-
-      const setSpan = (item) => {
-        const { row, gap } = getMetrics();
-        const el = item.firstElementChild; // the img (or content wrapper)
-        if (!el) return;
-        const h = el.getBoundingClientRect().height;
-        const span = Math.ceil((h + gap) / (row + gap));
-        item.style.gridRowEnd = `span ${span}`;
-      };
-
-      const setOrientation = (item) => {
-        const img = item.querySelector("img");
-        if (!img) return;
-        const w = img.naturalWidth,
-          h = img.naturalHeight;
-        if (w && h) {
-          // Treat slightly-wide as landscape; squares count as portrait
-          const isLandscape = w / h > 1.05;
-          item.classList.toggle("wide", isLandscape);
-        }
-      };
-
-      const items = Array.from(container.children);
-
-      items.forEach((item) => {
-        const img = item.querySelector("img");
-        if (img) {
-          const onReady = () => {
-            setOrientation(item);
-            setSpan(item);
-          };
-          img.complete
-            ? onReady()
-            : img.addEventListener("load", onReady, { once: true });
-        } else {
-          setSpan(item);
-        }
-      });
-
-      // Recompute spans on resize (layout changes)
-      new ResizeObserver(() => items.forEach(setSpan)).observe(container);
-    };
-
     if (info) {
       setInfoHeightVar();
       new ResizeObserver(setInfoHeightVar).observe(info);
       window.addEventListener("resize", setInfoHeightVar, { passive: true });
     }
-
-    document.querySelectorAll(".gallery").forEach(initMasonry);
   })();
 </script>
