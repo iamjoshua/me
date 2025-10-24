@@ -101,7 +101,11 @@
   function handleCloseClick() {
     // Always normalize the URL in-place to avoid a history back navigation
     if (location.pathname.startsWith("/photography/p/")) {
-      history.replaceState(null, "", "/photography");
+      // Get the collection ID from the page's data attributes or URL
+      const collectionElement = document.querySelector("[data-collection-id]");
+      const collectionId = collectionElement?.getAttribute("data-collection-id");
+      const returnPath = collectionId ? `/photography/${collectionId}` : "/photography";
+      history.replaceState(null, "", returnPath);
     }
     closeLightbox();
   }
@@ -161,7 +165,8 @@
     ?.addEventListener("click", onLightboxClick);
 
   const onPopState = () => {
-    const isGallery = location.pathname === "/photography";
+    const isGallery = location.pathname === "/photography" ||
+                      location.pathname.match(/^\/photography\/[^\/]+$/);
     if (isGallery) {
       closeLightbox(true);
       return;
