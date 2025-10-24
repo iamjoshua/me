@@ -6,11 +6,20 @@
   aria-modal="true"
 >
   <div class="relative w-full h-full flex items-center justify-center">
+    <!-- Loading spinner -->
+    <div
+      id="lightbox-spinner"
+      class="absolute spinner-hidden"
+      aria-label="Loading image"
+    >
+      <div class="spinner"></div>
+    </div>
+
     <img
       id="lightbox-image"
       src=""
       alt=""
-      class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
+      class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain opacity-0 transition-opacity duration-300"
     />
     <!-- Prev / Next arrows -->
     <button
@@ -44,10 +53,31 @@
   function openLightbox(imageUrl: string, title: string) {
     const lightbox = document.getElementById("lightbox");
     const image = document.getElementById("lightbox-image") as HTMLImageElement;
+    const spinner = document.getElementById("lightbox-spinner");
 
     if (lightbox && image) {
+      // Fade out current image
+      image.style.opacity = "0";
+
+      // Show spinner
+      if (spinner) {
+        spinner.classList.remove("spinner-hidden");
+        spinner.classList.add("spinner-visible");
+      }
+
+      // Set new image source
       image.src = imageUrl;
       image.alt = title;
+
+      // Fade in when image loads and hide spinner
+      image.onload = () => {
+        image.style.opacity = "1";
+        if (spinner) {
+          spinner.classList.remove("spinner-visible");
+          spinner.classList.add("spinner-hidden");
+        }
+      };
+
       lightbox.classList.remove("lightbox-hidden");
       lightbox.classList.add("lightbox-visible");
       document.body.style.overflow = "hidden";
@@ -80,6 +110,9 @@
 
   function closeLightbox(immediate: boolean = false) {
     const lightbox = document.getElementById("lightbox");
+    const image = document.getElementById("lightbox-image") as HTMLImageElement;
+    const spinner = document.getElementById("lightbox-spinner");
+
     if (lightbox) {
       if (immediate) {
         const prev = (lightbox as HTMLElement).style.transition;
@@ -95,6 +128,16 @@
         lightbox.classList.add("lightbox-hidden");
       }
       document.body.style.overflow = "auto";
+
+      // Hide spinner and clear the image
+      if (spinner) {
+        spinner.classList.remove("spinner-visible");
+        spinner.classList.add("spinner-hidden");
+      }
+      if (image) {
+        image.src = "";
+        image.alt = "";
+      }
     }
   }
 
@@ -260,5 +303,31 @@
     opacity: 1;
     pointer-events: auto;
     transition: opacity 0.3s ease-in-out;
+  }
+
+  .spinner-hidden {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .spinner-visible {
+    opacity: 1;
+    transition: opacity 0.2s ease-in-out;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>
