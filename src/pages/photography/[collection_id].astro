@@ -99,12 +99,23 @@ const coverAlt = `${selectedCollection.data.title} cover image`;
                   width: 600,
                 });
                 const fullUrl = getPhotoUrl(photo.data.path, { width: 2400 });
+
+                // Format EXIF data for display
+                const iso = photo.data.iso ? `ISO ${photo.data.iso}` : "";
+                const aperture = photo.data.aperture ? `f/${photo.data.aperture}` : "";
+                const focalLength = photo.data.focal_length ? `${photo.data.focal_length}mm` : "";
+                const shutterSpeed = photo.data.shutter_speed || "";
+
                 return (
                   <div
                     class="group cursor-pointer overflow-hidden rounded-lg mb-3"
                     data-photo-id={photo.id}
                     data-image-url={fullUrl}
                     data-title={photoTitle}
+                    data-iso={iso}
+                    data-aperture={aperture}
+                    data-focal-length={focalLength}
+                    data-shutter-speed={shutterSpeed}
                     onclick={`openLightboxById('${photo.id}')`}
                   >
                     <img

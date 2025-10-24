@@ -15,12 +15,30 @@
       <div class="spinner"></div>
     </div>
 
-    <img
-      id="lightbox-image"
-      src=""
-      alt=""
-      class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain opacity-0 transition-opacity duration-300"
-    />
+    <!-- Image wrapper for positioning EXIF relative to image -->
+    <div id="lightbox-image-wrapper" class="relative flex flex-col items-end opacity-0 transition-opacity duration-300">
+      <img
+        id="lightbox-image"
+        src=""
+        alt=""
+        class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
+      />
+
+      <!-- EXIF data display - positioned outside and aligned to right of image -->
+      <div
+        id="lightbox-exif"
+        class="mt-5 md:mt-0 md:fixed md:bottom-5 text-[10px] text-gray-600 font-black flex gap-2 opacity-50 transition-opacity duration-300 hover:opacity-100"
+      >
+        <span id="exif-iso"></span>
+        <span class="text-gray-200">•</span>
+        <span id="exif-aperture"></span>
+        <span class="text-gray-200">•</span>
+        <span id="exif-focal-length"></span>
+        <span class="text-gray-200">•</span>
+        <span id="exif-shutter-speed"></span>
+      </div>
+    </div>
+
     <!-- Prev / Next arrows -->
     <button
       id="prev-photo"
@@ -50,14 +68,25 @@
 
 <script>
   // Open by explicit URL and title (legacy)
-  function openLightbox(imageUrl: string, title: string) {
+  function openLightbox(
+    imageUrl: string,
+    title: string,
+    exif?: {
+      iso: string;
+      aperture: string;
+      focalLength: string;
+      shutterSpeed: string;
+    },
+  ) {
     const lightbox = document.getElementById("lightbox");
     const image = document.getElementById("lightbox-image") as HTMLImageElement;
     const spinner = document.getElementById("lightbox-spinner");
+    const exifContainer = document.getElementById("lightbox-exif");
+    const wrapper = document.getElementById("lightbox-image-wrapper");
 
-    if (lightbox && image) {
-      // Fade out current image
-      image.style.opacity = "0";
+    if (lightbox && image && wrapper) {
+      // Fade out wrapper (contains both image and EXIF)
+      wrapper.style.opacity = "0";
 
       // Show spinner
       if (spinner) {
@@ -69,9 +98,31 @@
       image.src = imageUrl;
       image.alt = title;
 
-      // Fade in when image loads and hide spinner
+      // Update EXIF data
+      if (exif && exifContainer) {
+        const isoEl = document.getElementById("exif-iso");
+        const apertureEl = document.getElementById("exif-aperture");
+        const focalLengthEl = document.getElementById("exif-focal-length");
+        const shutterSpeedEl = document.getElementById("exif-shutter-speed");
+
+        if (isoEl) isoEl.textContent = exif.iso;
+        if (apertureEl) apertureEl.textContent = exif.aperture;
+        if (focalLengthEl) focalLengthEl.textContent = exif.focalLength;
+        if (shutterSpeedEl) shutterSpeedEl.textContent = exif.shutterSpeed;
+
+        // Filter out empty spans to avoid extra gaps
+        const hasExifData =
+          exif.iso || exif.aperture || exif.focalLength || exif.shutterSpeed;
+        if (hasExifData) {
+          exifContainer.style.display = "flex";
+        } else {
+          exifContainer.style.display = "none";
+        }
+      }
+
+      // Fade in wrapper when image loads and hide spinner
       image.onload = () => {
-        image.style.opacity = "1";
+        wrapper.style.opacity = "1";
         if (spinner) {
           spinner.classList.remove("spinner-visible");
           spinner.classList.add("spinner-hidden");
@@ -94,8 +145,12 @@
 
     const imageUrl = el.getAttribute("data-image-url") || "";
     const title = el.getAttribute("data-title") || "";
+    const iso = el.getAttribute("data-iso") || "";
+    const aperture = el.getAttribute("data-aperture") || "";
+    const focalLength = el.getAttribute("data-focal-length") || "";
+    const shutterSpeed = el.getAttribute("data-shutter-speed") || "";
 
-    openLightbox(imageUrl, title);
+    openLightbox(imageUrl, title, { iso, aperture, focalLength, shutterSpeed });
 
     const targetPath = `/photography/p/${id}`;
     if (location.pathname !== targetPath) {
@@ -112,6 +167,8 @@
     const lightbox = document.getElementById("lightbox");
     const image = document.getElementById("lightbox-image") as HTMLImageElement;
     const spinner = document.getElementById("lightbox-spinner");
+    const exifContainer = document.getElementById("lightbox-exif");
+    const wrapper = document.getElementById("lightbox-image-wrapper");
 
     if (lightbox) {
       if (immediate) {
@@ -138,6 +195,23 @@
         image.src = "";
         image.alt = "";
       }
+
+      // Reset wrapper opacity
+      if (wrapper) {
+        wrapper.style.opacity = "0";
+      }
+
+      // Clear EXIF data
+      if (exifContainer) {
+        const isoEl = document.getElementById("exif-iso");
+        const apertureEl = document.getElementById("exif-aperture");
+        const focalLengthEl = document.getElementById("exif-focal-length");
+        const shutterSpeedEl = document.getElementById("exif-shutter-speed");
+        if (isoEl) isoEl.textContent = "";
+        if (apertureEl) apertureEl.textContent = "";
+        if (focalLengthEl) focalLengthEl.textContent = "";
+        if (shutterSpeedEl) shutterSpeedEl.textContent = "";
+      }
     }
   }
 
@@ -146,8 +220,11 @@
     if (location.pathname.startsWith("/photography/p/")) {
       // Get the collection ID from the page's data attributes or URL
       const collectionElement = document.querySelector("[data-collection-id]");
-      const collectionId = collectionElement?.getAttribute("data-collection-id");
-      const returnPath = collectionId ? `/photography/${collectionId}` : "/photography";
+      const collectionId =
+        collectionElement?.getAttribute("data-collection-id");
+      const returnPath = collectionId
+        ? `/photography/${collectionId}`
+        : "/photography";
       history.replaceState(null, "", returnPath);
     }
     closeLightbox();
@@ -208,8 +285,9 @@
     ?.addEventListener("click", onLightboxClick);
 
   const onPopState = () => {
-    const isGallery = location.pathname === "/photography" ||
-                      location.pathname.match(/^\/photography\/[^\/]+$/);
+    const isGallery =
+      location.pathname === "/photography" ||
+      location.pathname.match(/^\/photography\/[^\/]+$/);
     if (isGallery) {
       closeLightbox(true);
       return;
