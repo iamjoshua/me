@@ -4,6 +4,7 @@ import { repositoryCache } from "@/lib/github/repositoryCache";
 import { getFiles } from "@/lib/github/getFiles";
 import { join } from "path";
 import YAML from "yaml";
+import { getPhotoUrl } from "@/lib/utils";
 
 export const photoCollectionSchema = z.object({
   title: z.string(),
@@ -32,6 +33,7 @@ export function photoCollectionsLoader(): Loader {
           repo: "iamjoshua/photography",
           targetDir: "/tmp/photography-repo",
           branch: "main",
+          sparseCheckoutPaths: ["data"],
         });
         const baseDir = join(repoPath, "data/collections");
         const files = await getFiles(baseDir, "**/*.y?(a)ml");
@@ -68,18 +70,15 @@ export function photoCollectionsLoader(): Loader {
           if (!title) continue;
           if (!coverPath) continue;
 
-          // Always resolve relative to `photos/` in the photography repo and URL-encode segments
+          // Clean up the path and resolve relative to `photos/` directory
           let path = coverPath.replace(/^\.+\//, "").replace(/^\/+/, "");
-          if (!/^photos\//i.test(path)) {
-            path = `photos/${path}`;
-          }
-          const encodePath = (p: string) => p.split('/').map(encodeURIComponent).join('/');
-          const coverImageUrl = `https://raw.githubusercontent.com/iamjoshua/photography/main/${encodePath(path)}`;
+          const withoutPhotosPrefix = path.startsWith("photos/") ? path.substring(7) : path;
 
-          // Debug: show which image URL/path the page will attempt to render
-          const imageForHtml = coverImageUrl;
+          // Use getPhotoUrl to generate Cloudflare URL (production) or local URL (dev)
+          const coverImageUrl = getPhotoUrl(withoutPhotosPrefix);
+
           console.log(
-            `[photo-collections] id="${id}" title="${title}" cover_path="${coverPath}" resolvedUrlForHtml="${imageForHtml}"`,
+            `[photo-collections] id="${id}" title="${title}" cover_path="${coverPath}" coverImageUrl="${coverImageUrl}"`,
           );
 
           store.set({
