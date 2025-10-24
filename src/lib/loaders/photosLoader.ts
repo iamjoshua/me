@@ -9,6 +9,22 @@ export const photoSchema = z.object({
   filename: z.string(),
   title: z.string(),
   path: z.string(),
+  keywords: z.array(z.string()).optional(),
+  location: z.object({
+    sublocation: z.string().optional(),
+    city: z.string().optional(),
+    state: z.string().optional(),
+    country: z.string().optional(),
+  }).optional(),
+  rating: z.number().optional(),
+  date: z.string().optional(),
+  camera_make: z.string().optional(),
+  camera_model: z.string().optional(),
+  lens_model: z.string().optional(),
+  focal_length: z.number().optional(),
+  aperture: z.number().optional(),
+  shutter_speed: z.string().optional(),
+  iso: z.number().optional(),
 });
 
 export function photosLoader(): Loader {
@@ -51,6 +67,22 @@ export function photosLoader(): Loader {
                 filename,
                 title,
                 path: photoPath,
+                keywords: Array.isArray(parsed.keywords) ? parsed.keywords : undefined,
+                location: parsed.location && typeof parsed.location === 'object' ? {
+                  sublocation: parsed.location.sublocation,
+                  city: parsed.location.city,
+                  state: parsed.location.state,
+                  country: parsed.location.country,
+                } : undefined,
+                rating: typeof parsed.rating === 'number' ? parsed.rating : undefined,
+                date: typeof parsed.date === 'string' ? parsed.date : undefined,
+                camera_make: typeof parsed.camera_make === 'string' ? parsed.camera_make : undefined,
+                camera_model: typeof parsed.camera_model === 'string' ? parsed.camera_model : undefined,
+                lens_model: typeof parsed.lens_model === 'string' ? parsed.lens_model : undefined,
+                focal_length: typeof parsed.focal_length === 'number' ? parsed.focal_length : undefined,
+                aperture: typeof parsed.aperture === 'number' ? parsed.aperture : undefined,
+                shutter_speed: typeof parsed.shutter_speed === 'string' || typeof parsed.shutter_speed === 'number' ? String(parsed.shutter_speed) : undefined,
+                iso: typeof parsed.iso === 'number' ? parsed.iso : undefined,
               },
             });
           } catch (e) {
