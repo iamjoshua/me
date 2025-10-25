@@ -33,7 +33,10 @@ const galleryPhotos = yamlPhotos
   })
   .filter((p): p is (typeof allPhotos)[0] => p !== undefined);
 
-const coverImageUrl = selectedCollection.data.coverImageUrl;
+// Resize cover image for better performance
+let coverPath = selectedCollection.data.cover_path.replace(/^\.+\//, "").replace(/^\/+/, "");
+const withoutPhotosPrefix = coverPath.startsWith("photos/") ? coverPath.substring(7) : coverPath;
+const coverImageUrl = getPhotoUrl(withoutPhotosPrefix, { width: 2400 });
 const coverAlt = `${selectedCollection.data.title} cover image`;
 ---
 

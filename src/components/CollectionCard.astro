@@ -1,5 +1,6 @@
 ---
 import AnimateOnLoad from "./AnimateOnLoad.astro";
+import { getPhotoUrl } from "@/lib/utils";
 
 interface Props {
   collection: {
@@ -7,6 +8,7 @@ interface Props {
     data: {
       title: string;
       coverImageUrl?: string;
+      cover_path: string;
     };
   };
   index: number;
@@ -14,6 +16,11 @@ interface Props {
 
 const { collection, index } = Astro.props;
 const collectionUrl = `/photography/${collection.id}`;
+
+// Extract path from cover_path and resize for card display
+let coverPath = collection.data.cover_path.replace(/^\.+\//, "").replace(/^\/+/, "");
+const withoutPhotosPrefix = coverPath.startsWith("photos/") ? coverPath.substring(7) : coverPath;
+const resizedCoverUrl = getPhotoUrl(withoutPhotosPrefix, { width: 600 });
 ---
 
 <AnimateOnLoad type="slideUp" delay={index * 0.1} class="md:flex-none">
@@ -23,16 +30,12 @@ const collectionUrl = `/photography/${collection.id}`;
     data-collection-id={collection.id}
   >
     <div class="overflow-hidden rounded-lg bg-gray-100 relative">
-      {
-        collection.data.coverImageUrl && (
-          <img
-            src={collection.data.coverImageUrl}
-            alt={collection.data.title}
-            class="w-full md:h-66 md:w-auto h-auto object-cover transition-transform duration-300 group-hover:scale-105"
-            loading="lazy"
-          />
-        )
-      }
+      <img
+        src={resizedCoverUrl}
+        alt={collection.data.title}
+        class="w-full md:h-66 md:w-auto h-auto object-cover transition-transform duration-300 group-hover:scale-105"
+        loading="lazy"
+      />
       <div class="absolute inset-0 flex items-center justify-center">
         <h3
           class="text-white text-xl font-[Crimson_Text] font-light italic text-center [text-shadow:_2px_2px_5px_rgba(0,0,0,1)]"
