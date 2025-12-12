@@ -19,6 +19,12 @@ import Analytics from "@vercel/analytics/astro";
   </head>
   <body>
     <slot />
+    <script is:inline>
+      window.webAnalyticsBeforeSend = (event) => {
+        if (localStorage.getItem('va-disable')) return null;
+        return event;
+      };
+    </script>
     <Analytics />
   </body>
 </html>
