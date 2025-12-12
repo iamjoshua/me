@@ -19,6 +19,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.11",
     "@types/glob": "^8.1.0",
+    "@vercel/analytics": "^1.6.1",
     "astro": "^5.11.0",
     "astro-github-file-loader": "^1.1.0",
     "clsx": "^2.1.1",

@@ -17,6 +17,7 @@ import Navigation from "@/components/elements/Navigation.astro";
 import Frame from "@/components/Frame.astro";
 import { cn } from "@/lib/utils";
 import { ClientRouter } from "astro:transitions";
+import Analytics from "@vercel/analytics/astro";
 ---
 
 <!doctype html>
@@ -42,6 +43,7 @@ import { ClientRouter } from "astro:transitions";
       <Logo />
       <Navigation />
     </header>
+    <Analytics />
   </body>
 </html>
 
