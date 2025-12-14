@@ -11,5 +11,9 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
+  server: {
+    allowedHosts: ['max.local', 'localhost']
+  },
+
   adapter: vercel()
 });

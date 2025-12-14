@@ -44,7 +44,7 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
         {
           coverImageUrl && (
             <div
-              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat bg-fixed"
+              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat md:bg-fixed"
               style={`background-image: url('${coverImageUrl}')`}
               role="img"
               aria-label={`${title} cover image`}

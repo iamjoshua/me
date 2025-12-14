@@ -3,8 +3,8 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "npm run clearGitTemp && astro dev",
-    "dev:local": "npm run setup:local && npm run clearGitTemp && USE_LOCAL_PHOTOS=true astro dev",
+    "dev": "npm run clearGitTemp && astro dev --host",
+    "dev:local": "npm run setup:local && npm run clearGitTemp && USE_LOCAL_PHOTOS=true astro dev --host",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
