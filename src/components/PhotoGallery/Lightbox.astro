@@ -1,7 +1,7 @@
 <!-- Lightbox Modal -->
 <div
   id="lightbox"
-  class="fixed inset-0 z-50 bg-white bg-opacity-95 flex items-center justify-center p-4 lightbox-hidden"
+  class="fixed inset-0 z-50 bg-white bg-opacity-95 flex items-center justify-center p-0 md:p-4 lightbox-hidden"
   role="dialog"
   aria-modal="true"
 >
@@ -21,13 +21,13 @@
         id="lightbox-image"
         src=""
         alt=""
-        class="max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
+        class="max-w-full md:max-w-[90vw] max-h-[90vh] w-auto h-auto object-contain"
       />
 
       <!-- EXIF data display - positioned outside and aligned to right of image -->
       <div
         id="lightbox-exif"
-        class="mt-5 md:mt-0 md:fixed md:bottom-5 text-[10px] text-gray-600 font-black flex gap-2 opacity-50 transition-opacity duration-300 hover:opacity-100"
+        class="mt-5 md:mt-0 md:fixed md:bottom-5 text-[10px] text-gray-600 font-black flex gap-2 opacity-50 transition-opacity duration-300 hover:opacity-100 pr-4 md:pr-0"
       >
         <span id="exif-iso"></span>
         <span class="text-gray-200">•</span>
@@ -39,10 +39,10 @@
       </div>
     </div>
 
-    <!-- Prev / Next arrows -->
+    <!-- Prev / Next arrows (hidden on mobile) -->
     <button
       id="prev-photo"
-      class="absolute left-2 bottom-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 text-gray-800 hover:text-gray-900 bg-neutral-100/0 hover:bg-neutral-100/50 rounded-full shadow w-10 h-10 flex items-center justify-center z-10 cursor-pointer select-none"
+      class="hidden md:flex absolute left-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900 bg-neutral-100/0 hover:bg-neutral-100/50 rounded-full shadow w-10 h-10 items-center justify-center z-10 cursor-pointer select-none"
       onclick="navigateLightbox(-1)"
       aria-label="Previous photo"
     >
@@ -50,7 +50,7 @@
     </button>
     <button
       id="next-photo"
-      class="absolute right-2 bottom-6 md:bottom-auto md:top-1/2 md:-translate-y-1/2 text-gray-800 hover:text-gray-900 bg-neutral-100/0 hover:bg-neutral-100/50 rounded-full shadow w-10 h-10 flex items-center justify-center z-10 cursor-pointer select-none"
+      class="hidden md:flex absolute right-2 top-1/2 -translate-y-1/2 text-gray-800 hover:text-gray-900 bg-neutral-100/0 hover:bg-neutral-100/50 rounded-full shadow w-10 h-10 items-center justify-center z-10 cursor-pointer select-none"
       onclick="navigateLightbox(1)"
       aria-label="Next photo"
     >
