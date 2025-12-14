@@ -1,53 +1,187 @@
 ---
-import { getCollection } from "astro:content";
-import Layout from "../../layouts/Layout.astro";
+import { getCollection, getEntry } from "astro:content";
+import Layout from "@/layouts/CollectionV2Layout.astro";
 import Back from "@/components/elements/Back.astro";
-import CollectionGallery from "@/components/CollectionGallery.astro";
+import PhotoGrid from "@/components/PhotoGallery/PhotoGrid.astro";
+import Lightbox from "@/components/PhotoGallery/Lightbox.astro";
+import Logo from "@/components/elements/Logo.astro";
+import Navigation from "@/components/elements/Navigation.astro";
+import { cn, getPhotoUrl } from "@/lib/utils";
 
-const collections = await getCollection("photoCollections");
+const favoritesCollection = await getEntry("photoCollections", "favorites");
+const allPhotos = await getCollection("photos");
+
+const yamlPhotos = (favoritesCollection?.data.photos ?? []) as Array<{ path: string }>;
+
+const photos = yamlPhotos
+  .map((yamlPhoto) => {
+    const photoPath = yamlPhoto.path.replace(/^\/+/, "").replace(/^\.+\//, "");
+    const withoutPhotosPrefix = photoPath.startsWith("photos/")
+      ? photoPath.substring(7)
+      : photoPath;
+    return allPhotos.find((p) => p.data.path === withoutPhotosPrefix);
+  })
+  .filter((p): p is (typeof allPhotos)[0] => p !== undefined);
+
+const title = "Photography";
+let coverPath = favoritesCollection?.data.cover_path?.replace(/^\.+\//, "").replace(/^\/+/, "") ?? "";
+const withoutPhotosPrefix = coverPath.startsWith("photos/") ? coverPath.substring(7) : coverPath;
+const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400 }) : "";
 ---
 
 <Layout title="Joshua Heiland | Photography">
-  <div class="gallery-page">
-    <div class="relative ml-10">
-      <Back href="/" label="Home" />
-    </div>
+  <div class="fixed z-50 ml-10">
+    <Back
+      href="/"
+      label="Home"
+      style="text-white text-shadow-md shadow-gray-950 hover:text-white"
+    />
+  </div>
 
-    <div
-      id="photography-page"
-      class="min-h-screen lg:h-dvh md:w-[calc(100%+20px)] md:-ml-[10px] overflow-x-hidden lg:overflow-y-hidden flex flex-col"
-    >
-      <div class="h-[50vh] lg:h-1/5 flex justify-center items-center">
-        <div
-          class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+  <div class="gallery-layout pb-25">
+    <main class="flex flex-col">
+      <section class="h-screen collection-cover flex flex-col relative items-center">
+        {
+          coverImageUrl && (
+            <div
+              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat bg-fixed"
+              style={`background-image: url('${coverImageUrl}')`}
+              role="img"
+              aria-label={`${title} cover image`}
+            />
+          )
+        }
+        <div class="bg-white w-full h-20 md:h-25"></div>
+      </section>
+
+      <div
+        class="-mt-20 md:-mt-25 collection-info sticky top-0 w-full bottom-0 z-10 bg-white/90 backdrop-blur px-5 md:px-10 border-b border-b-1 border-neutral-200 flex flex-row items-center justify-between md:justify-center h-20 md:h-25 drop-shadow-[0_-8px_4px_rgba(0,0,0,0.1)] relative"
+      >
+        <h1
+          id="photography-title"
+          class="text-xl md:text-2xl font-[Crimson_Text] font-light italic text-gray-700 leading-tight transition-all duration-300 title-centered"
         >
-          Photography
-        </div>
+          {title}
+        </h1>
+        <p
+          id="photo-count"
+          class="text-sm md:text-md font-[Crimson_Text] font-light text-gray-700 italic md:absolute md:right-10 opacity-0 transition-opacity duration-300"
+        >
+          {photos.length} Photos
+        </p>
+        <svg
+          id="scroll-arrow"
+          class="w-4 h-4 text-gray-400 animate-bounce absolute bottom-2 left-1/2 -translate-x-1/2 transition-opacity duration-300"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
       </div>
 
-      <div class="w-full block lg:flex lg:h-3/5 lg:items-center gallery-zone">
-        <div class="w-full">
-          <CollectionGallery collections={collections} />
-        </div>
-      </div>
-      <div class="h-0 lg:h-1/5"></div>
-    </div>
+      <section class="p-5 pt-5">
+        <PhotoGrid photos={photos} />
+      </section>
+    </main>
   </div>
 </Layout>
 
+<Lightbox />
+
+<header
+  class={cn(
+    "absolute top-2 z-10 flex items-center justify-between",
+    "md:ml-10",
+    "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
+    "bg-white/90 backdrop-blur-sm rounded-xl mx-2",
+    "md:bg-white/90 md:backdrop-blur-sm md:rounded-full",
+  )}
+>
+  <Logo />
+  <Navigation />
+</header>
+
 <style>
-  /* Remove bottom spacing within TwoColumnView to avoid page vertical scroll */
-  .gallery-page .mb-22 {
-    margin-bottom: 0 !important;
+  :root {
+    --collection-info-height: 160px;
   }
-  /* Make sure the horizontal container can use full width */
-  .gallery-page #collection-horizontal {
-    width: 100%;
+
+  .collection-cover {
+    min-height: max(320px, calc(100vh - var(--collection-info-height, 160px)));
   }
-  /* On desktop (fine pointer), prevent page vertical scroll on photo pages */
-  @media (min-width: 1024px) and (pointer: fine) {
-    body {
-      overflow-y: hidden !important;
+
+  @media (max-width: 767px) {
+    .title-centered {
+      transform: translateX(calc(50vw - 50% - 1.25rem));
+    }
+
+    .title-left {
+      transform: translateX(0);
     }
   }
 </style>
+
+<script>
+  (function () {
+    const info = document.querySelector(".collection-info");
+    const setInfoHeightVar = () => {
+      if (!info) return;
+      const height = info.getBoundingClientRect().height;
+      document.documentElement.style.setProperty(
+        "--collection-info-height",
+        `${Math.round(height)}px`,
+      );
+    };
+
+    if (info) {
+      setInfoHeightVar();
+      new ResizeObserver(setInfoHeightVar).observe(info);
+      window.addEventListener("resize", setInfoHeightVar, { passive: true });
+    }
+
+    const backButton = document.querySelector("[data-back-button]");
+    const coverSection = document.querySelector(".collection-cover");
+    const scrollArrow = document.getElementById("scroll-arrow");
+
+    // Fade out scroll arrow, fade in photo count, and slide title when scrolled
+    const photoCount = document.getElementById("photo-count");
+    const photographyTitle = document.getElementById("photography-title");
+
+    window.addEventListener("scroll", () => {
+      const scrolled = window.scrollY > 50;
+      if (scrollArrow) scrollArrow.style.opacity = scrolled ? "0" : "1";
+      if (photoCount) photoCount.style.opacity = scrolled ? "1" : "0";
+      if (photographyTitle && window.innerWidth < 768) {
+        if (scrolled) {
+          photographyTitle.classList.remove("title-centered", "text-xl", "font-[Crimson_Text]", "font-light", "italic");
+          photographyTitle.classList.add("title-left", "text-sm", "uppercase");
+          photographyTitle.textContent = "Joshua Heiland";
+        } else {
+          photographyTitle.classList.remove("title-left", "text-sm", "uppercase");
+          photographyTitle.classList.add("title-centered", "text-xl", "font-[Crimson_Text]", "font-light", "italic");
+          photographyTitle.textContent = "Photography";
+        }
+      }
+    }, { passive: true });
+
+    if (backButton && coverSection) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              backButton.classList.remove("!text-gray-900", "!shadow-none");
+              backButton.classList.add("text-white", "text-shadow-md", "shadow-gray-950");
+            } else {
+              backButton.classList.remove("text-white", "text-shadow-md", "shadow-gray-950");
+              backButton.classList.add("!text-gray-900", "!shadow-none");
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      observer.observe(coverSection);
+    }
+  })();
+</script>

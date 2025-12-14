@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Back from "@/components/elements/Back.astro";
+import CollectionGallery from "@/components/CollectionGallery.astro";
+
+const collections = await getCollection("photoCollections");
+---
+
+<Layout title="Joshua Heiland | Photography">
+  <div class="gallery-page">
+    <div class="relative ml-10">
+      <Back href="/" label="Home" />
+    </div>
+
+    <div
+      id="photography-page"
+      class="min-h-screen lg:h-dvh md:w-[calc(100%+20px)] md:-ml-[10px] overflow-x-hidden lg:overflow-y-hidden flex flex-col"
+    >
+      <div class="h-[50vh] lg:h-1/5 flex justify-center items-center">
+        <div
+          class={`mt-18 text-3xl md:text-4xl font-light text-gray-700 lg:mb-18 italic leading-tight font-[Crimson_Text]`}
+        >
+          Photography
+        </div>
+      </div>
+
+      <div class="w-full block lg:flex lg:h-3/5 lg:items-center gallery-zone">
+        <div class="w-full">
+          <CollectionGallery collections={collections} />
+        </div>
+      </div>
+      <div class="h-0 lg:h-1/5"></div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Remove bottom spacing within TwoColumnView to avoid page vertical scroll */
+  .gallery-page .mb-22 {
+    margin-bottom: 0 !important;
+  }
+  /* Make sure the horizontal container can use full width */
+  .gallery-page #collection-horizontal {
+    width: 100%;
+  }
+  /* On desktop (fine pointer), prevent page vertical scroll on photo pages */
+  @media (min-width: 1024px) and (pointer: fine) {
+    body {
+      overflow-y: hidden !important;
+    }
+  }
+</style>
