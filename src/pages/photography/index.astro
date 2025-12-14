@@ -44,7 +44,8 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
         {
           coverImageUrl && (
             <div
-              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat md:bg-fixed"
+              id="parallax-cover"
+              class="flex-1 w-full bg-neutral-900 bg-cover bg-center bg-no-repeat"
               style={`background-image: url('${coverImageUrl}')`}
               role="img"
               aria-label={`${title} cover image`}
@@ -143,6 +144,16 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
     const backButton = document.querySelector("[data-back-button]");
     const coverSection = document.querySelector(".collection-cover");
     const scrollArrow = document.getElementById("scroll-arrow");
+    const parallaxCover = document.getElementById("parallax-cover");
+
+    // Subtle parallax effect on cover image
+    if (parallaxCover) {
+      window.addEventListener("scroll", () => {
+        const scrollY = window.scrollY;
+        const parallaxSpeed = 0.3; // Moves at 30% of scroll speed
+        parallaxCover.style.backgroundPositionY = `calc(50% + ${scrollY * parallaxSpeed}px)`;
+      }, { passive: true });
+    }
 
     // Fade out scroll arrow, fade in photo count, and slide title when scrolled
     const photoCount = document.getElementById("photo-count");
