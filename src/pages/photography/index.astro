@@ -11,7 +11,9 @@ import { cn, getPhotoUrl } from "@/lib/utils";
 const favoritesCollection = await getEntry("photoCollections", "favorites");
 const allPhotos = await getCollection("photos");
 
-const yamlPhotos = (favoritesCollection?.data.photos ?? []) as Array<{ path: string }>;
+const yamlPhotos = (favoritesCollection?.data.photos ?? []) as Array<{
+  path: string;
+}>;
 
 const photos = yamlPhotos
   .map((yamlPhoto) => {
@@ -24,9 +26,16 @@ const photos = yamlPhotos
   .filter((p): p is (typeof allPhotos)[0] => p !== undefined);
 
 const title = "Photography";
-let coverPath = favoritesCollection?.data.cover_path?.replace(/^\.+\//, "").replace(/^\/+/, "") ?? "";
-const withoutPhotosPrefix = coverPath.startsWith("photos/") ? coverPath.substring(7) : coverPath;
-const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400 }) : "";
+let coverPath =
+  favoritesCollection?.data.cover_path
+    ?.replace(/^\.+\//, "")
+    .replace(/^\/+/, "") ?? "";
+const withoutPhotosPrefix = coverPath.startsWith("photos/")
+  ? coverPath.substring(7)
+  : coverPath;
+const coverImageUrl = coverPath
+  ? getPhotoUrl(withoutPhotosPrefix, { width: 2400 })
+  : "";
 ---
 
 <Layout title="Joshua Heiland | Photography">
@@ -40,7 +49,9 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
 
   <div class="gallery-layout pb-25">
     <main class="flex flex-col">
-      <section class="h-screen collection-cover flex flex-col relative items-center">
+      <section
+        class="h-screen collection-cover flex flex-col relative items-center"
+      >
         {
           coverImageUrl && (
             <div
@@ -77,7 +88,11 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"></path>
         </svg>
       </div>
 
@@ -92,10 +107,10 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
 
 <header
   class={cn(
-    "absolute top-2 z-10 flex items-center justify-between",
-    "md:ml-10",
+    "absolute top-5 left-4 right-4 z-10 flex items-center justify-between",
+    "md:left-auto md:right-auto md:ml-10",
     "lg:top-auto lg:fixed lg:left-0 lg:bottom-5",
-    "bg-white/90 backdrop-blur-sm rounded-xl mx-2",
+    "bg-white/70 backdrop-blur-sm rounded-xl",
     "md:bg-white/90 md:backdrop-blur-sm md:rounded-full",
   )}
 >
@@ -148,33 +163,61 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
 
     // Subtle parallax effect on cover image
     if (parallaxCover) {
-      window.addEventListener("scroll", () => {
-        const scrollY = window.scrollY;
-        const parallaxSpeed = 0.3; // Moves at 30% of scroll speed
-        parallaxCover.style.backgroundPositionY = `calc(50% + ${scrollY * parallaxSpeed}px)`;
-      }, { passive: true });
+      window.addEventListener(
+        "scroll",
+        () => {
+          const scrollY = window.scrollY;
+          const parallaxSpeed = 0.3; // Moves at 30% of scroll speed
+          parallaxCover.style.backgroundPositionY = `calc(50% + ${scrollY * parallaxSpeed}px)`;
+        },
+        { passive: true },
+      );
     }
 
     // Fade out scroll arrow, fade in photo count, and slide title when scrolled
     const photoCount = document.getElementById("photo-count");
     const photographyTitle = document.getElementById("photography-title");
 
-    window.addEventListener("scroll", () => {
-      const scrolled = window.scrollY > 50;
-      if (scrollArrow) scrollArrow.style.opacity = scrolled ? "0" : "1";
-      if (photoCount) photoCount.style.opacity = scrolled ? "1" : "0";
-      if (photographyTitle && window.innerWidth < 768) {
-        if (scrolled) {
-          photographyTitle.classList.remove("title-centered", "text-xl", "font-[Crimson_Text]", "font-light", "italic");
-          photographyTitle.classList.add("title-left", "text-sm", "uppercase");
-          photographyTitle.textContent = "Joshua Heiland";
-        } else {
-          photographyTitle.classList.remove("title-left", "text-sm", "uppercase");
-          photographyTitle.classList.add("title-centered", "text-xl", "font-[Crimson_Text]", "font-light", "italic");
-          photographyTitle.textContent = "Photography";
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrolled = window.scrollY > 50;
+        if (scrollArrow) scrollArrow.style.opacity = scrolled ? "0" : "1";
+        if (photoCount) photoCount.style.opacity = scrolled ? "1" : "0";
+        if (photographyTitle && window.innerWidth < 768) {
+          if (scrolled) {
+            photographyTitle.classList.remove(
+              "title-centered",
+              "text-xl",
+              "font-[Crimson_Text]",
+              "font-light",
+              "italic",
+            );
+            photographyTitle.classList.add(
+              "title-left",
+              "text-sm",
+              "uppercase",
+            );
+            photographyTitle.textContent = "Joshua Heiland";
+          } else {
+            photographyTitle.classList.remove(
+              "title-left",
+              "text-sm",
+              "uppercase",
+            );
+            photographyTitle.classList.add(
+              "title-centered",
+              "text-xl",
+              "font-[Crimson_Text]",
+              "font-light",
+              "italic",
+            );
+            photographyTitle.textContent = "Photography";
+          }
         }
-      }
-    }, { passive: true });
+      },
+      { passive: true },
+    );
 
     if (backButton && coverSection) {
       const observer = new IntersectionObserver(
@@ -182,14 +225,22 @@ const coverImageUrl = coverPath ? getPhotoUrl(withoutPhotosPrefix, { width: 2400
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               backButton.classList.remove("!text-gray-900", "!shadow-none");
-              backButton.classList.add("text-white", "text-shadow-md", "shadow-gray-950");
+              backButton.classList.add(
+                "text-white",
+                "text-shadow-md",
+                "shadow-gray-950",
+              );
             } else {
-              backButton.classList.remove("text-white", "text-shadow-md", "shadow-gray-950");
+              backButton.classList.remove(
+                "text-white",
+                "text-shadow-md",
+                "shadow-gray-950",
+              );
               backButton.classList.add("!text-gray-900", "!shadow-none");
             }
           });
         },
-        { threshold: 0.1 }
+        { threshold: 0.1 },
       );
 
       observer.observe(coverSection);
