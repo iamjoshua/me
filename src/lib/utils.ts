@@ -44,18 +44,7 @@ export function getPhotoUrl(path: string, options?: PhotoUrlOptions): string {
   }
 
   const domain = "https://photos.joshuaheiland.com";
-
-  if (options?.width) {
-    // Resized images can look blurry; add some padding to enhance clarity
-    const paddedWidth = options.width + 100;
-    const params = [
-      `width=${paddedWidth}`,
-      `format=webp`,
-      `quality=100`,
-      `sharpen=0.5`,
-    ];
-    return `${domain}/cdn-cgi/image/${params.join(",")}/${path}`;
-  }
-
-  return `${domain}/${path}`;
+  const size = options?.width && options.width <= 800 ? "small" : "large";
+  const stem = path.replace(/\.[^/.]+$/, "");
+  return `${domain}/${size}/${stem}.webp`;
 }

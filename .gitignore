@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # local development symlinks
 public/local-photos
+
+# Vercel files
+.vercel
