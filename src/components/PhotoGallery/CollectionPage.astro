@@ -28,6 +28,7 @@ interface Props {
   coverAlt: string;
   backHref: string;
   backLabel: string;
+  collectionId?: string;
 }
 
 const {
@@ -38,7 +39,12 @@ const {
   coverAlt,
   backHref,
   backLabel,
+  collectionId,
 } = Astro.props;
+
+const galleryReturnUrl = collectionId
+  ? `/photography/${collectionId}`
+  : "/photography";
 ---
 
 <Layout title={pageTitle}>
@@ -50,7 +56,7 @@ const {
     />
   </div>
 
-  <div class="gallery-layout pb-25">
+  <div class="gallery-layout pb-25" data-gallery-return-url={galleryReturnUrl}>
     <main class="flex flex-col">
       <section
         class="h-screen collection-cover flex flex-col relative items-center"

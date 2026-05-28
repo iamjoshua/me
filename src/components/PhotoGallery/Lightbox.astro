@@ -216,16 +216,18 @@
   }
 
   function handleCloseClick() {
-    // Always normalize the URL in-place to avoid a history back navigation
     if (location.pathname.startsWith("/photography/p/")) {
-      // Get the collection ID from the page's data attributes or URL
-      const collectionElement = document.querySelector("[data-collection-id]");
-      const collectionId =
-        collectionElement?.getAttribute("data-collection-id");
-      const returnPath = collectionId
-        ? `/photography/${collectionId}`
-        : "/photography";
-      history.replaceState(null, "", returnPath);
+      const returnEl = document.querySelector("[data-gallery-return-url]");
+      const returnUrl = returnEl?.getAttribute("data-gallery-return-url");
+      if (returnUrl) {
+        history.replaceState(null, "", returnUrl);
+        closeLightbox();
+        return;
+      }
+      const navigateEl = document.querySelector("[data-gallery-navigate-url]");
+      const navigateUrl = navigateEl?.getAttribute("data-gallery-navigate-url");
+      location.href = navigateUrl || "/photography";
+      return;
     }
     closeLightbox();
   }
